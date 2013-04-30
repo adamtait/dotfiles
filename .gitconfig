@@ -1,0 +1,7 @@
+[user]
+	name = Adam Tait
+	email = adam@adamtait.com
+[alias]
+        ci = commit
+	st = status
+	push = push origin master
