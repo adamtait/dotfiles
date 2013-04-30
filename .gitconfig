@@ -5,3 +5,5 @@
         ci = commit
 	st = status
 	push = push origin master
+[push]
+	default = simple
