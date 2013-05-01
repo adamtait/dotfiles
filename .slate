@@ -1,9 +1,9 @@
 # Configs
 config defaultToCurrentScreen true
-config nudgePercentOf screenSize
+# config nudgePercentOf screenSize
 config resizePercentOf screenSize
 config secondsBetweenRepeat 0.1
-config checkDefaultsOnLoad true
+# config checkDefaultsOnLoad true
 config focusCheckWidthMax 3000
 # config keyboardLayout dvorak
 config windowHintsShowIcons true
@@ -76,7 +76,7 @@ layout 1monitor 'iTunes':REPEAT                          ${1-full}
 # default 2monitors resolutions:${mon-laptop};${mon-samsung};
 # default 1monitor  resolutions:${mon-laptop}
 
-bind e:cmd  ${showNormalHint}
+# bind e:cmd  ${showNormalHint}
 
 # ======================================
 # The HYPER key
