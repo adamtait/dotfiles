@@ -3,6 +3,7 @@
 	email = adam@adamtait.com
 [alias]
         ci = commit
+	co = checkout
 	st = status
 	push = push origin master
 [push]
