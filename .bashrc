@@ -6,6 +6,9 @@ for file in ~/.bash.d/*; do
 done
 unset file
 
+HISTSIZE=100000
+HISTFILESIZE=100000
+
 # Append to the Bash history file, rather than overwriting it
 shopt -s histappend
 
@@ -19,3 +22,6 @@ done
 # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
 [ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2 | tr ' ' '\n')" scp sftp ssh
 
+
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting

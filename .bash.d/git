@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [ -f ~/.git-completion.bash ]; then
+  . ~/.git-completion.bash
+fi
+
+
+function pull {
+    git remote prune origin
+    git pull
+}
+
+function branch {
+    git checkout -b $1
+    git push --set-upstream origin $1
+}
+
+function delbranch {
+    git push origin --delete $1
+    git branch -D $1
+}
