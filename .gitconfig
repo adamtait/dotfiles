@@ -1,10 +1,35 @@
-[user]
-	name = Adam Tait
-	email = adam@adamtait.com
+[core]
+	pager = "less -FXRS -x2"
+	editor = emacs
+[include]
+	path = .gituser
 [alias]
-        ci = commit
+	ci = commit
 	co = checkout
 	st = status
-	push = push origin master
+	di = diff
+	ds = "diff --staged"
+	br = branch
+	sta = stash
+	unstage = "reset HEAD"
+	llog = "log --date=local"
+	flog = "log --pretty=fuller --decorate"
+	lg = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
+	lol = "log --graph --decorate --oneline"
+	lola = "log --graph --decorate --oneline --all"
+	blog = "log origin/master... --left-right"
 [push]
 	default = simple
+[color]
+	ui = auto
+	branch = auto
+	diff = auto
+	interactive = auto
+	status = auto
+[apply]
+	whitespace = nowarn
+[branch]
+	autosetupmerge = true
+[rebase]
+	autosquash = true
+
