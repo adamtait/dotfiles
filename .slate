@@ -1,113 +1,113 @@
 # Configs
-config defaultToCurrentScreen true
-# config nudgePercentOf screenSize
-config resizePercentOf screenSize
-config secondsBetweenRepeat 0.1
-# config checkDefaultsOnLoad true
-config focusCheckWidthMax 3000
-# config keyboardLayout dvorak
-config windowHintsShowIcons true
-config windowHintsIgnoreHiddenWindows false
-#config windowHintsDuration 5
-config windowHintsSpread true
-#config windowHintsOrder persist
+config defaultToCurrentScreen	true
+config nudgePercentOf 		screenSize
+config resizePercentOf 		screenSize
+config secondsBetweenRepeat     0.1
+config checkDefaultsOnLoad 	true
+config focusCheckWidthMax    	3000
+
+# window hints
+config windowHintsShowIcons		true
+config windowHintsSpread		true
+config windowHintsIgnoreHiddenWindows	false
+
+# positioning grid
+bind g:cmd grid padding:5 0:6,2 1:8,3
+
+
+# The modifier keys
+alias modifiers ctrl;alt;cmd
+
 
 # Monitor Aliases
-alias mon-laptop      0
-alias mon-samsung    1
+alias monitor-macbook-pro        0
+alias monitor-cinema-display     1
 
-# Misc Aliases
-alias showHintsLeftHand hint AOEUIYQJKX
-alias showNormalHint hint AOEUIDHTNSYXFBPKGMCW
-alias browser 'Nightly'
-alias editor 'MacVim'
+# Bindings for specific applications
+alias browser        'Google Chrome'
+bind w:${modifiers} focus ${browser}
 
-# Abstract positions
+alias editor         'Emacs'
+bind e:${modifiers} focus ${editor}
+
+alias terminal       'iTerm'
+bind e:${modifiers} focus ${terminal}
+
+
+
+
+# Screen positions, relative to current screen
 alias full          move screenOriginX;screenOriginY                  screenSizeX;screenSizeY
 alias lefthalf      move screenOriginX;screenOriginY                  screenSizeX/2;screenSizeY
 alias righthalf     move screenOriginX+screenSizeX/2;screenOriginY    screenSizeX/2;screenSizeY
 
 alias rightmost     move screenOriginX+screenSizeX*0.4;screenOriginY  screenSizeX*0.6;screenSizeY
 alias rightless     move screenOriginX+screenSizeX*0.6;screenOriginY  screenSizeX*0.4;screenSizeY
-alias rightbottom   move screenOriginX+screenSizeX/2;screenOriginY+screenSizeY/2    screenSizeX/2;screenSizeY
+alias righttop	    move screenOriginX+screenSizeX/2;screenOriginY    screenSizeX/2;screenSizeY/2
+alias rightbottom   move screenOriginX+screenSizeX/2;screenOriginY+screenSizeY/2    screenSizeX/2;screenSizeY/2
 
 alias leftmost      move screenOriginX;screenOriginY                  screenSizeX*0.6;screenSizeY
 alias leftless      move screenOriginX;screenOriginY                  screenSizeX*0.4;screenSizeY
+alias lefttop    move screenOriginX;screenOriginY                  screenSizeX/2;screenSizeY/2
 alias leftbottom    move screenOriginX;screenOriginY+screenSizeY/2    screenSizeX/2;screenSizeY/2
 
-# Concrete positions
-alias 1-full        move screenOriginX;screenOriginY screenSizeX;screenSizeY         ${mon-laptop}
-alias 1-left        move screenOriginX;screenOriginY screenSizeX/2;screenSizeY         ${mon-laptop}
-alias 1-right       move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY         ${mon-laptop}
-alias 1-rightbottom move screenOriginX+screenSizeX/2;screenOriginY+screenSizeY/2    screenSizeX/2;screenSizeY/2       ${mon-laptop}
-alias 1-leftbottom  move screenOriginX;screenOriginY+screenSizeY/2    screenSizeX/2;screenSizeY/2       ${mon-laptop}
-
-alias 2-left        move screenOriginX;screenOriginY screenSizeX/2;screenSizeY         ${mon-samsung}
-alias 2-right       move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY         ${mon-samsung}
-alias 2-righttop    move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY/2       ${mon-samsung}
-alias 2-rightbottom move screenOriginX+screenSizeX/2;screenOriginY+screenSizeY/2    screenSizeX/2;screenSizeY/2       ${mon-samsung}
-
-
-# 2 Monitor layout
-layout 2monitors 'iTerm':MAIN_FIRST                       ${2-rightbottom} | ${1-left}
-layout 2monitors 'Safari':REPEAT                          ${1-full}
-layout 2monitors 'Nightly':REPEAT                          ${1-full}
-layout 2monitors 'Sublime Text 2':REPEAT              ${1-full}
-layout 2monitors 'MacVim':REPEAT              		  ${1-full}
-layout 2monitors 'Mail':MAIN_FIRST                        ${2-left}
-layout 2monitors 'Path Finder':MAIN_FIRST                 ${2-righttop}
-layout 2monitors 'Xcode':REPEAT                           ${1-full}
-layout 2monitors 'Eclipse':REPEAT                         ${1-full}
-layout 2monitors 'iTunes':REPEAT                          ${1-full}
-
-# 1 Monitor layout
-layout 1monitor 'iTerm':MAIN_FIRST                       ${1-right}
-layout 1monitor 'Sublime Text 2':MAIN_FIRST              ${1-left}
-layout 1monitor 'MacVim':MAIN_FIRST              		 ${1-left}
-layout 1monitor 'Safari':REPEAT                          ${1-full}
-layout 1monitor 'Nightly':REPEAT                          ${1-full}
-layout 1monitor 'Mail':MAIN_FIRST                        ${1-full}
-layout 1monitor 'Path Finder':MAIN_FIRST                 ${1-full}
-layout 1monitor 'Xcode':REPEAT                           ${1-full}
-layout 1monitor 'Eclipse':REPEAT                         ${1-full}
-layout 1monitor 'iTunes':REPEAT                          ${1-full}
-
-# Default Layouts
-# default 2monitors resolutions:${mon-laptop};${mon-samsung};
-# default 1monitor  resolutions:${mon-laptop}
-
-# bind e:cmd  ${showNormalHint}
-
-# ======================================
-# The HYPER key
-# ======================================
-
-alias hyper ctrl;alt;cmd
 
 # Location bindings
-bind j:${hyper} ${lefthalf}
-bind k:${hyper} ${full}
-bind l:${hyper} ${righthalf}
-bind m:${hyper} ${leftbottom}
-bind ,:${hyper} ${rightbottom}
+bind j:${modifiers} ${lefthalf}
+bind k:${modifiers} ${full}
+bind l:${modifiers} ${righthalf}
+bind i:${modifiers} ${lefttop}
+bind m:${modifiers} ${leftbottom}
+bind o:${modifiers} ${righttop}
+bind ,:${modifiers} ${rightbottom}
 
-bind p:${hyper} throw next
+# Throw
+bind ]:${modifiers} throw right resize full
+bind [:${modifiers}  throw left resize full
 
-# Resize Bindings
-# bind r:${hyper} ${leftmost}
-# bind g:${hyper} ${rightmost}
+# Resize 
+bind right:${modifiers} resize +10% +0
+bind left:${modifiers}  resize -10% +0
+bind up:${modifiers}    resize +0   -10%
+bind down:${modifiers}  resize +0   +10%
 
-# Focus Bindings
-# bind right:${hyper}    focus right
-# bind left:${hyper}     focus left
-# bind up:${hyper}       focus up
-# bind down:${hyper}     focus down
 
-# App bindings
-# bind e:${hyper} focus ${browser}
-# bind u:${hyper} focus ${editor}
-# bind x:${hyper} focus 'Xcode'
-# bind g:${hyper} focus 'GitHub'
-# bind m:${hyper} focus 'Mail'
-# bind i:${hyper} focus 'iTerm'
-# bind o:${hyper} focus 'Path Finder'
+# Concrete positions
+alias 1-full        move screenOriginX;screenOriginY screenSizeX;screenSizeY         ${monitor-macbook-pro}
+alias 1-left        move screenOriginX;screenOriginY screenSizeX/2;screenSizeY         ${monitor-macbook-pro}
+alias 1-right       move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY         ${monitor-macbook-pro}
+
+alias 2-left        move screenOriginX;screenOriginY screenSizeX/2;screenSizeY         ${monitor-cinema-display}
+alias 2-right       move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY         ${monitor-cinema-display}
+alias 2-righttop    move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY/2       ${monitor-cinema-display}
+alias 2-rightbottom move screenOriginX+screenSizeX/2;screenOriginY+screenSizeY/2    screenSizeX/2;screenSizeY/2       ${monitor-cinema-display}
+
+
+#####################
+##     LAYOUTS     ##
+#####################
+
+# Screen specific positions
+alias 1-full        move screenOriginX;screenOriginY screenSizeX;screenSizeY			${monitor-macbook-pro}
+alias 1-left        move screenOriginX;screenOriginY screenSizeX/2;screenSizeY			${monitor-macbook-pro}
+alias 1-right       move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY	${monitor-macbook-pro}
+
+alias 2-full        move screenOriginX;screenOriginY screenSizeX;screenSizeY			${monitor-cinema-display}
+alias 2-left        move screenOriginX;screenOriginY screenSizeX/2;screenSizeY			${monitor-cinema-display}
+alias 2-right       move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY	${monitor-cinema-display}
+
+
+
+layout macbook	${browser}      ${1-full}
+layout macbook	${terminal}	${1-full}
+layout macbook	${editor}	${1-full}
+default macbook			resolutions:${monitor-macbook-pro}
+bind 1:${modifiers} layout macbook
+
+
+layout macbook-and-cinema	${browser}		${1-full}
+layout macbook-and-cinema       ${terminal}		${2-right}
+layout macbook-and-cinema       ${editor}		${2-full}
+default macbook-and-cinema	resolutions:${monitor-macbook-pro};${monitor-cinema-display};
+bind 2:${modifiers} layout macbook-and-cinema
+
