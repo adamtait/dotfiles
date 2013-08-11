@@ -1,0 +1,1 @@
+alias ssh-gce='gcutil --service_version="v1beta15" --project="white-might-266" ssh  --zone="us-central1-b" "howsmyboyfriend"'
