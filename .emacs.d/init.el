@@ -211,9 +211,34 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Color ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(load-theme 'gentooish t)
+;;;;;;;;;; silly hack to make color-theme work in Emacs24+ ;;;;;;;;;;
+(defun plist-to-alist (the-plist)
+  (defun get-tuple-from-plist (the-plist)
+    (when the-plist
+      (cons (car the-plist) (cadr the-plist))))
 
+  (let ((alist '()))
+    (while the-plist
+      (add-to-list 'alist (get-tuple-from-plist the-plist))
+      (setq the-plist (cddr the-plist)))
+  alist))
+
+;;;;;;;;;;;;;;; load color-theme package (Emacs < 24) ;;;;;;;;;;;;;;;
+(install-package 'color-theme)
+(require 'color-theme)
+(setq color-theme-is-global t)
+(add-to-list 'load-path "~/.emacs.d/themes")
+
+;;;;;;;;;;;;;;; install color themes ;;;;;;;;;;;;;;;
+
+(require 'gentooish-theme)
+(require 'color-theme-solarized)
+(require 'color-theme-hihat)
+
+;; (load-theme 'bubbleberry t))
+(if window-system
+  (color-theme-gentooish)
+  (color-theme-hihat))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Whitespace
