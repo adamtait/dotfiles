@@ -20,6 +20,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Misc ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setq split-height-threshold nil)
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+(setq inhibit-startup-screen t)
+(defalias 'yes-or-no-p 'y-or-n-p)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;; Magit ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -155,7 +159,27 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; nREPL ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (install-package 'nrepl)
+(require 'nrepl)
+(add-hook 'nrepl-interaction-mode-hook
+          (lambda ()
+            (nrepl-turn-on-eldoc-mode)
+            (enable-paredit-mode)))
 
+(add-hook 'nrepl-mode-hook
+          (lambda ()
+            (nrepl-turn-on-eldoc-mode)
+            (enable-paredit-mode)
+            (define-key nrepl-mode-map
+              (kbd "{") 'paredit-open-curly)
+            (define-key nrepl-mode-map
+              (kbd "}") 'paredit-close-curly)))
+
+(setq nrepl-popup-stacktraces-in-repl t)
+
+(defun live-nrepl-set-print-length ()
+  (nrepl-send-string-sync "(set! *print-length* 100)" "clojure.core"))
+
+(add-hook 'nrepl-connected-hook 'live-nrepl-set-print-length)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Projectile ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -308,3 +332,26 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
           (set-window-start w1 s2)
           (set-window-start w2 s1)
           (setq i (1+ i))))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ido ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(require 'ido)
+(ido-mode t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; smex ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(install-package 'smex)
+(require 'smex)
+(global-set-key [(meta x)] (lambda ()
+                             (interactive)
+                             (or (boundp 'smex-cache)
+                                 (smex-initialize))
+                             (global-set-key [(meta x)] 'smex)
+                             (smex)))
+
+(global-set-key [(shift meta x)] (lambda ()
+                                   (interactive)
+                                   (or (boundp 'smex-cache)
+                                       (smex-initialize))
+                                   (global-set-key [(shift meta x)] 'smex-major-mode-commands)
+                                   (smex-major-mode-commands)))

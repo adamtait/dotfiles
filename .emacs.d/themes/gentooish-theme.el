@@ -20,6 +20,16 @@
      (hi-blue ((((background dark)) (:background "grey20"))))
      (ido-first-match ((t (:background "#361d45" :foreground "#cf7dff" :weight bold))))
      (ido-only-match ((((class color)) (:background "#361d45" :foreground "#cf7dff" :weight bold))))
+
+     (magit-diff-add ((t (:foreground "green"))))
+     (magit-diff-del ((t (:foreground "red"))))
+     (magit-item-highlight ((t (:background "gray15"))))
+     (magit-section-title ((t (:foreground "#9a383a"))))
+     (magit-diff-hunk-header ((t (:foreground "orange" :background nil))))
+     (magit-diff-file-header ((t (:foreground "orange"))))
+     (magit-branch ((t (:foreground "gold"))))
+     (magit-file-header ((t (:foreground "blue"))))
+
      (ido-subdir ((((min-colors 88) (class color)) (:foreground "#7dcfff"))))
      (linum ((t (:inherit shadow :background "grey12"))))
      (minibuffer-prompt ((((background dark)) (:foreground "#863335"))))
