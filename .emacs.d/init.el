@@ -146,20 +146,25 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Clojure ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(install-package 'clojure-mode)
-(install-package 'clojure-test-mode)
 (install-package 'paredit)
-
+(install-package 'clojure-test-mode)
 (show-paren-mode 1)
 
-(autoload 'clojure-mode "clojure-mode" nil t)
-(autoload 'align-cljlet "align-cljlet" nil t)
+(install-package 'cider)
+(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+(setq cider-repl-popup-stacktraces t)
+(setq cider-auto-select-error-buffer t)
+(setq cider-repl-display-in-current-window t)
+(add-hook 'cider-repl-mode-hook 'subword-mode)
+(add-hook 'cider-repl-mode-hook 'paredit-mode)
+
 
 (eval-after-load 'clojure-mode
   '(progn
      (require 'paredit)
      (defun clojure-paredit-hook () (paredit-mode +1))
      (add-hook 'clojure-mode-hook 'clojure-paredit-hook)
+     (enable-paredit-mode)
 
      (define-key clojure-mode-map "{" 'paredit-open-brace)
      (define-key clojure-mode-map "}" 'paredit-close-brace)
@@ -175,36 +180,6 @@
        (with 'defun)
        (it 'defun)
        (do-it 'defun))))
-
-
-;;;;;;;;;;;;;;; Clojure file associations ;;;;;;;;;;;;;;;
-
-(add-to-list 'auto-mode-alist '("\\.\\(cljs?\\|dtm\\|edn\\)$" . clojure-mode))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;; nREPL ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(install-package 'nrepl)
-(require 'nrepl)
-(add-hook 'nrepl-interaction-mode-hook
-          (lambda ()
-            (nrepl-turn-on-eldoc-mode)
-            (enable-paredit-mode)))
-
-(add-hook 'nrepl-mode-hook
-          (lambda ()
-            (nrepl-turn-on-eldoc-mode)
-            (enable-paredit-mode)
-            (define-key nrepl-mode-map
-              (kbd "{") 'paredit-open-curly)
-            (define-key nrepl-mode-map
-              (kbd "}") 'paredit-close-curly)))
-
-(setq nrepl-popup-stacktraces-in-repl t)
-
-(defun live-nrepl-set-print-length ()
-  (nrepl-send-string-sync "(set! *print-length* 100)" "clojure.core"))
-
-(add-hook 'nrepl-connected-hook 'live-nrepl-set-print-length)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;; Helm (find files in project) ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
