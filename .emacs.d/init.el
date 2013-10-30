@@ -3,12 +3,15 @@
 (add-to-list 'package-archives
     '("marmalade" .
       "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives
+    '("melpa" .
+      "http://melpa.milkbox.net/packages/"))
 (package-initialize)
 
 (defun install-package (package-name)
   (unless (package-installed-p package-name)
     (package-refresh-contents)
-    (package-install package-name))) 
+    (package-install package-name)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Macros ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -20,10 +23,32 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Misc ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setq split-height-threshold nil)
-(scroll-bar-mode -1)
+(if window-system
+    (scroll-bar-mode -1))
 (tool-bar-mode -1)
 (setq inhibit-startup-screen t)
 (defalias 'yes-or-no-p 'y-or-n-p)
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(setq ereceipts-home-dir "~/workspace/eReceipts-services")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Grep ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(require 'grep)
+
+(defun ereceipts-read-regexp ()
+  "Read regexp arg for interactive grep."
+  (let ((default (grep-tag-default)))
+    (read-string
+     (concat "Search for"
+	     (if (and default (> (length default) 0))
+		 (format " (default \"%s\"): " default) ": "))
+     default 'grep-regexp-history)))
+
+(defun ereceipts-clj-grep (regexp)
+  "Searches for the regexp in all clojure files under the eReceipts-services directory"
+  (interactive
+   (list (ereceipts-read-regexp)))
+  (rgrep regexp "*.clj" ereceipts-home-dir))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;; Magit ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -181,12 +206,14 @@
 
 (add-hook 'nrepl-connected-hook 'live-nrepl-set-print-length)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Projectile ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;; Helm (find files in project) ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(install-package 'projectile)
-
-(projectile-global-mode)
-(setq projectile-require-project-root "~/workspace/eReceipts-services")
+(install-package 'helm)
+(install-package 'helm-ls-git)
+(require 'helm-ls-git)
+(setq helm-ff-transformer-show-only-basename nil
+      helm-ls-git-show-abs-or-relative 'relative)
+(global-set-key (kbd "C-c C-f") 'helm-ls-git-ls)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Org mode ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
