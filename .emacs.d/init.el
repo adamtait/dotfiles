@@ -52,7 +52,8 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;; Magit ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(install-package 'magit)
+;;(install-package 'magit)
+(add-to-list 'load-path "~/.emacs.d/local-packages")
 (require 'magit)
 
 (global-set-key (kbd "C-x m") 'magit-status)
