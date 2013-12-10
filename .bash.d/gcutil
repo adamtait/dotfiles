@@ -6,7 +6,9 @@ GCLOUD_PROJECT_IDS=('white-might-266' 'ornate-grail-425')
 function ssh-gc {
   if [ $1 == static ] ; then
     gcutil getproject --project=ornate-grail-425 --cache_flag_values
+    gcutil ssh god-server
   else
     gcutil getproject --project=white-might-266 --cache_flag_values
+    gcutil ssh howsmyboyfriend-prod2
   fi
 }
