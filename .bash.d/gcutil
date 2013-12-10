@@ -1,1 +1,12 @@
-alias ssh-gce='gcutil --service_version="v1beta16" --project="white-might-266" ssh  --zone="us-central1-a" "howsmyboyfriend-prod2"'
+# The next line updates PATH for the Google Cloud SDK.
+export PATH=/Users/atait1/google-cloud-sdk/bin:$PATH
+
+GCLOUD_PROJECT_IDS=('white-might-266' 'ornate-grail-425')
+
+function ssh-gc {
+  if [ $1 == static ] ; then
+    gcutil getproject --project=ornate-grail-425 --cache_flag_values
+  else
+    gcutil getproject --project=white-might-266 --cache_flag_values
+  fi
+}
