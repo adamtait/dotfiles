@@ -24,8 +24,9 @@
 
 (setq split-height-threshold nil)
 (if window-system
-    (scroll-bar-mode -1))
-(tool-bar-mode -1)
+    (do (scroll-bar-mode -1)
+	(tool-bar-mode -1))) 
+
 (setq inhibit-startup-screen t)
 (defalias 'yes-or-no-p 'y-or-n-p)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -37,6 +38,9 @@
 
 (defun ereceipts-read-regexp ()
   "Read regexp arg for interactive grep."
+  ;; Need to call grep-compute-defaults due to a bug where rgrep
+  ;; doesn't work when called programatically
+  (grep-compute-defaults)
   (let ((default (grep-tag-default)))
     (read-string
      (concat "Search for"
@@ -53,7 +57,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;; Magit ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;(install-package 'magit)
-(add-to-list 'load-path "~/.emacs.d/local-packages")
+(add-to-list 'load-path "~/.emacs.d/local-packages/magit-1.2.0")
 (require 'magit)
 
 (global-set-key (kbd "C-x m") 'magit-status)
