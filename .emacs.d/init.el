@@ -24,8 +24,8 @@
 
 (setq split-height-threshold nil)
 (if window-system
-    (do (scroll-bar-mode -1)
-	(tool-bar-mode -1))) 
+    (progn (scroll-bar-mode -1)
+	(tool-bar-mode -1)))
 
 (setq inhibit-startup-screen t)
 (defalias 'yes-or-no-p 'y-or-n-p)
