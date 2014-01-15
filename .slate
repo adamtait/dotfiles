@@ -20,10 +20,10 @@ alias modifiers ctrl;alt;cmd
 
 
 # Monitor Aliases
-# alias monitor-macbook-pro        0
-# alias monitor-cinema-display     1
-alias monitor-macbook-pro	   1680x1050
-alias monitor-cinema-display	   2560x1440
+alias monitor-macbook-pro        0
+alias monitor-cinema-display     1
+# alias monitor-macbook-pro	   1680x1050
+# alias monitor-cinema-display	   2560x1440
 
 # Bindings for specific applications
 alias chrome        'Google Chrome'
