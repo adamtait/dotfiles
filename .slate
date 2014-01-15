@@ -20,15 +20,17 @@ alias modifiers ctrl;alt;cmd
 
 
 # Monitor Aliases
-alias monitor-macbook-pro        0
-alias monitor-cinema-display     1
+# alias monitor-macbook-pro        0
+# alias monitor-cinema-display     1
+alias monitor-macbook-pro	   1680x1050
+alias monitor-cinema-display	   2560x1440
 
 # Bindings for specific applications
 alias chrome        'Google Chrome'
 bind w:${modifiers} focus ${chrome}
 
-alias chrome_canary 'Google Chrome Canary'
-bind w:${modifiers} focus ${chrome_canary}
+alias safari 'Safari'
+bind w:${modifiers} focus ${safari}
 
 alias editor         'Emacs'
 bind e:${modifiers} focus ${editor}
@@ -36,7 +38,7 @@ bind e:${modifiers} focus ${editor}
 alias terminal       'iTerm'
 bind e:${modifiers} focus ${terminal}
 
-alias mail       'Mail'
+alias mail       'Apple Mail'
 bind e:${modifiers} focus ${mail}
 
 alias outlook       'Outlook'
@@ -110,7 +112,7 @@ alias 2-right       move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2
 
 
 layout macbook	${chrome}             ${1-full}
-layout macbook	${chrome_canary}      ${1-full}
+layout macbook	${safari}      ${1-full}
 layout macbook	${terminal}	      ${1-full}
 layout macbook	${editor}	      ${1-full}
 layout macbook	${mail}               ${1-full}
@@ -120,8 +122,8 @@ default macbook			      resolutions:${monitor-macbook-pro}
 bind 1:${modifiers} layout macbook
 
 
-layout macbook-and-cinema	${chrome}		${1-right}
-layout macbook-and-cinema	${chrome_canary}	${1-left}
+layout macbook-and-cinema	${chrome}		${1-full}
+layout macbook-and-cinema	${safari}	${1-full}
 layout macbook-and-cinema       ${terminal}		${2-right}
 layout macbook-and-cinema       ${editor}		${2-left}
 layout macbook-and-cinema       ${mail}			${1-left}
