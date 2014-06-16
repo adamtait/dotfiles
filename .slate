@@ -47,6 +47,9 @@ bind e:${modifiers} focus ${outlook}
 alias spotify       'Spotify'
 bind w:${modifiers} focus ${spotify}
 
+alias xcode         'Xcode'
+bind e:${modifiers} focus ${xcode}
+
 
 
 # Screen positions, relative to current screen
@@ -118,6 +121,7 @@ layout macbook	${editor}	      ${1-full}
 layout macbook	${mail}               ${1-full}
 layout macbook	${outlook}	      ${1-full}
 layout macbook	${spotify}	      ${1-full}
+layout macbook  ${xcode}              ${1-full}
 default macbook			      resolutions:${monitor-macbook-pro}
 bind 1:${modifiers} layout macbook
 
@@ -129,5 +133,6 @@ layout macbook-and-cinema       ${editor}		${2-left}
 layout macbook-and-cinema       ${mail}			${1-left}
 layout macbook-and-cinema       ${outlook}		${1-left}
 layout macbook-and-cinema       ${spotify}		${1-left}
+layout macbook-and-cinema       ${xcode}		${2-full}
 default macbook-and-cinema	resolutions:${monitor-macbook-pro};${monitor-cinema-display};
 bind 2:${modifiers} layout macbook-and-cinema
