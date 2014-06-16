@@ -22,15 +22,13 @@ alias modifiers ctrl;alt;cmd
 # Monitor Aliases
 alias monitor-macbook-pro        0
 alias monitor-cinema-display     1
-# alias monitor-macbook-pro	   1680x1050
-# alias monitor-cinema-display	   2560x1440
 
 # Bindings for specific applications
 alias chrome        'Google Chrome'
 bind w:${modifiers} focus ${chrome}
 
-alias safari 'Safari'
-bind w:${modifiers} focus ${safari}
+alias chrome_canary 'Google Chrome Canary'
+bind w:${modifiers} focus ${chrome_canary}
 
 alias editor         'Emacs'
 bind e:${modifiers} focus ${editor}
@@ -38,7 +36,7 @@ bind e:${modifiers} focus ${editor}
 alias terminal       'iTerm'
 bind e:${modifiers} focus ${terminal}
 
-alias mail       'Apple Mail'
+alias mail       'Mail'
 bind e:${modifiers} focus ${mail}
 
 alias outlook       'Outlook'
@@ -47,10 +45,8 @@ bind e:${modifiers} focus ${outlook}
 alias spotify       'Spotify'
 bind w:${modifiers} focus ${spotify}
 
-alias xcode         'Xcode'
+alias xcode         'xcode'
 bind e:${modifiers} focus ${xcode}
-
-
 
 # Screen positions, relative to current screen
 alias full          move screenOriginX;screenOriginY                  screenSizeX;screenSizeY
@@ -89,45 +85,35 @@ bind down:${modifiers}  resize +0   +10%
 
 
 # Concrete positions
-alias 1-full        move screenOriginX;screenOriginY screenSizeX;screenSizeY         ${monitor-macbook-pro}
-alias 1-left        move screenOriginX;screenOriginY screenSizeX/2;screenSizeY         ${monitor-macbook-pro}
-alias 1-right       move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY         ${monitor-macbook-pro}
+alias 1-full        ${full}			${monitor-macbook-pro}
+alias 1-left        ${lefthalf}			${monitor-macbook-pro}
+alias 1-right       ${righthalf}		${monitor-macbook-pro}
 
-alias 2-left        move screenOriginX;screenOriginY screenSizeX/2;screenSizeY         ${monitor-cinema-display}
-alias 2-right       move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY         ${monitor-cinema-display}
-alias 2-righttop    move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY/2       ${monitor-cinema-display}
-alias 2-rightbottom move screenOriginX+screenSizeX/2;screenOriginY+screenSizeY/2    screenSizeX/2;screenSizeY/2       ${monitor-cinema-display}
+alias 2-full        ${full}			${monitor-cinema-display}
+alias 2-left        ${lefthalf}			${monitor-cinema-display}
+alias 2-right       ${righthalf}		${monitor-cinema-display}
+alias 2-righttop    ${righttop}			${monitor-cinema-display}
+alias 2-rightbottom ${rightbottom}		${monitor-cinema-display}
 
 
 #####################
 ##     LAYOUTS     ##
 #####################
 
-# Screen specific positions
-alias 1-full        move screenOriginX;screenOriginY screenSizeX;screenSizeY			${monitor-macbook-pro}
-alias 1-left        move screenOriginX;screenOriginY screenSizeX/2;screenSizeY			${monitor-macbook-pro}
-alias 1-right       move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY	${monitor-macbook-pro}
-
-alias 2-full        move screenOriginX;screenOriginY screenSizeX;screenSizeY			${monitor-cinema-display}
-alias 2-left        move screenOriginX;screenOriginY screenSizeX/2;screenSizeY			${monitor-cinema-display}
-alias 2-right       move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY	${monitor-cinema-display}
-
-
-
 layout macbook	${chrome}             ${1-full}
-layout macbook	${safari}      ${1-full}
+layout macbook	${chrome_canary}      ${1-full}
 layout macbook	${terminal}	      ${1-full}
 layout macbook	${editor}	      ${1-full}
 layout macbook	${mail}               ${1-full}
 layout macbook	${outlook}	      ${1-full}
 layout macbook	${spotify}	      ${1-full}
-layout macbook  ${xcode}              ${1-full}
+layout macbook	${xcode}	      ${1-full}
 default macbook			      resolutions:${monitor-macbook-pro}
 bind 1:${modifiers} layout macbook
 
 
-layout macbook-and-cinema	${chrome}		${1-full}
-layout macbook-and-cinema	${safari}	${1-full}
+layout macbook-and-cinema	${chrome}		${1-right}
+layout macbook-and-cinema	${chrome_canary}	${1-left}
 layout macbook-and-cinema       ${terminal}		${2-right}
 layout macbook-and-cinema       ${editor}		${2-left}
 layout macbook-and-cinema       ${mail}			${1-left}
@@ -136,3 +122,6 @@ layout macbook-and-cinema       ${spotify}		${1-left}
 layout macbook-and-cinema       ${xcode}		${2-full}
 default macbook-and-cinema	resolutions:${monitor-macbook-pro};${monitor-cinema-display};
 bind 2:${modifiers} layout macbook-and-cinema
+
+# Source the contents of the per-user configuration file if it exists
+source ~/.slate-user if_exists
