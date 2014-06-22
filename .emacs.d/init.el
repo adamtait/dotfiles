@@ -31,6 +31,7 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (setq ereceipts-home-dir "~/workspace/eReceipts-services")
+(setq default-directory "~/")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Grep ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -197,7 +198,10 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Org mode ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; Custom org mode to get clojure babel support
+(add-to-list 'load-path "~/.emacs.d/local-packages/org-mode-8.0/lisp")
 (require 'org)
+(require 'org-compat)
 (require 'org-clock)
 (require 'org-faces)
 
@@ -239,6 +243,24 @@
   (org-agenda nil "n"))
 
 (global-set-key (kbd "C-c o a") 'my-agenda)
+
+;; Babel
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (clojure . t)))
+
+;; Use cider as the clojure execution backend
+(setq org-babel-clojure-backend 'cider)
+(require 'ob-clojure)
+
+;; Let's have pretty source code blocks
+(setq org-edit-src-content-indentation 0
+      org-src-tab-acts-natively t
+      org-src-fontify-natively t
+      org-confirm-babel-evaluate nil)
+
+(setq org-export-backends '(md))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Color ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -362,3 +384,15 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
                                        (smex-initialize))
                                    (global-set-key [(shift meta x)] 'smex-major-mode-commands)
                                    (smex-major-mode-commands)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;; Markdown Mode ;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(install-package 'markdown-mode)
+
+;; Checks that parens are closed on save
+(add-hook 'markdown-mode-hook
+	  (lambda ()
+	    (when buffer-file-name
+	      (add-hook 'after-save-hook
+			'check-parens
+			nil t))))
