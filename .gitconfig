@@ -32,4 +32,6 @@
 	default = simple
 [rebase]
 	autosquash = true
-
+[user]
+	name = "Adam Tait"
+	email = adam@adamtait.com
