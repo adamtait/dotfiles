@@ -13,6 +13,10 @@
     (package-refresh-contents)
     (package-install package-name)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Fix for PATH ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+(setq exec-path (append exec-path '("/usr/local/bin")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Macros ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -195,6 +199,11 @@
 (setq helm-ff-transformer-show-only-basename nil
       helm-ls-git-show-abs-or-relative 'relative)
 (global-set-key (kbd "C-c C-f") 'helm-ls-git-ls)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;; AG (like grep) ;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(install-package 'ag)
+(setq ag-highlight-search t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Org mode ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
