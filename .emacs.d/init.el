@@ -34,30 +34,7 @@
 (setq inhibit-startup-screen t)
 (defalias 'yes-or-no-p 'y-or-n-p)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-(setq ereceipts-home-dir "~/workspace/eReceipts-services")
-(setq default-directory "~/")
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Grep ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(require 'grep)
-
-(defun ereceipts-read-regexp ()
-  "Read regexp arg for interactive grep."
-  ;; Need to call grep-compute-defaults due to a bug where rgrep
-  ;; doesn't work when called programatically
-  (grep-compute-defaults)
-  (let ((default (grep-tag-default)))
-    (read-string
-     (concat "Search for"
-	     (if (and default (> (length default) 0))
-		 (format " (default \"%s\"): " default) ": "))
-     default 'grep-regexp-history)))
-
-(defun ereceipts-clj-grep (regexp)
-  "Searches for the regexp in all clojure files under the eReceipts-services directory"
-  (interactive
-   (list (ereceipts-read-regexp)))
-  (rgrep regexp "*.clj" ereceipts-home-dir))
+(setq default-directory "~/workspace")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;; Magit ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -121,39 +98,6 @@
 
 (define-key magit-status-mode-map (kbd "W") 'magit-toggle-whitespace)
 
-;;;;;;;;;;;;;;; Magit: git commit string ;;;;;;;;;;;;;;;
-
-(defun get-git-commit-string-from-story-ID (storyID)
-  (format "[#%s] \n\nStory: https://www.pivotaltracker.com/story/show/%s" storyID storyID))
-
-(defun get-current-git-branch-name ()
-  (shell-command-to-string "git rev-parse --abbrev-ref HEAD"))
-
-(defun parse-out-story-id (branch-name)
-  (if (> (length branch-name) 8)
-      (let ((story-id (substring branch-name 0 8)))
-        (if (numberp (string-to-number story-id))
-            story-id
-          ""))
-        ""))
-
-(defun generate-git-commit-string ()
-  (let ((story-id (parse-out-story-id (get-current-git-branch-name))))
-    (if (> (length story-id) 0)
-        (get-git-commit-string-from-story-ID story-id)
-      "")))
-
-(defun add-git-template-on-magit-log-edit-mode-hook ()
-  (when (eq major-mode 'magit-log-edit-mode)
-    (let ((buf (get-buffer magit-log-edit-buffer-name)))
-      (princ (generate-git-commit-string) buf)
-      (previous-line)
-      (previous-line)
-      (move-end-of-line))))
-
-(add-hook 'after-change-major-mode-hook
-          'add-git-template-on-magit-log-edit-mode-hook)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Clojure ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (install-package 'paredit)
@@ -167,7 +111,6 @@
 (setq cider-repl-display-in-current-window t)
 (add-hook 'cider-repl-mode-hook 'subword-mode)
 (add-hook 'cider-repl-mode-hook 'paredit-mode)
-
 
 (eval-after-load 'clojure-mode
   '(progn
