@@ -352,3 +352,9 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
 	      (add-hook 'after-save-hook
 			'check-parens
 			nil t))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;; Dockerfile Mode ;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(add-to-list 'load-path "~/.emacs.d/local-packages/")
+(require 'dockerfile-mode)
+(add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
