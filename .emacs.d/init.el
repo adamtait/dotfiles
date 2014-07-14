@@ -134,6 +134,10 @@
        (it 'defun)
        (do-it 'defun))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;; Clojure Cheatsheet (offline) ;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(install-package 'clojure-cheatsheet)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;; Helm (find files in project) ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (install-package 'helm)
