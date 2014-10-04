@@ -13,3 +13,9 @@
 [submodule "submodules/cider"]
 	path = submodules/cider
 	url = https://github.com/stuartsierra/cider
+[submodule "submodules/org-mode"]
+	path = submodules/org-mode
+	url = https://github.com/stuartsierra/org-mode
+[submodule "submodules/magit"]
+	path = submodules/magit
+	url = https://github.com/magit/magit
