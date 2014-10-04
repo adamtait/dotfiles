@@ -99,26 +99,6 @@
 (add-to-list 'auto-mode-alist '("\\.\\(rdfs?\\|owl\\)$" . nxml-mode))
 (add-to-list 'auto-mode-alist '("\\.st$" . fundamental-mode))
 (add-to-list 'auto-mode-alist '("\\.\\(cljs?\\|dtm\\|edn\\)$" . clojure-mode))
-(add-to-list 'auto-mode-alist '("\\.rake$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("Rakefile$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("Capfile$" . ruby-mode))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; RUBY
-
-;; Missing from ruby-mode.el, see https://groups.google.com/group/emacs-on-rails/msg/565fba8263233c28
-(defun ruby-insert-end ()
-  "Insert \"end\" at point and reindent current line."
-  (interactive)
-  (insert "end")
-  (ruby-indent-line t)
-  (end-of-line))
-
-(add-hook 'ruby-mode-hook
-          (lambda ()
-            (require 'ruby-electric)
-            (ruby-electric-mode t)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -583,10 +563,10 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; "Twilight" color theme
+;; Gentooish color theme
 
-(add-to-list 'custom-theme-load-path "~/.emacs.d/local")
-(load-theme 'twilight-stuart t)
+(require 'gentooish-theme)
+(color-theme-gentooish)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -634,3 +614,33 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
 ;; Work around path bug on OS X
 (when (string-equal "/" default-directory)
   (cd "~/"))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Markdown mode
+
+(install-package 'markdown-mode)
+
+;; Checks that parens are closed on save
+(add-hook 'markdown-mode-hook
+	    (lambda ()
+	          (when buffer-file-name
+		          (add-hook 'after-save-hook
+				    'check-parens
+				    nil t))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Dockerfile mode
+
+(require 'dockerfile-mode)
+(add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Extra modes
+
+(install-package 'yaml-mode)
+(install-package 'web-mode)
+(install-package 'protobuf-mode)
+
+
