@@ -1,9 +1,11 @@
 #!/bin/zsh
 
 # load the git submodules
-#git submodule init   # may not be necessary
+echo "loading git submodules"
+git submodule init
 git submodule update
 
-ln -s zshrc.symlink ~/.zshrc
-ln -s emacs.symlink ~/.emacs
-ln -s slate.symlink ~/.slate
+echo "setting up symlinks"
+ln -s $PWD/zshrc.symlink ~/.zshrc
+ln -s $PWD/emacs.symlink ~/.emacs
+ln -s $PWD/slate.symlink ~/.slate
