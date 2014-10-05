@@ -7,6 +7,7 @@
 (push "*.edn" ffip-patterns)
 (push "*.dtm" ffip-patterns)
 (push "*.xml" ffip-patterns)
+(push "*.clj" ffip-patterns)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -374,6 +375,19 @@ ring."
 (global-set-key (kbd "s-R") 'cider-reset)
 
 
+(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+
+;; To store the REPL history in a file:
+(setq cider-repl-history-file "~/.emacs.d/.repl-history")
+
+;; Enabling CamelCase support for editing commands(like forward-word,
+;; backward-word, etc) in the REPL is quite useful since we often have
+;; to deal with Java class and method names. The built-in Emacs minor
+;; mode subword-mode provides such functionality
+(add-hook 'cider-repl-mode-hook 'subword-mode)
+
+(require 'clojure-cheatsheet)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; org-babel + Clojure
 
@@ -593,10 +607,10 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
   (menu-bar-mode 1))
 
 ;; Fix Unicode character spacing; see http://stackoverflow.com/q/8779351
-(when (string-equal system-type "darwin")
-  (set-fontset-font "fontset-default"
-                    'unicode
-                    '("Menlo" . "iso10646-1")))
+;;(when (string-equal system-type "darwin")
+;;  (set-fontset-font "fontset-default"
+;;                    'unicode
+;;                    '("Menlo" . "iso10646-1")))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -624,15 +638,15 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Markdown mode
 
-;; (install-package 'markdown-mode)
+(require 'markdown-mode)
 
 ;; Checks that parens are closed on save
-;; (add-hook 'markdown-mode-hook
-;;	    (lambda ()
-;;	          (when buffer-file-name
-;;		          (add-hook 'after-save-hook
-;;				    'check-parens
-;;				    nil t))))
+(add-hook 'markdown-mode-hook
+	    (lambda ()
+	          (when buffer-file-name
+		          (add-hook 'after-save-hook
+				    'check-parens
+				    nil t))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Dockerfile mode
@@ -644,8 +658,15 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Extra modes
 
-;; (install-package 'yaml-mode)
-;; (install-package 'web-mode)
-;; (install-package 'protobuf-mode)
+(require 'yaml-mode)
+(require 'web-mode)
+(require 'protobuf-mode)
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; keyboard macros
+
+(global-set-key [f2] 'start-kbd-macro)
+(global-set-key [f3] 'end-kbd-macro)
+(global-set-key [f4] 'call-last-kbd-macro)
 
