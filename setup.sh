@@ -11,7 +11,7 @@ emacs --script "$PWD/install_elpa.el"
 
 
 echo "creating .path"
- cat > "$HOME/.path" <<EOF
+    cat > "$HOME/.path" <<EOF
 $HOME/bin
 /usr/local/bin
 /opt/local/bin
@@ -25,6 +25,23 @@ EOF
 
 
 echo "setting up symlinks"
-ln -s $PWD/zshrc.symlink ~/.zshrc
-ln -s $PWD/emacs.symlink ~/.emacs
-ln -s $PWD/slate.symlink ~/.slate
+if [[ ! -h ~/.zshrc ]]; then
+    ln -s $PWD/zshrc.symlink ~/.zshrc
+fi
+if [[ ! -h ~/.emacs ]]; then
+    ln -s $PWD/emacs.symlink ~/.emacs
+fi
+if [[ ! -h ~/.slate ]]; then
+    ln -s $PWD/slate.symlink ~/.slate
+fi
+
+
+echo "adding OSX settings"
+SUDO defaults write com.apple.Finder AppleShowAllFiles YES; killall Finder
+
+
+echo "setup fonts"
+curl http://www.marksimonson.com/assets/content/fonts/AnonymousPro-1.002.zip > /tmp/AnonymousPro-1.002.zip
+unzip /tmp/AnonymousPro-1.002.zip
+cp /tmp/AnonymousPro-1.002.001/*.ttf ~/Library/Fonts/
+rm -rf /tmp/*AnonymousPro*
