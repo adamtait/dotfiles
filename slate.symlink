@@ -27,9 +27,6 @@ alias monitor-cinema-display     1
 alias chrome        'Google Chrome'
 bind w:${modifiers} focus ${chrome}
 
-alias chrome_canary 'Google Chrome Canary'
-bind w:${modifiers} focus ${chrome_canary}
-
 alias editor         'Emacs'
 bind e:${modifiers} focus ${editor}
 
@@ -45,13 +42,17 @@ bind e:${modifiers} focus ${outlook}
 alias spotify       'Spotify'
 bind w:${modifiers} focus ${spotify}
 
-alias xcode         'xcode'
+alias xcode         'Xcode'
 bind e:${modifiers} focus ${xcode}
+
+
 
 # Screen positions, relative to current screen
 alias full          move screenOriginX;screenOriginY                  screenSizeX;screenSizeY
 alias lefthalf      move screenOriginX;screenOriginY                  screenSizeX/2;screenSizeY
 alias righthalf     move screenOriginX+screenSizeX/2;screenOriginY    screenSizeX/2;screenSizeY
+alias tophalf       move screenOriginX;screenOriginY                  screenSizeX;screenSizeY/2
+alias bottomhalf    move screenOriginX;screenOriginY+screenSizeY/2   screenSizeX;screenSizeY/2
 
 alias rightmost     move screenOriginX+screenSizeX*0.4;screenOriginY  screenSizeX*0.6;screenSizeY
 alias rightless     move screenOriginX+screenSizeX*0.6;screenOriginY  screenSizeX*0.4;screenSizeY
@@ -68,6 +69,8 @@ alias leftbottom    move screenOriginX;screenOriginY+screenSizeY/2    screenSize
 bind j:${modifiers} ${lefthalf}
 bind k:${modifiers} ${full}
 bind l:${modifiers} ${righthalf}
+bind u:${modifiers} ${tophalf}
+bind n:${modifiers} ${bottomhalf}
 bind i:${modifiers} ${lefttop}
 bind m:${modifiers} ${leftbottom}
 bind o:${modifiers} ${righttop}
@@ -79,7 +82,7 @@ bind [:${modifiers}  throw left resize full
 
 # Resize
 bind right:${modifiers} resize +10% +0
-bind left:${modifiers}  resize -10% +0
+bind left:${modifiers}  sequence nudge -10% +0 > resize +10% +0
 bind up:${modifiers}    resize +0   -10%
 bind down:${modifiers}  resize +0   +10%
 
@@ -92,8 +95,6 @@ alias 1-right       ${righthalf}		${monitor-macbook-pro}
 alias 2-full        ${full}			${monitor-cinema-display}
 alias 2-left        ${lefthalf}			${monitor-cinema-display}
 alias 2-right       ${righthalf}		${monitor-cinema-display}
-alias 2-righttop    ${righttop}			${monitor-cinema-display}
-alias 2-rightbottom ${rightbottom}		${monitor-cinema-display}
 
 
 #####################
@@ -101,7 +102,6 @@ alias 2-rightbottom ${rightbottom}		${monitor-cinema-display}
 #####################
 
 layout macbook	${chrome}             ${1-full}
-layout macbook	${chrome_canary}      ${1-full}
 layout macbook	${terminal}	      ${1-full}
 layout macbook	${editor}	      ${1-full}
 layout macbook	${mail}               ${1-full}
@@ -112,13 +112,12 @@ default macbook			      resolutions:${monitor-macbook-pro}
 bind 1:${modifiers} layout macbook
 
 
-layout macbook-and-cinema	${chrome}		${1-right}
-layout macbook-and-cinema	${chrome_canary}	${1-left}
+layout macbook-and-cinema	${chrome}		${1-full}
 layout macbook-and-cinema       ${terminal}		${2-right}
 layout macbook-and-cinema       ${editor}		${2-left}
-layout macbook-and-cinema       ${mail}			${1-left}
-layout macbook-and-cinema       ${outlook}		${1-left}
-layout macbook-and-cinema       ${spotify}		${1-left}
+layout macbook-and-cinema       ${mail}			${1-full}
+layout macbook-and-cinema       ${outlook}		${1-full}
+layout macbook-and-cinema       ${spotify}		${1-full}
 layout macbook-and-cinema       ${xcode}		${2-full}
 default macbook-and-cinema	resolutions:${monitor-macbook-pro};${monitor-cinema-display};
 bind 2:${modifiers} layout macbook-and-cinema
