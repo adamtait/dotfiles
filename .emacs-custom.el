@@ -54,11 +54,12 @@
  '(typopunct-buffer-language (quote english))
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))
  '(version-control t)
- '(visual-line-mode nil t))
+ '(visual-line-mode nil t)
+ '(default-directory "~/workspace"))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:height 160 :family "Anonymous Pro")))))
+'(default ((t (:height 140 :family "Anonymous Pro")))))
