@@ -624,15 +624,15 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Markdown mode
 
-(install-package 'markdown-mode)
+;; (install-package 'markdown-mode)
 
 ;; Checks that parens are closed on save
-(add-hook 'markdown-mode-hook
-	    (lambda ()
-	          (when buffer-file-name
-		          (add-hook 'after-save-hook
-				    'check-parens
-				    nil t))))
+;; (add-hook 'markdown-mode-hook
+;;	    (lambda ()
+;;	          (when buffer-file-name
+;;		          (add-hook 'after-save-hook
+;;				    'check-parens
+;;				    nil t))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Dockerfile mode
@@ -644,8 +644,8 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Extra modes
 
-(install-package 'yaml-mode)
-(install-package 'web-mode)
-(install-package 'protobuf-mode)
+;; (install-package 'yaml-mode)
+;; (install-package 'web-mode)
+;; (install-package 'protobuf-mode)
 
 
