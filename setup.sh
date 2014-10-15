@@ -12,7 +12,7 @@ emacs --script "$PWD/install_elpa.el"
 
 echo "creating .path"
     cat > "$HOME/.path" <<EOF
-$HOME/bin
+$HOME/.dotfiles/bin
 /usr/local/bin
 /opt/local/bin
 /usr/bin
@@ -21,6 +21,7 @@ $HOME/bin
 /sbin
 /opt/X11/bin
 /usr/texbin
+$JAVA_HOME/bin
 EOF
 
 
