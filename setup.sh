@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+CURRENT_DIR=$PWD
+
 echo "loading git submodules"
 git submodule init
 git submodule update
@@ -42,7 +44,10 @@ SUDO defaults write com.apple.Finder AppleShowAllFiles YES; killall Finder
 
 
 echo "setup fonts"
+cd /tmp
 curl http://www.marksimonson.com/assets/content/fonts/AnonymousPro-1.002.zip > /tmp/AnonymousPro-1.002.zip
 unzip /tmp/AnonymousPro-1.002.zip
 cp /tmp/AnonymousPro-1.002.001/*.ttf ~/Library/Fonts/
 rm -rf /tmp/*AnonymousPro*
+
+cd $CURRENT_DIR
