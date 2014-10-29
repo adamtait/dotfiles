@@ -49,6 +49,7 @@ brew cleanup
 # Brew Cask for OSX apps
 brew install caskroom/cask/brew-cask
 
+# to search for more casks, visit http://caskroom.io/
 apps=(
   dropbox
   google-chrome
@@ -65,3 +66,29 @@ apps=(
 # Default is: /Users/$user/Applications
 echo "installing apps..."
 brew cask install --appdir="/Applications" ${apps[@]}
+
+
+
+# Mjolnir.app (window manager)
+if [[ ! -d /Applications/Mjolnir.app ]]; then
+    echo "Installing Mjolnir.app (window manager)"
+    curl -LOv https://github.com/sdegutis/mjolnir/releases/download/0.4.3/Mjolnir-0.4.3.tgz
+    mv Mjolnir-0.4.3.tgz /tmp/
+    tar -zxvf /tmp/Mjolnir-0.4.3.tgz
+    mv /tmp/Mjolnir.app /Applications/
+    rm /tmp/Mjolnir*
+fi
+
+echo "Installing Lua -> window manager scripting language"
+brew install lua
+brew install luarocks
+
+if [[ ! -d ~/.luarocks ]]; then
+    mkdir ~/.luarocks
+fi
+echo 'rocks_servers = { "http://rocks.moonscript.org" }' > ~/.luarocks/config.lua
+
+echo "Installing Mjolnir extensions"
+luarocks install mjolnir.hotkey
+luarocks install mjolnir.application
+

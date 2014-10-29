@@ -34,8 +34,8 @@ fi
 if [[ ! -h ~/.emacs ]]; then
     ln -s $PWD/emacs.symlink ~/.emacs
 fi
-if [[ ! -h ~/.slate ]]; then
-    ln -s $PWD/slate.symlink ~/.slate
+if [[ ! -h ~/.mjolnir ]]; then
+    ln -s $PWD/.mjolnir ~/
 fi
 
 
@@ -43,11 +43,13 @@ echo "adding OSX settings"
 SUDO defaults write com.apple.Finder AppleShowAllFiles YES; killall Finder
 
 
-echo "setup fonts"
-cd /tmp
-curl http://www.marksimonson.com/assets/content/fonts/AnonymousPro-1.002.zip > /tmp/AnonymousPro-1.002.zip
-unzip /tmp/AnonymousPro-1.002.zip
-cp /tmp/AnonymousPro-1.002.001/*.ttf ~/Library/Fonts/
-rm -rf /tmp/*AnonymousPro*
+if [[ ! -d ~/Library/Fonts/Anonymous\ Pro.ttf ]]; then
+    echo "installing Anonymous Pro (emacs font)"
+    cd /tmp
+    curl http://www.marksimonson.com/assets/content/fonts/AnonymousPro-1.002.zip > /tmp/AnonymousPro-1.002.zip
+    unzip /tmp/AnonymousPro-1.002.zip
+    cp /tmp/AnonymousPro-1.002.001/*.ttf ~/Library/Fonts/
+    rm -rf /tmp/*AnonymousPro*
+fi
 
 cd $CURRENT_DIR
