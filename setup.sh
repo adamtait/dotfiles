@@ -48,15 +48,13 @@ if [[ ! -h ~/.gitconfig ]]; then
     ln -s $PWD/.gitconfig ~/
 fi
 
-
-
 # gitconfig
 if [[ -f ~/.gitconfig ]]; then
     echo "removing your old .gitconfig"
     rm ~/.gitconfig
 fi
-if [[ ! -h ~/gitconfig.symlink ]]; then
-    echo 'creating a new gitconfig'
+if [[ ! -h ~/.gitconfig ]]; then
+    echo 'creating a new .gitconfig'
 
     git_credential='cache'
     if [ "$(uname -s)" == "Darwin" ]
@@ -69,9 +67,9 @@ if [[ ! -h ~/gitconfig.symlink ]]; then
     echo ' - What is your github author email?'
     read -e git_authoremail
 
-    sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" gitconfig.symlink > gitconfig.symlink
+    sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" gitconfig.template > gitconfig.symlink
 
-    ln -s gitconfig.symlink ~/.gitconfig
+    ln -s $PWD/gitconfig.symlink ~/.gitconfig
 fi
 
 

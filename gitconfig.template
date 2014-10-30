@@ -1,0 +1,42 @@
+
+[hub]
+        protocol = https
+[user]
+        name = AUTHORNAME
+        email = AUTHOREMAIL
+[credential]
+        helper = GIT_CREDENTIAL_HELPER
+[core]
+	pager = "less -FXRS -x2"
+	editor = emacs
+[include]
+	path = .gituser
+[alias]
+	ci = commit
+	co = checkout
+	st = status
+	di = diff
+	ds = "diff --staged"
+	br = branch
+	sta = stash
+	unstage = "reset HEAD"
+	llog = "log --date=local"
+	flog = "log --pretty=fuller --decorate"
+	lg = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
+	lol = "log --graph --decorate --oneline"
+	lola = "log --graph --decorate --oneline --all"
+	blog = "log origin/master... --left-right"
+[color]
+	ui = auto
+	branch = auto
+	diff = auto
+	interactive = auto
+	status = auto
+[apply]
+	whitespace = nowarn
+[branch]
+	autosetupmerge = true
+[push]
+	default = simple
+[rebase]
+	autosquash = true
