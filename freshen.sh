@@ -69,15 +69,22 @@ echo "installing apps..."
 brew cask install --appdir="/Applications" ${apps[@]}
 
 
+# Oh-My-Zsh
+if [[ ! -d ~/.oh-my-zsh ]]; then
+    git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+    chsh -s /bin/zsh
+fi
 
 # Mjolnir.app (window manager)
 if [[ ! -d /Applications/Mjolnir.app ]]; then
     echo "Installing Mjolnir.app (window manager)"
+    CURRENT_DIR=$PWD
+    cd /tmp
     curl -LOv https://github.com/sdegutis/mjolnir/releases/download/0.4.3/Mjolnir-0.4.3.tgz
-    mv Mjolnir-0.4.3.tgz /tmp/
-    tar -zxvf /tmp/Mjolnir-0.4.3.tgz
-    mv /tmp/Mjolnir.app /Applications/
-    rm /tmp/Mjolnir*
+    tar -zxvf /tmp/Mjolnir-0.4.3.tgz /tmp/
+    mv Mjolnir.app /Applications/
+    rm Mjolnir*
+    cd $CURRENT_DIR
 fi
 
 echo "Installing Lua -> window manager scripting language"
