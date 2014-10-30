@@ -51,6 +51,7 @@ brew install caskroom/cask/brew-cask
 
 # to search for more casks, visit http://caskroom.io/
 apps=(
+  emacs
   dropbox
   google-chrome
   appcleaner
