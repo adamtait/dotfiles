@@ -50,7 +50,8 @@ echo "adding OSX settings"
 SUDO defaults write com.apple.Finder AppleShowAllFiles YES; killall Finder
 
 
-if [[ ! -d ~/Library/Fonts/Anonymous\ Pro.ttf ]]; then
+# install fonts
+if [[ ! -e ~/Library/Fonts/Anonymous\ Pro.ttf ]]; then
     echo "installing Anonymous Pro (emacs font)"
     cd /tmp
     curl http://www.marksimonson.com/assets/content/fonts/AnonymousPro-1.002.zip > /tmp/AnonymousPro-1.002.zip
