@@ -25,7 +25,7 @@
  '(ns-pop-up-frames nil)
  '(ns-tool-bar-display-mode (quote both) t)
  '(ns-tool-bar-size-mode (quote regular) t)
- '(org-agenda-files (quote ("~/Documents/agenda/relevance.org" "~/Documents/agenda/personal.org" "~/Documents/agenda/other/")))
+ '(org-agenda-files (quote ("~/Dropbox/agenda/walmart.org" "~/Dropbox/agenda/personal.org" "~/Dropbox/agenda/other/")))
  '(org-clock-idle-time 10)
  '(org-clock-into-drawer t)
  '(org-emphasis-alist (quote (("*" bold) ("/" italic) ("_" underline) ("=" org-code verbatim) ("`" org-code verbatim) ("~" org-verbatim verbatim) ("+" (:strike-through t)))))
