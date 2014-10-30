@@ -6,8 +6,15 @@ echo "loading git submodules"
 git submodule init
 git submodule update
 
-
-echo "installing elpa packages"
+echo "creating elpa directory & installing elpa packages"
+if [[ ! -d $PWD/.emacs.d/elpa ]]; then
+    echo "removing old emacs configuration"
+    # safety in the case that you had already installed .emacs configuration
+    sudo rm -rf ~/.emacs.d
+fi
+if [[ ! -h ~/.emacs.d ]]; then
+    ln -s $PWD/emacs.d ~/
+fi
 rm -rf $PWD/.emacs.d/elpa
 emacs --script "$PWD/install_elpa.el"
 
