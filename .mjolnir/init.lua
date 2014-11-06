@@ -187,7 +187,7 @@ mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "left",
 )
 mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "right",
    function()
-      resize(mjolnir.window.focusedwindow(), 15)
+      resize(mjolnir.window.focusedwindow(), 20)
    end
 )
 
@@ -199,9 +199,13 @@ mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "1",
    function()
       local screens = mjolnir.screen.allscreens()
       local apps = {
-         ["Google Chrome"] = {"full", screens[1]},
-         ["Emacs"]         = {"full", screens[1]},
-         ["iTerm"]         = {"full", screens[1]}
+         ["Google Chrome"]       = {"full", screens[1]},
+         ["Safari"]              = {"full", screens[1]},
+         ["Emacs"]               = {"full", screens[1]},
+         ["iTerm"]               = {"full", screens[1]},
+         ["Slack"]               = {"full", screens[1]},
+         ["Spotify"]             = {"full", screens[1]},
+         ["Microsoft Outlook"]   = {"full", screens[1]}
       }
 
       for name, pos in pairs(apps) do
@@ -217,9 +221,13 @@ mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "2",
    function()
       local screens = mjolnir.screen.allscreens()
       local apps = {
-         ["Google Chrome"] = {"full",   screens[1]},
-         ["Emacs"]         = {"left",   screens[2]},
-         ["iTerm"]         = {"right",  screens[2]}
+         ["Google Chrome"]       = {"full", screens[1]},
+         ["Safari"]              = {"full", screens[1]},
+         ["Emacs"]               = {"left", screens[2]},
+         ["iTerm"]               = {"right", screens[2]},
+         ["Slack"]               = {"full", screens[1]},
+         ["Spotify"]             = {"full", screens[1]},
+         ["Microsoft Outlook"]   = {"full", screens[1]}
       }
 
       for name, pos in pairs(apps) do
