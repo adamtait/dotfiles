@@ -46,7 +46,9 @@ plugins=(git docker extract lein mosh pod redis-cli xcode zsh-syntax-highlightin
 source $ZSH/oh-my-zsh.sh
 
 # local flavours
-source $HOME/.zsh.d/*
+for file in $HOME/.zsh.d/*; do
+    source "$file"
+done
 
 
 # $PATH - load path from ~/.path
