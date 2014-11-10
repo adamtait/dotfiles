@@ -38,6 +38,7 @@ binaries=(
   tree
   ack
   git
+  rbenv
 )
 
 echo "installing binaries..."
