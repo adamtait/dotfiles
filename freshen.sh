@@ -39,6 +39,7 @@ binaries=(
   ack
   git
   rbenv
+  ruby-build
 )
 
 echo "installing binaries..."
