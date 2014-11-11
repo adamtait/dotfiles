@@ -41,6 +41,9 @@ fi
 if [[ ! -h ~/.emacs ]]; then
     ln -s $PWD/emacs.symlink ~/.emacs
 fi
+if [[ ! -h ~/.lein ]]; then
+    ln -s $PWD/.lein ~/.lein
+fi
 if [[ ! -h ~/.mjolnir ]]; then
     ln -s $PWD/.mjolnir ~/
 fi
