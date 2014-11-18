@@ -13,7 +13,7 @@ if [[ ! -d $PWD/.emacs.d/elpa ]]; then
     sudo rm -rf ~/.emacs.d
 fi
 if [[ ! -h ~/.emacs.d ]]; then
-    ln -s $PWD/emacs.d ~/
+    ln -s $PWD/.emacs.d ~/
 fi
 rm -rf $PWD/.emacs.d/elpa
 emacs --script "$PWD/install_elpa.el"
@@ -41,6 +41,9 @@ fi
 if [[ ! -h ~/.emacs ]]; then
     ln -s $PWD/emacs.symlink ~/.emacs
 fi
+if [[ ! -h ~/.lein ]]; then
+    ln -s $PWD/.lein ~/.lein
+fi
 if [[ ! -h ~/.mjolnir ]]; then
     ln -s $PWD/.mjolnir ~/
 fi
@@ -57,7 +60,7 @@ if [[ ! -h ~/.gitconfig ]]; then
     echo 'creating a new .gitconfig'
 
     git_credential='cache'
-    if [ "$(uname -s)" == "Darwin" ]
+    if [ "$(uname -s)" '==' "Darwin" ]
     then
         git_credential='osxkeychain'
     fi

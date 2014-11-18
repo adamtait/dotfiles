@@ -42,8 +42,13 @@ ZSH_THEME="pure"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git docker extract lein mosh pod redis-cli xcode zsh-syntax-highlighting)
 
+
 source $ZSH/oh-my-zsh.sh
 
+# local flavours
+for file in $HOME/.zsh.d/*; do
+    source "$file"
+done
 
 
 # $PATH - load path from ~/.path
@@ -68,12 +73,18 @@ HIST_STAMPS="yyyy-mm-dd"
 
 
 # Java on OS X
-if [[ -f /usr/libexec/java_home ]]; then
-    export JAVA_HOME="$(/usr/libexec/java_home -v '1.7*')"
+if [ -z $JAVA_VERSION ]; then
+    echo "need to set JAVA_VERSION => 'export JAVA_VERSION=1.7' or add to ~/.zsh.d/"
+else
+    if [[ -f /usr/libexec/java_home ]]; then
+        export JAVA_HOME="$(/usr/libexec/java_home -v $JAVA_VERSION)"
+    fi
 fi
+
+
+# rbenv from Homebrew
+export RBENV_ROOT=/usr/local/var/rbenv
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
 # aliases
 alias pgrep='ps -efa | grep'
-
-# local flavours
-source $HOME/.zsh.d/*
