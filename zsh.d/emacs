@@ -1,0 +1,3 @@
+## alias emacs to Emacs24 from HomeBrew
+
+alias emacs="/opt/homebrew-cask/Caskroom/emacs/24.4/Emacs.app/Contents/MacOS/Emacs -nw"

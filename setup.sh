@@ -38,6 +38,9 @@ echo "setting up symlinks"
 if [[ ! -h ~/.zshrc ]]; then
     ln -s $PWD/zshrc.symlink ~/.zshrc
 fi
+if [[ ! -h ~/.zsh.d ]]; then
+    ln -s $PWD/zsh.d ~/.zsh.d
+fi
 if [[ ! -h ~/.emacs ]]; then
     ln -s $PWD/emacs.symlink ~/.emacs
 fi
