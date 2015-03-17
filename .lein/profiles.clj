@@ -1,5 +1,5 @@
 {:user {
-    :plugins [[cider/cider-nrepl "0.7.0-SNAPSHOT"]
+    :plugins [[cider/cider-nrepl "0.8.2"]
               [lein-cprint "1.0.0"]
               [lein-deps-tree "0.1.2"]
 	      [lein-jdk-tools "0.1.1"]
