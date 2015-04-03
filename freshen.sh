@@ -102,3 +102,7 @@ echo "Installing Mjolnir extensions"
 luarocks install mjolnir.hotkey
 luarocks install mjolnir.application
 
+
+echo "Installing Bazel.io (Google Build Tool) prerequesites"
+brew install protobuf libarchive
+echo "NOTE: for Bazel to work, you still need to install JDK 1.8"

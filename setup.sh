@@ -15,9 +15,14 @@ fi
 if [[ ! -h ~/.emacs.d ]]; then
     ln -s $PWD/.emacs.d ~/
 fi
-rm -rf $PWD/.emacs.d/elpa
-emacs --script "$PWD/install_elpa.el"
 
+vared -p "Would you like to install emacs elpa packages? (yes[y] or no[n]): " -c install_elpa
+if [[ ("$install_elpa" == "y") || ("$install_elpa" == "yes") ]]; then
+    rm -rf $PWD/.emacs.d/elpa
+    emacs --script "$PWD/install_elpa.el" &>/dev/null 
+    echo "\n\n"
+    echo "DONE installing elpa packages"
+fi
 
 echo "creating .path"
     cat > "$HOME/.path" <<EOF
@@ -31,6 +36,7 @@ $HOME/.dotfiles/bin
 /opt/X11/bin
 /usr/texbin
 $JAVA_HOME/bin
+$PWD/submodules/bazel/output
 EOF
 
 
@@ -38,8 +44,9 @@ echo "setting up symlinks"
 if [[ ! -h ~/.zshrc ]]; then
     ln -s $PWD/zshrc.symlink ~/.zshrc
 fi
-if [[ ! -h ~/.zsh.d ]]; then
-    ln -s $PWD/zsh.d ~/.zsh.d
+if [[ ! -d ~/.zsh.d ]]; then
+    mkdir ~/.zsh.d
+    ln -s $PWD/zsh.d/* ~/.zsh.d/
 fi
 if [[ ! -h ~/.emacs ]]; then
     ln -s $PWD/emacs.symlink ~/.emacs
@@ -55,7 +62,7 @@ if [[ ! -h ~/.gitconfig ]]; then
 fi
 
 # gitconfig
-if [[ -f ~/.gitconfig ]]; then
+if [[ (-f ~/.gitconfig) && (! -h ~/.gitconfig) ]]; then
     echo "removing your old .gitconfig"
     rm ~/.gitconfig
 fi
@@ -92,5 +99,12 @@ if [[ ! -e ~/Library/Fonts/Anonymous\ Pro.ttf ]]; then
     cp /tmp/AnonymousPro-1.002.001/*.ttf ~/Library/Fonts/
     rm -rf /tmp/*AnonymousPro*
 fi
+
+# compile & install Bazel
+if [[ ! -f $PWD/submodules/bazel/output/bazel ]]; then
+    echo "compiling Bazel"
+    sh $PWD/submodules/bazel/compile.sh
+fi
+
 
 cd $CURRENT_DIR

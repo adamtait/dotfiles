@@ -22,3 +22,6 @@
 [submodule "submodules/git-modes"]
 	path = submodules/git-modes
 	url = https://github.com/magit/git-modes.git
+[submodule "submodules/bazel"]
+	path = submodules/bazel
+	url = https://github.com/google/bazel
