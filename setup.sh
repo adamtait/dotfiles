@@ -81,10 +81,8 @@ if [[ ! -h ~/.gitconfig ]]; then
         git_credential='osxkeychain'
     fi
 
-    echo ' - What is your github author name?'
-    read -e git_authorname
-    echo ' - What is your github author email?'
-    read -e git_authoremail
+    vared -p ' - What is your github author name? ' -c git_authorname
+    vared -p ' - What is your github author email?' -c git_authoremail
 
     sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" gitconfig.template > gitconfig.symlink
 
