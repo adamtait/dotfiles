@@ -1,0 +1,8 @@
+# set command history to store lots of keystrokes
+HISTSIZE=100000
+SAVEHIST=100000
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+HIST_STAMPS="yyyy-mm-dd"

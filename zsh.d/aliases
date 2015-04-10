@@ -4,3 +4,6 @@ alias d="cd ~/.dotfiles"
 alias h="cd ~/workspace/hydra"
 alias t="cd ~/workspace/tabtop"
 alias s="cd ~/workspace/thefutureserver"
+
+alias pg='ps -efa | grep'
+alias pgrep='ps -efa | grep'
