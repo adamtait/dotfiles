@@ -86,7 +86,7 @@ if [[ ! -d /Applications/Mjolnir.app ]]; then
     cd /tmp
     curl -LOv https://github.com/sdegutis/mjolnir/releases/download/0.4.3/Mjolnir-0.4.3.tgz
     tar -zxvf /tmp/Mjolnir-0.4.3.tgz /tmp/
-    mv Mjolnir.app /Applications/
+    sudo mv Mjolnir.app /Applications/
     rm Mjolnir*
     cd $CURRENT_DIR
 fi
