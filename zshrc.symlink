@@ -61,30 +61,13 @@ if [[ -e "$HOME/.path" ]]; then
     export PATH="$path"
 fi
 
-
-# set command history to store lots of keystrokes
-HISTSIZE=100000
-SAVEHIST=100000
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-HIST_STAMPS="yyyy-mm-dd"
-
-
-# Java on OS X
-if [ -z $JAVA_VERSION ]; then
-    echo "need to set JAVA_VERSION => 'export JAVA_VERSION=1.7' or add to ~/.zsh.d/"
-else
-    if [[ -f /usr/libexec/java_home ]]; then
-        export JAVA_HOME="$(/usr/libexec/java_home -v $JAVA_VERSION)"
-    fi
+# $MANPATH - load manpath from ~/.manpath
+if [[ -e "$HOME/.manpath" ]]; then
+    manpath=""
+    while read -r; do
+        if [[ ! -z "$manpath" ]]; then manpath="$manpath:"; fi
+        manpath="$manpath$REPLY"
+    done < "$HOME/.manpath"
+    export MANPATH="$manpath"
 fi
 
-
-# rbenv from Homebrew
-export RBENV_ROOT=/usr/local/var/rbenv
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-
-# aliases
-alias pgrep='ps -efa | grep'

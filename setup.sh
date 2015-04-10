@@ -25,7 +25,7 @@ if [[ ("$install_elpa" == "y") || ("$install_elpa" == "yes") ]]; then
 fi
 
 echo "creating .path"
-    cat > "$HOME/.path" <<EOF
+cat > "$HOME/.path" <<EOF
 $HOME/.dotfiles/bin
 /usr/local/bin
 /opt/local/bin
@@ -35,8 +35,14 @@ $HOME/.dotfiles/bin
 /sbin
 /opt/X11/bin
 /usr/texbin
+$(brew --prefix coreutils)/libexec/gnubin
 $JAVA_HOME/bin
 $PWD/submodules/bazel/output
+EOF
+
+echo "creating .manpath"
+cat > "$HOME/.manpath" <<EOF
+/usr/local/opt/coreutils/libexec/gnuman
 EOF
 
 
@@ -75,10 +81,8 @@ if [[ ! -h ~/.gitconfig ]]; then
         git_credential='osxkeychain'
     fi
 
-    echo ' - What is your github author name?'
-    read -e git_authorname
-    echo ' - What is your github author email?'
-    read -e git_authoremail
+    vared -p ' - What is your github author name? ' -c git_authorname
+    vared -p ' - What is your github author email?' -c git_authoremail
 
     sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" gitconfig.template > gitconfig.symlink
 
