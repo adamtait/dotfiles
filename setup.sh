@@ -25,7 +25,7 @@ if [[ ("$install_elpa" == "y") || ("$install_elpa" == "yes") ]]; then
 fi
 
 echo "creating .path"
-    cat > "$HOME/.path" <<EOF
+cat > "$HOME/.path" <<EOF
 $HOME/.dotfiles/bin
 /usr/local/bin
 /opt/local/bin
@@ -35,8 +35,14 @@ $HOME/.dotfiles/bin
 /sbin
 /opt/X11/bin
 /usr/texbin
+$(brew --prefix coreutils)/libexec/gnubin
 $JAVA_HOME/bin
 $PWD/submodules/bazel/output
+EOF
+
+echo "creating .manpath"
+cat > "$HOME/.manpath" <<EOF
+/usr/local/opt/coreutils/libexec/gnuman
 EOF
 
 
