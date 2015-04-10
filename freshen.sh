@@ -70,6 +70,8 @@ apps=(
 echo "installing apps..."
 brew cask install --appdir="/Applications" ${apps[@]}
 
+# Python Setup
+pip install --upgrade pip setuptools
 
 # Oh-My-Zsh
 if [[ ! -d ~/.oh-my-zsh ]]; then
