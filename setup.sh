@@ -1,13 +1,15 @@
 #!/bin/zsh
 
 CURRENT_DIR=$PWD
+DOTFILES_DIR=$0:a:h
+cd ~
 
 echo "loading git submodules"
 git submodule init
 git submodule update
 
 echo "creating elpa directory & installing elpa packages"
-if [[ ! -d $PWD/.emacs.d/elpa ]]; then
+if [[ ! -d ~/.emacs.d ]]; then
     echo "removing old emacs configuration"
     # safety in the case that you had already installed .emacs configuration
     sudo rm -rf ~/.emacs.d
@@ -18,8 +20,8 @@ fi
 
 vared -p "Would you like to install emacs elpa packages? (yes[y] or no[n]): " -c install_elpa
 if [[ ("$install_elpa" == "y") || ("$install_elpa" == "yes") ]]; then
-    rm -rf $PWD/.emacs.d/elpa
-    emacs --script "$PWD/install_elpa.el" &>/dev/null 
+    rm -rf $DOTFILES_DIR/.emacs.d/elpa
+    emacs --script "${DOTFILES_DIR}/install_elpa.el" &>/dev/null 
     echo "\n\n"
     echo "DONE installing elpa packages"
 fi
