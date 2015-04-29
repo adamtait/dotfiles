@@ -27,7 +27,7 @@ brew install bash
 brew tap homebrew/dupes
 brew install homebrew/dupes/grep
 
-$PATH=$(brew --prefix coreutils)/libexec/gnubin:$PATH
+export PATH=$(brew --prefix coreutils)/libexec/gnubin:$PATH
 
 
 # install some apps
