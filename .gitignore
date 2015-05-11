@@ -1,7 +1,13 @@
+# emacs
 *~
+\#*\#
+.\#*
 .emacs.d/elpa
 .emacs.d/ido.last
 .emacs.d/smex-items
 .emacs.d/.repl-history
+
+# generated files
 .lein/self-installs
 gitconfig.symlink
+zsh.d/emacs
