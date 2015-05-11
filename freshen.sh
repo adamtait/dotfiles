@@ -85,7 +85,7 @@ if [[ ! -d /Applications/Mjolnir.app ]]; then
     CURRENT_DIR=$PWD
     cd /tmp
     curl -LOv https://github.com/sdegutis/mjolnir/releases/download/0.4.3/Mjolnir-0.4.3.tgz
-    tar -zxvf /tmp/Mjolnir-0.4.3.tgz /tmp/
+    tar -zxvf Mjolnir-0.4.3.tgz
     sudo mv Mjolnir.app /Applications/
     rm Mjolnir*
     cd $CURRENT_DIR
@@ -93,7 +93,20 @@ fi
 
 echo "Installing Lua -> window manager scripting language"
 brew install lua
-brew install luarocks
+if [[ ! -s /usr/local/bin/luarocks ]]; then
+    echo "Installing LuaRocks; deployment tools for Lua modules"
+    CURRENT_DIR=$PWD
+    cd /tmp
+    curl -LOv http://keplerproject.github.io/luarocks/releases/luarocks-2.2.2.tar.gz
+    tar -zxvf luarocks-2.2.2.tar.gz
+    cd luarocks-2.2.2
+    ./configure
+    make
+    sudo make install
+    cd ..
+    rm -rf luarocks*
+    cd $CURRENT_DIR
+fi
 
 if [[ ! -d ~/.luarocks ]]; then
     mkdir ~/.luarocks
