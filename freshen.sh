@@ -118,6 +118,12 @@ luarocks install mjolnir.hotkey
 luarocks install mjolnir.application
 
 
+if [[ ! `emacs -version` =~ "24" ]]; then
+    echo "removing old emacs version"
+    sudo rm /usr/bin/emacs
+    sudo rm -rf /usr/share/emacs
+fi
+
 echo "Installing Bazel.io (Google Build Tool) prerequesites"
 brew install protobuf libarchive
 echo "NOTE: for Bazel to work, you still need to install JDK 1.8"
