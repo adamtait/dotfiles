@@ -35,6 +35,7 @@
     web-mode
     yaml-mode
     yasnippet
+    leuven-theme
     ))
 
 (dolist (p my-packages)
