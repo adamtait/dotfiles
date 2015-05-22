@@ -181,7 +181,12 @@
 (when (fboundp 'set-word-wrap)
   (add-hook 'org-mode-hook 'set-word-wrap))
 
-(setq daypage-path (concat "~/Dropbox/daypage/" system-name "/"))
+(defun system-daypage-path ()
+  (concat "~/Dropbox/daypage/"
+          (car (split-string system-name "\\."))
+          "/"))
+
+(setq daypage-path (system-daypage-path))
 
 (defun find-daypage (&optional date)
   "Go to the day page for the specified date,
