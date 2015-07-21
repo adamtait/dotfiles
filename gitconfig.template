@@ -38,5 +38,7 @@
 	autosetupmerge = true
 [push]
 	default = simple
+[pull]
+        rebase = true
 [rebase]
 	autosquash = true
