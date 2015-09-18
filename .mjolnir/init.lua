@@ -222,6 +222,29 @@ mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "2",
    function()
       local screens = mjolnir.screen.allscreens()
       local apps = {
+         ["Google Chrome"]       = {"right", screens[1]},
+         ["Safari"]              = {"right", screens[1]},
+         ["Emacs"]               = {"left", screens[1]},
+         ["Xcode"]               = {"left", screens[1]},
+         ["iTerm"]               = {"right", screens[1]},
+         ["Slack"]               = {"right", screens[1]},
+         ["Spotify"]             = {"right", screens[1]},
+         ["Microsoft Outlook"]   = {"right", screens[1]}
+      }
+
+      for name, pos in pairs(apps) do
+         local w = winfromtitle(name)
+         if w then
+            move(w, pos[1], pos[2])
+         end
+      end
+   end
+)
+
+mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "3",
+   function()
+      local screens = mjolnir.screen.allscreens()
+      local apps = {
          ["Google Chrome"]       = {"full", screens[1]},
          ["Safari"]              = {"full", screens[1]},
          ["Emacs"]               = {"left", screens[2]},
