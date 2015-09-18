@@ -277,6 +277,15 @@ and CDR is beginning position."
 	      (match-beginning 2))))))
 
 
+;; temporary stuff for mobileOrg
+
+;; Set to the location of your Org files on your local system
+(setq org-directory "~/Dropbox/daypage/mobile")
+;; Set to the name of the file where new notes will be stored
+(setq org-mobile-inbox-for-pull "~/Dropbox/daypage/mobile/inbox.org")
+;; Set to <your Dropbox root directory>/MobileOrg.
+(setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; CLOJURE/LISP/NREPL/CIDER
@@ -590,7 +599,9 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
 ;; Gentooish color theme
 
 (require 'gentooish-theme)
-(color-theme-gentooish)
+;; (color-theme-gentooish)
+
+;; (load-theme leuven)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
