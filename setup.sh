@@ -62,7 +62,7 @@ fi
 
 echo "creating .path"
 cat > "$HOME/.path" <<EOF
-$DOTFILES_DIR/.dotfiles/bin
+$DOTFILES_DIR/bin
 /usr/local/bin
 /opt/local/bin
 /usr/bin

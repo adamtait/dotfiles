@@ -70,4 +70,3 @@ if [[ -e "$HOME/.manpath" ]]; then
     done < "$HOME/.manpath"
     export MANPATH="$manpath"
 fi
-
