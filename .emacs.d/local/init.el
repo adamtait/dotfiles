@@ -38,8 +38,6 @@
 
 ;; magit's dependencies
 (require 'cl-lib)
-(require 'git-commit-mode)
-(require 'git-rebase-mode)
 
 (require 'magit)
 (global-set-key (kbd "C-x m") 'magit-status)
