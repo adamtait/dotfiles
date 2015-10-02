@@ -10,7 +10,7 @@
  '(column-number-mode t)
  '(custom-safe-themes
    (quote
-    ("dcde3c9b3118fd9b2e9fbe1fe390d412216aa40f046ef5a158546616bb20f074" default)))
+    ("eedfd62e0242a78ceb8d6c5426410cbbfab4c8c253682a142984693c56c4a1d0" "dcde3c9b3118fd9b2e9fbe1fe390d412216aa40f046ef5a158546616bb20f074" default)))
  '(default-directory "~/workspace" t)
  '(delete-old-versions t)
  '(dired-listing-switches "-alg")
@@ -91,5 +91,5 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:height 140 :family "Anonymous Pro"))))
  '(highlight ((t (:foreground nil :background nil))))
- '(hl-line ((t (:background "#2d2d2d")))))
+ '(hl-line ((t (:background "#ffcccc")))))
   ;; "#2d2d2d" "#ffcccc"
