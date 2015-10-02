@@ -62,7 +62,6 @@ fi
 
 echo "creating .path"
 cat > "$HOME/.path" <<EOF
-$DOTFILES_DIR/bin
 /usr/local/bin
 /opt/local/bin
 /usr/bin
@@ -73,6 +72,7 @@ $DOTFILES_DIR/bin
 /usr/texbin
 $(brew --prefix coreutils)/libexec/gnubin
 $JAVA_HOME/bin
+$DOTFILES_DIR/bin
 $DOTFILES_DIR/submodules/bazel/output
 EOF
 
