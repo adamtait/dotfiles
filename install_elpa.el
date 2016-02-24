@@ -36,6 +36,7 @@
     yaml-mode
     yasnippet
     leuven-theme
+    restclient
     ))
 
 (dolist (p my-packages)
