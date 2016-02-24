@@ -37,6 +37,7 @@
     yasnippet
     leuven-theme
     restclient
+    graphviz-dot-mode
     ))
 
 (dolist (p my-packages)
