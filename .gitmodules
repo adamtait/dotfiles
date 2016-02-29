@@ -25,3 +25,9 @@
 [submodule "submodules/bazel"]
 	path = submodules/bazel
 	url = https://github.com/google/bazel
+[submodule "submodules/leuven-theme"]
+	path = submodules/leuven-theme
+	url = git://github.com/fniessen/emacs-leuven-theme.git
+[submodule "submodules/restclient"]
+	path = submodules/restclient
+	url = git@github.com:pashky/restclient.el.git
