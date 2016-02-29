@@ -16,9 +16,6 @@
 [submodule "submodules/org-mode"]
 	path = submodules/org-mode
 	url = https://github.com/stuartsierra/org-mode
-[submodule "submodules/magit"]
-	path = submodules/magit
-	url = https://github.com/magit/magit
 [submodule "submodules/git-modes"]
 	path = submodules/git-modes
 	url = https://github.com/magit/git-modes.git
