@@ -9,7 +9,7 @@
 
 (add-to-list 'package-archives
     '("melpa" .
-      "http://melpa.milkbox.net/packages/"))
+      "http://stable.melpa.org/packages/"))
 
 (package-initialize)
 
@@ -35,9 +35,8 @@
     web-mode
     yaml-mode
     yasnippet
-    leuven-theme
-    restclient
     graphviz-dot-mode
+    magit
     ))
 
 (dolist (p my-packages)
