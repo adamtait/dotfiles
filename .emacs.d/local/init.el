@@ -103,7 +103,8 @@
 (add-to-list 'auto-mode-alist '("\\.\\(rdfs?\\|owl\\)$" . nxml-mode))
 (add-to-list 'auto-mode-alist '("\\.st$" . fundamental-mode))
 (add-to-list 'auto-mode-alist '("\\.\\(cljs?\\|dtm\\|edn\\)$" . clojure-mode))
-
+(add-to-list 'auto-mode-alist '("\\.\\(rest\\|rst\\)$" . rst-mode))
+;;(add-to-list 'auto-mode-alist '("\\.\\(rest\\|rst\\)$" . rst-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LINUX-STYLE C CODE
@@ -594,12 +595,17 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Gentooish color theme
+;; color themes
 
 (require 'gentooish-theme)
 ;; (color-theme-gentooish)
 
 ;; (load-theme leuven)
+
+(require 'material-theme)
+(load-theme 'material t)
+
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -28,3 +28,6 @@
 [submodule "submodules/restclient"]
 	path = submodules/restclient
 	url = git@github.com:pashky/restclient.el.git
+[submodule "submodules/emacs-material-theme"]
+	path = submodules/emacs-material-theme
+	url = git@github.com:cpaulik/emacs-material-theme.git
