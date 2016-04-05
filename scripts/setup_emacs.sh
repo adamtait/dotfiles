@@ -9,7 +9,7 @@ if [[ -d $HOME/.emacs.d ]]; then
     sudo rm -rf $HOME/.emacs.d
 fi
 if [[ ! -h $HOME/.emacs.d ]]; then
-    ln -s $DOTFILES_DIR/.emacs.d $HOME/
+    ln -s $DOTFILES_DIR/emacs.d $HOME/.emacs.d
 fi
 
 
@@ -32,7 +32,7 @@ fi
 echo "\n--- installing Emacs packages"
 vared -p "Would you like to install emacs elpa packages? (yes[y] or no[n]): " -c install_elpa
 if [[ ("$install_elpa" == "y") || ("$install_elpa" == "yes") ]]; then
-    rm -rf $DOTFILES_DIR/.emacs.d/elpa
+    rm -rf $DOTFILES_DIR/emacs.d/elpa
 
     # $EMACS_EXEC
     /Applications/Emacs.app/Contents/MacOS/Emacs --script "${DOTFILES_DIR}/scripts/install_elpa.el" \

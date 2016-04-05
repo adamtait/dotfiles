@@ -2,10 +2,10 @@
 *~
 \#*\#
 .\#*
-.emacs.d/elpa
-.emacs.d/ido.last
-.emacs.d/smex-items
-.emacs.d/.repl-history
+emacs.d/elpa
+emacs.d/ido.last
+emacs.d/smex-items
+emacs.d/.repl-history
 
 # generated files
 .lein/self-installs
