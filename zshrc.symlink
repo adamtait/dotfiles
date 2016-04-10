@@ -45,12 +45,6 @@ plugins=(git docker extract lein mosh pod redis-cli xcode zsh-syntax-highlightin
 
 source $ZSH/oh-my-zsh.sh
 
-# local flavours
-for file in $HOME/.zsh.d/*; do
-    source "$file"
-done
-
-
 # $PATH - load path from ~/.path
 if [[ -e "$HOME/.path" ]]; then
     path=""
@@ -70,3 +64,10 @@ if [[ -e "$HOME/.manpath" ]]; then
     done < "$HOME/.manpath"
     export MANPATH="$manpath"
 fi
+
+
+# local flavours
+for file in $HOME/.zsh.d/*; do
+    source "$file"
+done
+
