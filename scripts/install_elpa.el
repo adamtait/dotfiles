@@ -37,6 +37,7 @@
     yasnippet
     graphviz-dot-mode
     magit
+    coffee-mode
     ))
 
 (dolist (p my-packages)
