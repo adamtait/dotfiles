@@ -91,5 +91,5 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:height 140 :family "Anonymous Pro"))))
  '(highlight ((t (:foreground nil :background nil))))
- '(hl-line ((t (:background "#ffcccc")))))
+ '(hl-line ((t (:background "#2d2d2d")))))
   ;; "#2d2d2d" "#ffcccc"
