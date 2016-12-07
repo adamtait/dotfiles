@@ -38,6 +38,7 @@
     graphviz-dot-mode
     magit
     coffee-mode
+    swift-mode
     ))
 
 (dolist (p my-packages)
