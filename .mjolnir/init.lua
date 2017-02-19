@@ -84,6 +84,10 @@ function right(win)
    win:movetounit(mjolnir.geometry.rect(0.5, 0, 0.5, 1))
 end
 
+function right3(win)
+   win:movetounit(mjolnir.geometry.rect(0.33, 0, 0.33, 1))
+end
+
 function bottomleft(win)
    win:movetounit(mjolnir.geometry.rect(0, 0.5, 0.5, 0.5))
 end
@@ -95,6 +99,21 @@ end
 function bottomright(win)
    win:movetounit(mjolnir.geometry.rect(0.5, 0.5, 0.5, 0.5))
 end
+
+
+function left3(win)
+   win:movetounit(mjolnir.geometry.rect(0, 0, 0.33, 1))
+end
+
+function right3(win)
+   win:movetounit(mjolnir.geometry.rect(0.66, 0, 0.33, 1))
+end
+
+function center3(win)
+   win:movetounit(mjolnir.geometry.rect(0.33, 0, 0.33, 1))
+end
+
+
 
 
 mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "j",
@@ -157,6 +176,26 @@ mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "[",
       wintoscreen(win, win:screen():next())
    end
 )
+
+mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "y",
+   function()
+      left3(mjolnir.window.focusedwindow())
+   end
+)
+
+mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "f",
+   function()
+      center3(mjolnir.window.focusedwindow())
+   end
+)
+
+mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "g",
+   function()
+      right3(mjolnir.window.focusedwindow())   
+   end
+)
+
+
 
 
 -- Nudging & Resizing
@@ -245,14 +284,15 @@ mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "3",
    function()
       local screens = mjolnir.screen.allscreens()
       local apps = {
-         ["Google Chrome"]       = {"full", screens[1]},
-         ["Safari"]              = {"full", screens[1]},
-         ["Emacs"]               = {"left", screens[2]},
-         ["Xcode"]               = {"left", screens[2]},
-         ["iTerm2"]              = {"right", screens[2]},
-         ["Slack"]               = {"full", screens[1]},
-         ["Spotify"]             = {"full", screens[1]},
-         ["Microsoft Outlook"]   = {"full", screens[1]}
+         ["Google Chrome"]       = {"right3", screens[1]},
+         ["Safari"]              = {"right3", screens[1]},
+         ["Firefox"]             = {"right3", screens[1]},
+         ["Emacs"]               = {"center3", screens[1]},
+         ["Xcode"]               = {"left3", screens[1]},
+         ["iTerm2"]              = {"left3", screens[1]},
+         ["Slack"]               = {"left3", screens[1]},
+         ["Spotify"]             = {"center3", screens[1]},
+         ["KeePassX"]            = {"left3", screens[1]},
       }
 
       for name, pos in pairs(apps) do
