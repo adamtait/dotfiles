@@ -41,6 +41,7 @@ binaries=(
   rbenv
   ruby-build
   ninja
+  ios-sim
 )
 
 echo "installing binaries..."
