@@ -84,10 +84,6 @@ function right(win)
    win:movetounit(mjolnir.geometry.rect(0.5, 0, 0.5, 1))
 end
 
-function right3(win)
-   win:movetounit(mjolnir.geometry.rect(0.33, 0, 0.33, 1))
-end
-
 function bottomleft(win)
    win:movetounit(mjolnir.geometry.rect(0, 0.5, 0.5, 0.5))
 end
@@ -105,8 +101,16 @@ function left3(win)
    win:movetounit(mjolnir.geometry.rect(0, 0, 0.33, 1))
 end
 
+function left2of3(win)
+   win:movetounit(mjolnir.geometry.rect(0, 0, 0.66, 1))
+end
+
 function right3(win)
    win:movetounit(mjolnir.geometry.rect(0.66, 0, 0.33, 1))
+end
+
+function right2of3(win)
+   win:movetounit(mjolnir.geometry.rect(0.33, 0, 0.66, 1))
 end
 
 function center3(win)
@@ -183,6 +187,12 @@ mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "y",
    end
 )
 
+mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "p",
+   function()
+      left2of3(mjolnir.window.focusedwindow())
+   end
+)
+
 mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "f",
    function()
       center3(mjolnir.window.focusedwindow())
@@ -195,6 +205,11 @@ mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "g",
    end
 )
 
+mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "c",
+   function()
+      right2of3(mjolnir.window.focusedwindow())
+   end
+)
 
 
 
