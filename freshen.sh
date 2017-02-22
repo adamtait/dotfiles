@@ -40,6 +40,7 @@ binaries=(
   git
   rbenv
   ruby-build
+  ninja
 )
 
 echo "installing binaries..."

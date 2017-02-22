@@ -31,3 +31,6 @@
 [submodule "submodules/emacs-material-theme"]
 	path = submodules/emacs-material-theme
 	url = git@github.com:cpaulik/emacs-material-theme.git
+[submodule "submodules/xcbuild"]
+	path = submodules/xcbuild
+	url = git@github.com:facebook/xcbuild.git
