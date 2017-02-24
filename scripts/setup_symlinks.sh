@@ -26,5 +26,10 @@ fi
 
 if [[ ! -h $HOME/.mjolnir ]]; then
     echo "--- adding .mjolnir"
-    ln -s $DOTFILES_DIR/.mjolnir $HOME/
+    ln -s $DOTFILES_DIR/.mjolnir $HOME/.mjolnir
+fi
+
+if [[ ! -h $HOME/.hammerspoon ]]; then
+    echo "--- adding .hammerspoon"
+    ln -s $DOTFILES_DIR/.hammerspoon $HOME/.hammerspoon
 fi
