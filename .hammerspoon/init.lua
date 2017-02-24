@@ -1,7 +1,7 @@
 
 
 function getDirectoryPath(filePath)
-   return string.gsub(filePath, "/%w-$", "")
+   return string.gsub(filePath, "/[%.%w]-$", "")
 end
 
 
