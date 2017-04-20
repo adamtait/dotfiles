@@ -5,14 +5,13 @@
 
 (add-to-list 'package-archives
     '("marmalade" .
-      "http://marmalade-repo.org/packages/"))
+      "https://marmalade-repo.org/packages/"))
 
 (add-to-list 'package-archives
-    '("melpa" .
-      "http://stable.melpa.org/packages/"))
+    '("melpa-stable" .
+      "https://stable.melpa.org/packages/"))
 
 (package-initialize)
-
 (package-refresh-contents)
 
 (defvar my-packages
