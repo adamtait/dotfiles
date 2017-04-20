@@ -1,16 +1,18 @@
-mjolnir.application = require "mjolnir.application"
-mjolnir.window      = require "mjolnir.window"
-mjolnir.hotkey      = require "mjolnir.hotkey"
-mjolnir.fnutils     = require "mjolnir.fnutils"
-mjolnir.geometry    = require "mjolnir.geometry"
-mjolnir.screen      = require "mjolnir.screen"
+--------------------------------------------------------------------------------
+-- locals
+--------------------------------------------------------------------------------
+local application = require "mjolnir.application"
+local window      = require "mjolnir.window"
+local hotkey      = require "mjolnir.hotkey"
+local geometry    = require "mjolnir.geometry"
+local screen      = require "mjolnir.screen"
 
 
 -- a couple of these functions were taken from https://github.com/ledbettj/config-files/blob/06bf36b3dec7be4536ccf8427e903ebbcc1de3e1/mjolnir.lua
 
 -- find the main window belonging to the application with title 'title'
 function winfromtitle(title)
-   local apps = mjolnir.application.runningapplications()
+   local apps = application.runningapplications()
    for _, app in pairs(apps) do
       if app:title() == title then
          return app:mainwindow()
@@ -61,153 +63,153 @@ end
 -- hard positions
 
 function topleft(win)
-   win:movetounit(mjolnir.geometry.rect(0, 0, 0.5, 0.5))
+   win:movetounit(geometry.rect(0, 0, 0.5, 0.5))
 end
 
 function top(win)
-   win:movetounit(mjolnir.geometry.rect(0, 0, 1, 0.5))
+   win:movetounit(geometry.rect(0, 0, 1, 0.5))
 end
 
 function topright(win)
-   win:movetounit(mjolnir.geometry.rect(0.5, 0, 0.5, 0.5))
+   win:movetounit(geometry.rect(0.5, 0, 0.5, 0.5))
 end
 
 function left(win)
-   win:movetounit(mjolnir.geometry.rect(0, 0, 0.5, 1))
+   win:movetounit(geometry.rect(0, 0, 0.5, 1))
 end
 
 function full(win)
-   win:movetounit(mjolnir.geometry.rect(0, 0, 1, 1))
+   win:movetounit(geometry.rect(0, 0, 1, 1))
 end
 
 function right(win)
-   win:movetounit(mjolnir.geometry.rect(0.5, 0, 0.5, 1))
+   win:movetounit(geometry.rect(0.5, 0, 0.5, 1))
 end
 
 function bottomleft(win)
-   win:movetounit(mjolnir.geometry.rect(0, 0.5, 0.5, 0.5))
+   win:movetounit(geometry.rect(0, 0.5, 0.5, 0.5))
 end
 
 function bottom(win)
-   win:movetounit(mjolnir.geometry.rect(0, 0.5, 1, 0.5))
+   win:movetounit(geometry.rect(0, 0.5, 1, 0.5))
 end
 
 function bottomright(win)
-   win:movetounit(mjolnir.geometry.rect(0.5, 0.5, 0.5, 0.5))
+   win:movetounit(geometry.rect(0.5, 0.5, 0.5, 0.5))
 end
 
 
 function left3(win)
-   win:movetounit(mjolnir.geometry.rect(0, 0, 0.33, 1))
+   win:movetounit(geometry.rect(0, 0, 0.33, 1))
 end
 
 function left2of3(win)
-   win:movetounit(mjolnir.geometry.rect(0, 0, 0.66, 1))
+   win:movetounit(geometry.rect(0, 0, 0.66, 1))
 end
 
 function right3(win)
-   win:movetounit(mjolnir.geometry.rect(0.66, 0, 0.33, 1))
+   win:movetounit(geometry.rect(0.66, 0, 0.33, 1))
 end
 
 function right2of3(win)
-   win:movetounit(mjolnir.geometry.rect(0.33, 0, 0.66, 1))
+   win:movetounit(geometry.rect(0.33, 0, 0.66, 1))
 end
 
 function center3(win)
-   win:movetounit(mjolnir.geometry.rect(0.33, 0, 0.33, 1))
+   win:movetounit(geometry.rect(0.33, 0, 0.33, 1))
 end
 
 
 
 
-mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "j",
+hotkey.bind({"cmd", "ctrl", "alt"}, "j",
    function()
-      left(mjolnir.window.focusedwindow())
+      left(window.focusedwindow())
    end
 )
 
-mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "k",
+hotkey.bind({"cmd", "ctrl", "alt"}, "k",
    function()
-      full(mjolnir.window.focusedwindow())
+      full(window.focusedwindow())
    end
 )
 
-mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "l",
+hotkey.bind({"cmd", "ctrl", "alt"}, "l",
    function()
-      right(mjolnir.window.focusedwindow())
+      right(window.focusedwindow())
    end
 )
 
-mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "u",
+hotkey.bind({"cmd", "ctrl", "alt"}, "u",
    function()
-      top(mjolnir.window.focusedwindow())
+      top(window.focusedwindow())
    end
 )
 
-mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "n",
+hotkey.bind({"cmd", "ctrl", "alt"}, "n",
    function()
-      bottom(mjolnir.window.focusedwindow())
+      bottom(window.focusedwindow())
    end
 )
 
-mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "i",
+hotkey.bind({"cmd", "ctrl", "alt"}, "i",
    function()
-      topleft(mjolnir.window.focusedwindow())
+      topleft(window.focusedwindow())
    end
 )
 
-mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "m",
+hotkey.bind({"cmd", "ctrl", "alt"}, "m",
    function()
-      bottomleft(mjolnir.window.focusedwindow())
+      bottomleft(window.focusedwindow())
    end
 )
 
-mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "o",
+hotkey.bind({"cmd", "ctrl", "alt"}, "o",
    function()
-      topright(mjolnir.window.focusedwindow())
+      topright(window.focusedwindow())
    end
 )
 
-mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, ",",
+hotkey.bind({"cmd", "ctrl", "alt"}, ",",
    function()
-      bottomright(mjolnir.window.focusedwindow())
+      bottomright(window.focusedwindow())
    end
 )
 
-mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "[",
+hotkey.bind({"cmd", "ctrl", "alt"}, "[",
    function()
-      local win = mjolnir.window.focusedwindow()
+      local win = window.focusedwindow()
       wintoscreen(win, win:screen():next())
    end
 )
 
-mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "y",
+hotkey.bind({"cmd", "ctrl", "alt"}, "y",
    function()
-      left3(mjolnir.window.focusedwindow())
+      left3(window.focusedwindow())
    end
 )
 
-mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "p",
+hotkey.bind({"cmd", "ctrl", "alt"}, "p",
    function()
-      left2of3(mjolnir.window.focusedwindow())
+      left2of3(window.focusedwindow())
    end
 )
 
-mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "f",
+hotkey.bind({"cmd", "ctrl", "alt"}, "f",
    function()
-      center3(mjolnir.window.focusedwindow())
+      center3(window.focusedwindow())
    end
 )
 
-mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "g",
+hotkey.bind({"cmd", "ctrl", "alt"}, "g",
    function()
-      right3(mjolnir.window.focusedwindow())   
+      right3(window.focusedwindow())   
    end
 )
 
-mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "c",
+hotkey.bind({"cmd", "ctrl", "alt"}, "c",
    function()
-      right2of3(mjolnir.window.focusedwindow())
+      right2of3(window.focusedwindow())
    end
 )
 
@@ -233,15 +235,15 @@ function resize(win, distance)
    win:setsize(size)
 end
 
-mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "left",
+hotkey.bind({"cmd", "ctrl", "alt"}, "left",
    function()
-      nudgeLeft(mjolnir.window.focusedwindow(), 10)
-      resize(mjolnir.window.focusedwindow(), 15)
+      nudgeLeft(window.focusedwindow(), 10)
+      resize(window.focusedwindow(), 15)
    end
 )
-mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "right",
+hotkey.bind({"cmd", "ctrl", "alt"}, "right",
    function()
-      resize(mjolnir.window.focusedwindow(), 20)
+      resize(window.focusedwindow(), 20)
    end
 )
 
@@ -249,18 +251,19 @@ mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "right",
 
 -- Layouts
 
-mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "1",
+hotkey.bind({"cmd", "ctrl", "alt"}, "1",
    function()
-      local screens = mjolnir.screen.allscreens()
+      local screens = screen.allscreens()
       local apps = {
          ["Google Chrome"]       = {"full", screens[1]},
          ["Safari"]              = {"full", screens[1]},
+         ["Firefox"]              = {"full", screens[1]},
          ["Emacs"]               = {"full", screens[1]},
          ["Xcode"]               = {"full", screens[1]},
          ["iTerm2"]              = {"full", screens[1]},
          ["Slack"]               = {"full", screens[1]},
          ["Spotify"]             = {"full", screens[1]},
-         ["Microsoft Outlook"]   = {"full", screens[1]}
+         ["KeePassX"]            = {"full", screens[1]}
       }
 
       for name, pos in pairs(apps) do
@@ -272,18 +275,19 @@ mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "1",
    end
 )
 
-mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "2",
+hotkey.bind({"cmd", "ctrl", "alt"}, "2",
    function()
-      local screens = mjolnir.screen.allscreens()
+      local screens = screen.allscreens()
       local apps = {
          ["Google Chrome"]       = {"right", screens[1]},
          ["Safari"]              = {"right", screens[1]},
+         ["Firefox"]             = {"right", screens[1]},
          ["Emacs"]               = {"left", screens[1]},
          ["Xcode"]               = {"left", screens[1]},
          ["iTerm2"]              = {"right", screens[1]},
          ["Slack"]               = {"right", screens[1]},
          ["Spotify"]             = {"right", screens[1]},
-         ["Microsoft Outlook"]   = {"right", screens[1]}
+         ["KeePassX"]            = {"left", screens[1]}
       }
 
       for name, pos in pairs(apps) do
@@ -295,9 +299,9 @@ mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "2",
    end
 )
 
-mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "3",
+hotkey.bind({"cmd", "ctrl", "alt"}, "3",
    function()
-      local screens = mjolnir.screen.allscreens()
+      local screens = screen.allscreens()
       local apps = {
          ["Google Chrome"]       = {"right3", screens[1]},
          ["Safari"]              = {"right3", screens[1]},
@@ -307,7 +311,7 @@ mjolnir.hotkey.bind({"cmd", "ctrl", "alt"}, "3",
          ["iTerm2"]              = {"left3", screens[1]},
          ["Slack"]               = {"left3", screens[1]},
          ["Spotify"]             = {"center3", screens[1]},
-         ["KeePassX"]            = {"left3", screens[1]},
+         ["KeePassX"]            = {"left3", screens[1]}
       }
 
       for name, pos in pairs(apps) do
