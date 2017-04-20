@@ -1,0 +1,36 @@
+#!/bin/bash
+
+
+if [[ -e ~/.localrc ]]
+then
+  source ~/.localrc
+fi
+
+
+# $PATH - load path from ~/.path
+if [[ -e "$HOME/.path" ]]; then
+    path=""
+    while read -r; do
+        if [[ ! -z "$path" ]]; then path="$path:"; fi
+        path="$path$REPLY"
+    done < "$HOME/.path"
+    export PATH="$path"
+fi
+
+# $MANPATH - load manpath from ~/.manpath
+if [[ -e "$HOME/.manpath" ]]; then
+    manpath=""
+    while read -r; do
+        if [[ ! -z "$manpath" ]]; then manpath="$manpath:"; fi
+        manpath="$manpath$REPLY"
+    done < "$HOME/.manpath"
+    export MANPATH="$manpath"
+fi
+
+
+# local flavours
+for f in ~/.bash.d/*; do
+    echo "sourcing ${f}"
+    source $f;
+done
+
