@@ -1,6 +1,6 @@
-#!/bin/zsh
+#!/bin/sh
 
-DOTFILES_DIR=$0:a:h/..
+DOTFILES_DIR=$(dirname "$0")/..
 
 echo "creating .path - ${DOTFILES_DIR}"
 cat > "$HOME/.path" <<EOF

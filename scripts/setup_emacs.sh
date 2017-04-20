@@ -1,6 +1,7 @@
-#!/bin/zsh
+#!/bin/sh
 
-DOTFILES_DIR=$0:a:h/..
+DOTFILES_DIR=$(dirname "$0")/..
+echo "dotfiles dir: ${DOTFILES_DIR}"
 
 echo "\n--- cleaning up any old emacs installation"
 if [[ -d $HOME/.emacs.d ]]; then

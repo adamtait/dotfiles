@@ -1,17 +1,20 @@
-#!/bin/zsh
+#!/bin/sh
 
-DOTFILES_DIR=$0:a:h/..
+DOTFILES_DIR=$(dirname "$0")/..
 
-
-if [[ ! -h $HOME/.zshrc ]]; then
-    echo "--- adding .zshrc"
-    ln -s $DOTFILES_DIR/zshrc.symlink $HOME/.zshrc
+if [[ ! -h $HOME/.bashrc ]]; then
+    echo "--- overwriting .bashrc"
+    ln -s $DOTFILES_DIR/bashrc.symlink $HOME/.bashrc
 fi
 
-if [[ ! -d $HOME/.zsh.d ]]; then
-    echo "--- adding .zsh.d"
-    mkdir $HOME/.zsh.d
-    ln -s $DOTFILES_DIR/zsh.d/* $HOME/.zsh.d/
+if [[ ! -h $HOME/.bash_profile ]]; then
+    echo "--- replacing .bash_profile"
+    ln -s $DOTFILES_DIR/bashrc.symlink $HOME/.bash_profile
+fi
+
+if [[ ! -h $HOME/.bash.d ]]; then
+    echo "--- linking .bash.d"
+    ln -s $DOTFILES_DIR/bash.d $HOME/.bash.d
 fi
 
 if [[ ! -h $HOME/.emacs ]]; then

@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/sh
 
 
 if [[ ! -e $HOME/Library/Fonts/Anonymous\ Pro.ttf ]]; then

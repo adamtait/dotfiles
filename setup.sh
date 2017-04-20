@@ -1,7 +1,7 @@
-#!/bin/zsh
+#!/bin/sh
 
 CURRENT_DIR=$PWD
-DOTFILES_DIR=$0:a:h
+DOTFILES_DIR=$CURRENT_DIR
 cd $DOTFILES_DIR
 
 echo "loading git submodules"
@@ -16,10 +16,10 @@ fi
 echo "-- EMACS -----------------------"
 sh $DOTFILES_DIR/scripts/setup_emacs.sh
 
-echo "-- $PATH -----------------------"
+echo "-- PATHs -----------------------"
 sh $DOTFILES_DIR/scripts/setup_paths.sh
 
-echo "-- SYMLINKS --------------------"
+echo "-- SYMLINKs --------------------"
 sh $DOTFILES_DIR/scripts/setup_symlinks.sh
 
 echo "-- GITCONFIG -------------------"
@@ -28,10 +28,10 @@ sh $DOTFILES_DIR/scripts/setup_gitconfig.sh
 echo "-- OSX SETTINGS ----------------"
 SUDO defaults write com.apple.Finder AppleShowAllFiles YES; killall Finder
 
-echo "-- FONTS -----------------------"
+echo "-- FONT(s) ---------------------"
 sh $DOTFILES_DIR/scripts/setup_fonts.sh
 
-echo "-- BAZEL (GOOGLE BUILD TOOL) ---"
+echo "-- BAZEL (GOOGLE build tool) ---"
 sh $DOTFILES_DIR/scripts/setup_bazel.sh
 
 cd $CURRENT_DIR

@@ -1,6 +1,6 @@
-#!/bin/zsh
+#!/bin/sh
 
-DOTFILES_DIR=$0:a:h/..
+DOTFILES_DIR=$(dirname "$0")/..
 
 
 if [[ (-f $HOME/.gitconfig) && (! -h $HOME/.gitconfig) ]]; then
@@ -17,8 +17,8 @@ if [[ ! -h $HOME/.gitconfig ]]; then
         git_credential='osxkeychain'
     fi
 
-    vared -p ' - What is your github author name? ' -c git_authorname
-    vared -p ' - What is your github author email? ' -c git_authoremail
+    read -p ' - What is your github author name? ' git_authorname
+    read -p ' - What is your github author email? ' git_authoremail
 
     sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" gitconfig.template > gitconfig.symlink
 

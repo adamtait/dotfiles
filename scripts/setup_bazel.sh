@@ -1,6 +1,7 @@
-#!/bin/zsh
+#!/bin/sh
 
-DOTFILES_DIR=$0:a:h/..
+DOTFILES_DIR=$(dirname "$0")/..
+
 
 if [[ ! -f $DOTFILES_DIR/submodules/bazel/output/bazel ]]; then
     echo "--- compiling Bazel"
