@@ -96,21 +96,23 @@ if [[ ! -s /usr/local/bin/luarocks ]]; then
     echo "Installing LuaRocks; deployment tools for Lua modules"
     CURRENT_DIR=$PWD
     cd /tmp
-    curl -LOv http://keplerproject.github.io/luarocks/releases/luarocks-2.2.2.tar.gz
-    tar -zxvf luarocks-2.2.2.tar.gz
-    cd luarocks-2.2.2
+    curl -LOv http://keplerproject.github.io/luarocks/releases/luarocks-2.4.1.tar.gz
+    tar -zxvf luarocks-2.4.1.tar.gz
+    cd luarocks-2.4.1
     ./configure
-    make
-    sudo make install
+    sudo make bootstrap
+    sudo luarocks install luasocket
     cd ..
     rm -rf luarocks*
     cd $CURRENT_DIR
 fi
 
+
+
 if [[ ! -d ~/.luarocks ]]; then
     mkdir ~/.luarocks
 fi
-echo 'rocks_servers = { "http://rocks.moonscript.org" }' > ~/.luarocks/config.lua
+echo 'rocks_servers = { "http://rocks.moonscript.org" }' >> /usr/local/etc/luarocks52/config-5.2.lua
 
 echo "Installing Mjolnir extensions"
 luarocks install mjolnir.hotkey
