@@ -56,3 +56,4 @@ alias h="history | grep "
 
 # just for fun
 alias d="cd ~/.dotfiles"
+alias g="git"
