@@ -1,5 +1,0 @@
-## quick jumps
-
-alias d="cd ~/.dotfiles"
-
-alias pgrep='ps -efa | grep'
