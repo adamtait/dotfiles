@@ -25,22 +25,28 @@ if [[ `emacs -version` != "24" ]]; then
     EMACS_EXEC="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
 
     echo "Adding alias for command-line emacs"
-    touch $DOTFILES_DIR/zsh.d/emacs
-    echo "alias emacs=\"${EMACS_EXEC}\"" >> $DOTFILES_DIR/zsh.d/emacs
+    touch $DOTFILES_DIR/bash.d/emacs
+    echo "alias emacs=\"${EMACS_EXEC}\"" >> $DOTFILES_DIR/bash.d/emacs
     echo ">> you might want to: alias emacs=\"${EMACS_EXEC}\""
 fi
 
 echo "\n--- installing Emacs packages"
-vared -p "Would you like to install emacs elpa packages? (yes[y] or no[n]): " -c install_elpa
-if [[ ("$install_elpa" == "y") || ("$install_elpa" == "yes") ]]; then
+
+function install_elpa {
     rm -rf $DOTFILES_DIR/emacs.d/elpa
 
-    # $EMACS_EXEC
+    # $EMACS_EXEC                                                                                                             
     /Applications/Emacs.app/Contents/MacOS/Emacs --script "${DOTFILES_DIR}/scripts/install_elpa.el" \
       >/tmp/emacs.install_elpa.stdout.log \
       2>/tmp/emacs.install_elpa.stderr.log
-
+lways
     echo "DONE installing Emacs packages"
-fi
+}
 
-
+echo "Would you like to install emacs elpa packages? ('yes' or 'no'): "
+select user_choice in "yes" "no"; do
+    case $user_choice in
+        yes ) install_elpa; break;;
+        no ) exit;;
+    esac
+done
