@@ -13,7 +13,7 @@ cat > "$HOME/.path" <<EOF
 $(brew --prefix coreutils)/libexec/gnubin
 /usr/local/bin
 /opt/local/bin
-$JAVA_HOME/bin
+/usr/local/opt/libarchive/bin
 $DOTFILES_DIR/bin
 $DOTFILES_DIR/submodules/bazel/output
 EOF
