@@ -21,7 +21,9 @@ brew install coreutils
 brew install findutils
 
 # Install Bash 4
-brew install bash
+brew install bash && \
+echo $(brew --prefix)/bin/bash | sudo tee -a /etc/shells && \
+chsh -s $(brew --prefix)/bin/bash
 
 # Install more recent versions of some OS X tools
 brew tap homebrew/dupes
@@ -53,18 +55,19 @@ brew cleanup
 # Brew Cask for OSX apps
 brew install caskroom/cask/brew-cask
 
-# to search for more casks, visit http://caskroom.io/
+# to search for more casks, visit http://caskroom.github.io/
 apps=(
+  appcleaner
   emacs
   dropbox
   google-chrome
-  appcleaner
   firefox
   spotify
   vagrant
   iterm2
   flux
   skype
+  keepassx
 )
 
 # Install apps to /Applications
@@ -74,12 +77,6 @@ brew cask install --appdir="/Applications" ${apps[@]}
 
 # Python Setup
 pip install --upgrade pip setuptools
-
-# Oh-My-Zsh
-if [[ ! -d ~/.oh-my-zsh ]]; then
-    git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
-    chsh -s /bin/zsh
-fi
 
 # Mjolnir.app (window manager)
 if [[ ! -d /Applications/Mjolnir.app ]]; then
