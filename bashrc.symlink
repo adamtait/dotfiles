@@ -30,7 +30,6 @@ fi
 
 # local flavours
 for f in ~/.bash.d/*; do
-    echo "sourcing ${f}"
     source $f;
 done
 
