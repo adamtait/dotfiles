@@ -56,10 +56,6 @@ alias h="history | grep "
 
 # just for fun
 alias d="cd ~/.dotfiles"
-alias g="git"
-alias gst="git status"
-alias gb="git branch"
-
 
 
 # IP addresses
