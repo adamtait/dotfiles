@@ -1,12 +1,6 @@
 #!/bin/bash
 
 
-if [[ -e ~/.localrc ]]
-then
-  source ~/.localrc
-fi
-
-
 # $PATH - load path from ~/.path
 if [[ -e "$HOME/.path" ]]; then
     path=""
@@ -28,8 +22,14 @@ if [[ -e "$HOME/.manpath" ]]; then
 fi
 
 
+
 # local flavours
 for f in ~/.bash.d/*; do
     source $f;
 done
 source ~/.bash.d/bash-powerline.sh    # can't figure out why this doesn't source correctly with the other env scripts
+
+if [[ -e ~/.localrc ]]
+then
+  source ~/.localrc
+fi
