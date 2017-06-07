@@ -68,6 +68,7 @@ apps=(
   flux
   skype
   keepassx
+  hugo            # static site generator - https://gohugo.io
 )
 
 # Install apps to /Applications
