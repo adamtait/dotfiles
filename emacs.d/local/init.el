@@ -34,7 +34,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Magit
-;; http://github.com/philjackson/magit/downloads
+;; http://github.com/magit/magit/downloads
 
 ;; magit's dependencies
 (require 'cl-lib)
@@ -95,6 +95,12 @@
   (magit-refresh))
 
 (define-key magit-status-mode-map (kbd "W") 'magit-toggle-whitespace)
+
+;; show git hook output
+(setq magit-diff-auto-show nil)
+(add-hook 'git-commit-mode-hook (lambda () (save-selected-window 'magit-process)))
+
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
