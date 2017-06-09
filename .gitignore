@@ -11,6 +11,7 @@ emacs.d/.repl-history
 .lein/self-installs
 gitconfig.symlink
 zsh.d/emacs
+.emacs.d
 
 
 # secrets
