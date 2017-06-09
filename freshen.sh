@@ -129,3 +129,12 @@ fi
 echo "Installing Bazel.io (Google Build Tool) prerequesites"
 brew install protobuf libarchive
 echo "NOTE: for Bazel to work, you still need to install JDK 1.8"
+
+
+echo "Installing Dart Lang"
+brew tap dart-lang/dart
+brew install dart
+
+
+
+echo -e "\n--- freshen.sh --- Complete."
