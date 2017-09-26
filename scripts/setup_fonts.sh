@@ -1,9 +1,14 @@
 #!/bin/sh
 
+# Google fonts API key: AIzaSyBms6HpvhPRKRqLf2cWz9faRMrqzlhi6Ag
+
+
 FONTS_DIR=$HOME/Library/Fonts
 
+
+### --------------- Anonymous Pro ---------------
 if [[ ! -e $FONTS_DIR/AnonymousPro.regular.ttf ]]; then
-    echo "--- installing Anonymous Pro (emacs font)"
+    echo "--- installing Anonymous Pro"
 
     curl http://fonts.gstatic.com/s/anonymouspro/v10/Zhfjj_gat3waL4JSju74E-V_5zh5b-_HiooIRUBwn1A.ttf > $FONTS_DIR/AnonymousPro.regular.ttf
     curl http://fonts.gstatic.com/s/anonymouspro/v10/q0u6LFHwttnT_69euiDbWKwIsuKDCXG0NQm7BvAgx-c.ttf > $FONTS_DIR/AnonymousPro.italic.ttf
@@ -12,6 +17,7 @@ if [[ ! -e $FONTS_DIR/AnonymousPro.regular.ttf ]]; then
 fi
 
 
+### --------------- Roboto Mono ---------------
 if [[ ! -e $FONTS_DIR/RobotoMono.regular.ttf ]]; then
     echo "--- installing Roboto Mono (terminal font)"
 
@@ -28,4 +34,21 @@ if [[ ! -e $FONTS_DIR/RobotoMono.regular.ttf ]]; then
 fi
 
 
-# Google fonts API key: AIzaSyBms6HpvhPRKRqLf2cWz9faRMrqzlhi6Ag
+### --------------- Hack ---------------
+if [[ ! -e $FONTS_DIR/Hack-Regular.ttf ]]; then
+    echo "--- installing Hack"   # unfortunately, not available on Google Fonts
+
+    OLD_DIR=`pwd`
+    TEMP_DIR=/tmp/hack-font
+    mkdir $TEMP_DIR
+    cd $TEMP_DIR
+    curl -s https://api.github.com/repos/source-foundry/Hack/releases/latest \
+        | grep "browser_download_url.*ttf.tar.gz" \
+        | cut -d : -f 2,3 \
+        | tr -d \" \
+        | wget -qi -
+    tar -zxmf Hack*
+    cp *.ttf $FONTS_DIR/
+    cd $OLD_DIR
+    rm -rf $TEMP_DIR
+fi
