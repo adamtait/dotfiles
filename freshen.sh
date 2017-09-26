@@ -69,6 +69,7 @@ apps=(
   skype
   keepassx
   hugo            # static site generator - https://gohugo.io
+  inkscape        # vector graphics tool
 )
 
 # Install apps to /Applications
