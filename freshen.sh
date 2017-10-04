@@ -52,6 +52,15 @@ brew install ${binaries[@]}
 brew cleanup
 
 
+# check for existing emacs install
+if [[ ! `emacs -version` =~ "25" ]]; then
+    echo "removing old emacs version"
+    sudo rm /usr/bin/emacs
+    sudo rm -rf /usr/share/emacs
+fi
+
+
+
 # Brew Cask for OSX apps
 brew install caskroom/cask/brew-cask
 
@@ -119,13 +128,6 @@ echo 'rocks_servers = { "http://rocks.moonscript.org" }' >> /usr/local/etc/luaro
 echo "Installing Mjolnir extensions"
 luarocks install mjolnir.hotkey
 luarocks install mjolnir.application
-
-
-if [[ ! `emacs -version` =~ "24" ]]; then
-    echo "removing old emacs version"
-    sudo rm /usr/bin/emacs
-    sudo rm -rf /usr/share/emacs
-fi
 
 echo "Installing Bazel.io (Google Build Tool) prerequesites"
 brew install protobuf libarchive

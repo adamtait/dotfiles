@@ -79,7 +79,6 @@
  '(sentence-end-double-space nil)
  '(text-scale-mode-step 1.1)
  '(tool-bar-mode nil)
- '(typopunct-buffer-language (quote english))
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))
  '(version-control t)
  '(visual-line-mode nil t))

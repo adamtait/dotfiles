@@ -551,32 +551,6 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
 (global-set-key (kbd "s-{") (lambda () (interactive) (other-window -1)))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Typopunct mode
-
-;; http://www.emacswiki.org/emacs/TypographicalPunctuationMarks
-
-(require 'typopunct)
-
-(defconst typopunct-ellipsis (decode-char 'ucs #x2026))
-(defconst typopunct-middot   (decode-char 'ucs #xB7)) ; or 2219
-(defun typopunct-insert-ellipsis-or-middot (arg)
-  "Change three consecutive dots to a typographical ellipsis mark."
-  (interactive "p")
-  (cond
-   ((and (= 1 arg)
-         (eq (char-before) ?^))
-    (delete-char -1)
-    (insert typopunct-middot))
-   ((and (= 1 arg)
-         (eq this-command last-command)
-         (looking-back "\\.\\."))
-    (replace-match "")
-    (insert typopunct-ellipsis))
-   (t
-    (self-insert-command arg))))
-(define-key typopunct-map "." 'typopunct-insert-ellipsis-or-middot)
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Text scaling (zoom)
@@ -594,16 +568,11 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
 (global-set-key (kbd "s-)") 'text-scale-reset)
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Server
-
-;; (server-start)
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; color themes
 
-(require 'gentooish-theme)
+;(require 'gentooish-theme)
 ;; (color-theme-gentooish)
 
 ;; (load-theme leuven)
@@ -615,7 +584,7 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Aquamacs / Cocoa Emacs stuff
+;;  Cocoa Emacs stuff
 
 (when (fboundp 'tabbar-mode) (tabbar-mode -1))
 

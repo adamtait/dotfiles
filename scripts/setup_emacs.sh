@@ -20,8 +20,8 @@ if [[ ! -d /Applications/Emacs.app ]]; then
     exit 1
 fi
 
-EMACS_EXEC=emacs
-if [[ `emacs -version` != "24" ]]; then
+
+if [[ `emacs -version` != "25" ]]; then
     EMACS_EXEC="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
 
     echo "Adding alias for command-line emacs"
@@ -30,16 +30,16 @@ if [[ `emacs -version` != "24" ]]; then
     echo ">> you might want to: alias emacs=\"${EMACS_EXEC}\""
 fi
 
-echo "\n--- installing Emacs packages"
 
+
+echo "\n--- installing Emacs packages"
 function install_elpa {
     rm -rf $DOTFILES_DIR/emacs.d/elpa
 
-    # $EMACS_EXEC                                                                                                             
+    # run ELPA script
     /Applications/Emacs.app/Contents/MacOS/Emacs --script "${DOTFILES_DIR}/scripts/install_elpa.el" \
       >/tmp/emacs.install_elpa.stdout.log \
       2>/tmp/emacs.install_elpa.stderr.log
-lways
     echo "DONE installing Emacs packages"
 }
 
