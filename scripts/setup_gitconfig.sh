@@ -1,6 +1,6 @@
 #!/bin/sh
 
-DOTFILES_DIR=$(dirname "$0")/..
+DOTFILES_DIR=$(dirname $(realpath "$0"))/..
 
 
 if [[ (-f $HOME/.gitconfig) && (! -h $HOME/.gitconfig) ]]; then

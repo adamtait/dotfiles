@@ -1,6 +1,6 @@
 #!/bin/sh
 
-DOTFILES_DIR=$(dirname "$0")/..
+DOTFILES_DIR=$(dirname $(realpath "$0"))/..
 
 echo "creating .path - ${DOTFILES_DIR}"
 cat > "$HOME/.path" <<EOF

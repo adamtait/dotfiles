@@ -1,6 +1,6 @@
 #!/bin/sh
 
-DOTFILES_DIR=$(dirname "$0")/..
+DOTFILES_DIR=$(dirname $(realpath "$0"))/..
 echo "dotfiles dir: ${DOTFILES_DIR}"
 
 echo "\n--- cleaning up any old emacs installation"
