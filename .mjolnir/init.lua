@@ -255,15 +255,16 @@ hotkey.bind({"cmd", "ctrl", "alt"}, "1",
    function()
       local screens = screen.allscreens()
       local apps = {
-         ["Google Chrome"]       = {"full", screens[1]},
-         ["Safari"]              = {"full", screens[1]},
-         ["Firefox"]              = {"full", screens[1]},
-         ["Emacs"]               = {"full", screens[1]},
-         ["Xcode"]               = {"full", screens[1]},
-         ["iTerm2"]              = {"full", screens[1]},
-         ["Slack"]               = {"full", screens[1]},
-         ["Spotify"]             = {"full", screens[1]},
-         ["KeePassX"]            = {"full", screens[1]}
+         ["Google Chrome"]              = {"full", screens[1]},
+         ["Safari"]                     = {"full", screens[1]},
+         ["Firefox"]                    = {"full", screens[1]},
+         ["FirefoxDeveloperEdition"]    = {"full", screens[1]},
+         ["Emacs"]                      = {"full", screens[1]},
+         ["Xcode"]                      = {"full", screens[1]},
+         ["iTerm2"]                     = {"full", screens[1]},
+         ["Slack"]                      = {"full", screens[1]},
+         ["Spotify"]                    = {"full", screens[1]},
+         ["KeePassX"]                   = {"full", screens[1]}
       }
 
       for name, pos in pairs(apps) do
@@ -279,15 +280,16 @@ hotkey.bind({"cmd", "ctrl", "alt"}, "2",
    function()
       local screens = screen.allscreens()
       local apps = {
-         ["Google Chrome"]       = {"right", screens[1]},
-         ["Safari"]              = {"right", screens[1]},
-         ["Firefox"]             = {"right", screens[1]},
-         ["Emacs"]               = {"left", screens[1]},
-         ["Xcode"]               = {"left", screens[1]},
-         ["iTerm2"]              = {"right", screens[1]},
-         ["Slack"]               = {"right", screens[1]},
-         ["Spotify"]             = {"right", screens[1]},
-         ["KeePassX"]            = {"left", screens[1]}
+         ["Google Chrome"]              = {"right", screens[1]},
+         ["Safari"]                     = {"right", screens[1]},
+         ["Firefox"]                    = {"right", screens[1]},
+         ["FirefoxDeveloperEdition"]    = {"right", screens[1]},
+         ["Emacs"]                      = {"left", screens[1]},
+         ["Xcode"]                      = {"left", screens[1]},
+         ["iTerm2"]                     = {"right", screens[1]},
+         ["Slack"]                      = {"right", screens[1]},
+         ["Spotify"]                    = {"right", screens[1]},
+         ["KeePassX"]                   = {"left", screens[1]}
       }
 
       for name, pos in pairs(apps) do
@@ -303,15 +305,16 @@ hotkey.bind({"cmd", "ctrl", "alt"}, "3",
    function()
       local screens = screen.allscreens()
       local apps = {
-         ["Google Chrome"]       = {"right3", screens[1]},
-         ["Safari"]              = {"right3", screens[1]},
-         ["Firefox"]             = {"right3", screens[1]},
-         ["Emacs"]               = {"center3", screens[1]},
-         ["Xcode"]               = {"left3", screens[1]},
-         ["iTerm2"]              = {"left3", screens[1]},
-         ["Slack"]               = {"left3", screens[1]},
-         ["Spotify"]             = {"center3", screens[1]},
-         ["KeePassX"]            = {"left3", screens[1]}
+         ["Google Chrome"]              = {"right3", screens[1]},
+         ["Safari"]                     = {"right3", screens[1]},
+         ["Firefox"]                    = {"right3", screens[1]},
+         ["FirefoxDeveloperEdition"]    = {"right3", screens[1]},
+         ["Emacs"]                      = {"center3", screens[1]},
+         ["Xcode"]                      = {"left3", screens[1]},
+         ["iTerm2"]                     = {"left3", screens[1]},
+         ["Slack"]                      = {"left3", screens[1]},
+         ["Spotify"]                    = {"center3", screens[1]},
+         ["KeePassX"]                   = {"left3", screens[1]}
       }
 
       for name, pos in pairs(apps) do
