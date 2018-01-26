@@ -42,168 +42,170 @@ end
 
 
 -- position by relative screen size
-function positionRelativeTo(pos)
-   local w = hs.window.focusedWindow()
-   local f = w:frame()
+function positionRelativeTo(x, y, w, h)
+   local win = hs.window.focusedWindow()
+   local f = win:frame()
+   local screen = win:screen()
+   local max = screen:frame()
 
-   f.x = 
-   f.y =
-   f.w =
-   f.h =
-   w:setFrame(f)
+   f.x = max.x + (max.w * x)
+   f.y = max.y + (max.h * y)
+   f.w = max.w * w
+   f.h = max.h * h
+   win:setFrame(f)
 end
 
 
 -- hard positions
 
-function topleft(win)
-   win:movetounit(geometry.rect(0, 0, 0.5, 0.5))
+function topleft()
+   positionRelativeTo(0, 0, 0.5, 0.5)
 end
 
-function top(win)
-   win:movetounit(geometry.rect(0, 0, 1, 0.5))
+function top()
+   positionRelativeTo(0, 0, 1, 0.5)
 end
 
-function topright(win)
-   win:movetounit(geometry.rect(0.5, 0, 0.5, 0.5))
+function topright()
+   positionRelativeTo(0.5, 0, 0.5, 0.5)
 end
 
-function left(win)
-   win:movetounit(geometry.rect(0, 0, 0.5, 1))
+function left()
+   positionRelativeTo(0, 0, 0.5, 1)
 end
 
-function full(win)
-   win:movetounit(geometry.rect(0, 0, 1, 1))
+function full()
+   positionRelativeTo(0, 0, 1, 1)
 end
 
-function right(win)
-   win:movetounit(geometry.rect(0.5, 0, 0.5, 1))
+function right()
+   positionRelativeTo(0.5, 0, 0.5, 1)
 end
 
-function bottomleft(win)
-   win:movetounit(geometry.rect(0, 0.5, 0.5, 0.5))
+function bottomleft()
+   positionRelativeTo(0, 0.5, 0.5, 0.5)
 end
 
-function bottom(win)
-   win:movetounit(geometry.rect(0, 0.5, 1, 0.5))
+function bottom()
+   positionRelativeTo(0, 0.5, 1, 0.5)
 end
 
-function bottomright(win)
-   win:movetounit(geometry.rect(0.5, 0.5, 0.5, 0.5))
-end
-
-
-function left3(win)
-   win:movetounit(geometry.rect(0, 0, 0.33, 1))
-end
-
-function left2of3(win)
-   win:movetounit(geometry.rect(0, 0, 0.66, 1))
-end
-
-function right3(win)
-   win:movetounit(geometry.rect(0.66, 0, 0.33, 1))
-end
-
-function right2of3(win)
-   win:movetounit(geometry.rect(0.33, 0, 0.66, 1))
-end
-
-function center3(win)
-   win:movetounit(geometry.rect(0.33, 0, 0.33, 1))
+function bottomright()
+   positionRelativeTo(0.5, 0.5, 0.5, 0.5)
 end
 
 
+function left3()
+   positionRelativeTo(0, 0, 0.33, 1)
+end
+
+function left2of3()
+   positionRelativeTo(0, 0, 0.66, 1)
+end
+
+function right3()
+   positionRelativeTo(0.66, 0, 0.33, 1)
+end
+
+function right2of3()
+   positionRelativeTo(0.33, 0, 0.66, 1)
+end
+
+function center3()
+   positionRelativeTo(0.33, 0, 0.33, 1)
+end
 
 
-hotkey.bind({"cmd", "ctrl", "alt"}, "j",
+
+
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, "j",
    function()
-      left(window.focusedwindow())
+      left()
    end
 )
 
-hotkey.bind({"cmd", "ctrl", "alt"}, "k",
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, "k",
    function()
-      full(window.focusedwindow())
+      full()
    end
 )
 
-hotkey.bind({"cmd", "ctrl", "alt"}, "l",
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, "l",
    function()
-      right(window.focusedwindow())
+      right()
    end
 )
 
-hotkey.bind({"cmd", "ctrl", "alt"}, "u",
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, "u",
    function()
-      top(window.focusedwindow())
+      top()
    end
 )
 
-hotkey.bind({"cmd", "ctrl", "alt"}, "n",
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, "n",
    function()
-      bottom(window.focusedwindow())
+      bottom()
    end
 )
 
-hotkey.bind({"cmd", "ctrl", "alt"}, "i",
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, "i",
    function()
-      topleft(window.focusedwindow())
+      topleft()
    end
 )
 
-hotkey.bind({"cmd", "ctrl", "alt"}, "m",
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, "m",
    function()
-      bottomleft(window.focusedwindow())
+      bottomleft()
    end
 )
 
-hotkey.bind({"cmd", "ctrl", "alt"}, "o",
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, "o",
    function()
-      topright(window.focusedwindow())
+      topright()
    end
 )
 
-hotkey.bind({"cmd", "ctrl", "alt"}, ",",
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, ",",
    function()
-      bottomright(window.focusedwindow())
+      bottomright()
    end
 )
 
-hotkey.bind({"cmd", "ctrl", "alt"}, "[",
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, "[",
    function()
       local win = window.focusedwindow()
       wintoscreen(win, win:screen():next())
    end
 )
 
-hotkey.bind({"cmd", "ctrl", "alt"}, "y",
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, "y",
    function()
-      left3(window.focusedwindow())
+      left3()
    end
 )
 
-hotkey.bind({"cmd", "ctrl", "alt"}, "p",
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, "p",
    function()
-      left2of3(window.focusedwindow())
+      left2of3()
    end
 )
 
-hotkey.bind({"cmd", "ctrl", "alt"}, "f",
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, "f",
    function()
-      center3(window.focusedwindow())
+      center3()
    end
 )
 
-hotkey.bind({"cmd", "ctrl", "alt"}, "g",
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, "g",
    function()
-      right3(window.focusedwindow())   
+      right3()   
    end
 )
 
-hotkey.bind({"cmd", "ctrl", "alt"}, "c",
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, "c",
    function()
-      right2of3(window.focusedwindow())
+      right2of3()
    end
 )
 
@@ -211,33 +213,39 @@ hotkey.bind({"cmd", "ctrl", "alt"}, "c",
 
 -- Nudging & Resizing
 
-function nudgeLeft(win, distance)
-   local frame = win:frame()
-   frame.x = frame.x - distance
-   win:setframe(frame)
+function nudgeLeft(distance)
+   local w = hs.window.focusedWindow()
+   local f = w:frame()
+   f.x = f.x - distance
+   win:setframe(f)
 end
 
-function nudgeRight(win, distance)
-   local frame = win:frame()
-   frame.x = frame.x + distance
-   win:setframe(frame)
+function nudgeRight(distance)
+   local w = hs.window.focusedWindow()
+   local f = w:frame()
+   f.x = f.x + distance
+   win:setframe(f)
 end
 
-function resize(win, distance)
-   local size = win:size()
+function resize(distance)
+   local w = hs.window.focusedWindow()
+   local size = w:size()
    size.w = size.w + distance
    win:setsize(size)
 end
 
-hotkey.bind({"cmd", "ctrl", "alt"}, "left",
+
+
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, "left",
    function()
-      nudgeLeft(window.focusedwindow(), 10)
-      resize(window.focusedwindow(), 15)
+      nudgeLeft(10)
+      resize(15)
    end
 )
-hotkey.bind({"cmd", "ctrl", "alt"}, "right",
+
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, "right",
    function()
-      resize(window.focusedwindow(), 20)
+      resize(20)
    end
 )
 
@@ -245,77 +253,68 @@ hotkey.bind({"cmd", "ctrl", "alt"}, "right",
 
 -- Layouts
 
-hotkey.bind({"cmd", "ctrl", "alt"}, "1",
-   function()
-      local screens = screen.allscreens()
-      local apps = {
-         ["Google Chrome"]              = {"full", screens[1]},
-         ["Safari"]                     = {"full", screens[1]},
-         ["Firefox"]                    = {"full", screens[1]},
-         ["FirefoxDeveloperEdition"]    = {"full", screens[1]},
-         ["Emacs"]                      = {"full", screens[1]},
-         ["Xcode"]                      = {"full", screens[1]},
-         ["iTerm2"]                     = {"full", screens[1]},
-         ["Slack"]                      = {"full", screens[1]},
-         ["Spotify"]                    = {"full", screens[1]},
-         ["KeePassX"]                   = {"full", screens[1]}
-      }
+function screenName()
+  return hs.screen.allScreens()[1]:name()
+end
+  
 
-      for name, pos in pairs(apps) do
-         local w = winfromtitle(name)
-         if w then
-            move(w, pos[1], pos[2])
-         end
-      end
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, "1",
+   function()
+      local n = screenName()
+      local layout = {
+         {"Google Chrome", nil, n, hs.layout.maximized, nil, nil},
+         {"Safari", nil, n, hs.layout.maximized, nil, nil},
+         {"Firefox", nil, n, hs.layout.maximized, nil, nil},
+         {"FirefoxDeveloperEdition", nil, n, hs.layout.maximized, nil, nil},
+         {"Emacs", nil, n, hs.layout.maximized, nil, nil},
+         {"Xcode", nil, n, hs.layout.maximized, nil, nil},
+         {"iTerm2", nil, n, hs.layout.maximized, nil, nil},
+         {"Slack", nil, n, hs.layout.maximized, nil, nil},
+         {"Spotify", nil, n, hs.layout.maximized, nil, nil},
+         {"KeePassX", nil, n, hs.layout.maximized, nil, nil}
+      }
+      hs.layout.apply(layout)
    end
 )
 
-hotkey.bind({"cmd", "ctrl", "alt"}, "2",
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, "2",
    function()
-      local screens = screen.allscreens()
-      local apps = {
-         ["Google Chrome"]              = {"right", screens[1]},
-         ["Safari"]                     = {"right", screens[1]},
-         ["Firefox"]                    = {"right", screens[1]},
-         ["FirefoxDeveloperEdition"]    = {"right", screens[1]},
-         ["Emacs"]                      = {"left", screens[1]},
-         ["Xcode"]                      = {"left", screens[1]},
-         ["iTerm2"]                     = {"right", screens[1]},
-         ["Slack"]                      = {"right", screens[1]},
-         ["Spotify"]                    = {"right", screens[1]},
-         ["KeePassX"]                   = {"left", screens[1]}
+      local n = screenName()
+      local layout = {
+         {"Google Chrome", nil, n, hs.layout.right50, nil, nil},
+         {"Safari", nil, n, hs.layout.right50, nil, nil},
+         {"Firefox", nil, n, hs.layout.right50, nil, nil},
+         {"FirefoxDeveloperEdition", nil, n, hs.layout.right50, nil, nil},
+         {"Emacs", nil, n, hs.layout.left50, nil, nil},
+         {"Xcode", nil, n, hs.layout.left50, nil, nil},
+         {"iTerm2", nil, n, hs.layout.right50, nil, nil},
+         {"Slack", nil, n, hs.layout.right50, nil, nil},
+         {"Spotify", nil, n, hs.layout.right50, nil, nil},
+         {"KeePassX", nil, n, hs.layout.left50, nil, nil}
       }
-
-      for name, pos in pairs(apps) do
-         local w = winfromtitle(name)
-         if w then
-            move(w, pos[1], pos[2])
-         end
-      end
+      hs.layout.apply(layout)
    end
 )
 
-hotkey.bind({"cmd", "ctrl", "alt"}, "3",
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, "3",
    function()
-      local screens = screen.allscreens()
-      local apps = {
-         ["Google Chrome"]              = {"right3", screens[1]},
-         ["Safari"]                     = {"right3", screens[1]},
-         ["Firefox"]                    = {"right3", screens[1]},
-         ["FirefoxDeveloperEdition"]    = {"right3", screens[1]},
-         ["Emacs"]                      = {"center3", screens[1]},
-         ["Xcode"]                      = {"left3", screens[1]},
-         ["iTerm2"]                     = {"left3", screens[1]},
-         ["Slack"]                      = {"left3", screens[1]},
-         ["Spotify"]                    = {"center3", screens[1]},
-         ["KeePassX"]                   = {"left3", screens[1]}
-      }
+      local n = screenName()
+      local l = hs.geometry.rect(0, 0, 0.33, 1)
+      local m = hs.geometry.rect(0.33, 0, 0.33, 1)
+      local r = hs.geometry.rect(0.66, 0, 0.33, 1)      
 
-      for name, pos in pairs(apps) do
-         local w = winfromtitle(name)
-         if w then
-            move(w, pos[1], pos[2])
-         end
-      end
+      local layout = {
+         {"Google Chrome",              nil, n, r, nil, nil},
+         {"Safari",                     nil, n, r, nil, nil},
+         {"Firefox",                    nil, n, r, nil, nil},
+         {"FirefoxDeveloperEdition",    nil, n, r, nil, nil},
+         {"Emacs",                      nil, n, m, nil, nil},
+         {"Xcode",                      nil, n, l, nil, nil},
+         {"iTerm2",                     nil, n, l, nil, nil},
+         {"Slack",                      nil, n, l, nil, nil},
+         {"Spotify",                    nil, n, m, nil, nil},
+         {"KeePassX",                   nil, n, l, nil, nil}
+      }
+      hs.layout.apply(layout)
    end
 )
