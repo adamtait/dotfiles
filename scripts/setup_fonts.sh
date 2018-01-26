@@ -48,7 +48,7 @@ if [[ ! -e $FONTS_DIR/Hack-Regular.ttf ]]; then
         | tr -d \" \
         | wget -qi -
     tar -zxmf Hack*
-    cp *.ttf $FONTS_DIR/
+    cp ttf/*.ttf $FONTS_DIR/
     cd $OLD_DIR
     rm -rf $TEMP_DIR
 fi
