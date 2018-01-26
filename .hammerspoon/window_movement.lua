@@ -262,16 +262,16 @@ hs.hotkey.bind({"cmd", "ctrl", "alt"}, "1",
    function()
       local n = screenName()
       local layout = {
-         {"Google Chrome", nil, n, hs.layout.maximized, nil, nil},
-         {"Safari", nil, n, hs.layout.maximized, nil, nil},
-         {"Firefox", nil, n, hs.layout.maximized, nil, nil},
-         {"FirefoxDeveloperEdition", nil, n, hs.layout.maximized, nil, nil},
-         {"Emacs", nil, n, hs.layout.maximized, nil, nil},
-         {"Xcode", nil, n, hs.layout.maximized, nil, nil},
-         {"iTerm2", nil, n, hs.layout.maximized, nil, nil},
-         {"Slack", nil, n, hs.layout.maximized, nil, nil},
-         {"Spotify", nil, n, hs.layout.maximized, nil, nil},
-         {"KeePassX", nil, n, hs.layout.maximized, nil, nil}
+         {"Google Chrome",              nil, n, hs.layout.maximized, nil, nil},
+         {"Safari",                     nil, n, hs.layout.maximized, nil, nil},
+         {"Firefox",                    nil, n, hs.layout.maximized, nil, nil},
+         {"Firefox Developer Edition",  nil, n, hs.layout.maximized, nil, nil},
+         {"Emacs",                      nil, n, hs.layout.maximized, nil, nil},
+         {"Xcode",                      nil, n, hs.layout.maximized, nil, nil},
+         {"iTerm2",                     nil, n, hs.layout.maximized, nil, nil},
+         {"Slack",                      nil, n, hs.layout.maximized, nil, nil},
+         {"Spotify",                    nil, n, hs.layout.maximized, nil, nil},
+         {"KeePassX",                   nil, n, hs.layout.maximized, nil, nil}
       }
       hs.layout.apply(layout)
    end
@@ -281,16 +281,16 @@ hs.hotkey.bind({"cmd", "ctrl", "alt"}, "2",
    function()
       local n = screenName()
       local layout = {
-         {"Google Chrome", nil, n, hs.layout.right50, nil, nil},
-         {"Safari", nil, n, hs.layout.right50, nil, nil},
-         {"Firefox", nil, n, hs.layout.right50, nil, nil},
-         {"FirefoxDeveloperEdition", nil, n, hs.layout.right50, nil, nil},
-         {"Emacs", nil, n, hs.layout.left50, nil, nil},
-         {"Xcode", nil, n, hs.layout.left50, nil, nil},
-         {"iTerm2", nil, n, hs.layout.right50, nil, nil},
-         {"Slack", nil, n, hs.layout.right50, nil, nil},
-         {"Spotify", nil, n, hs.layout.right50, nil, nil},
-         {"KeePassX", nil, n, hs.layout.left50, nil, nil}
+         {"Google Chrome",              nil, n, hs.layout.right50, nil, nil},
+         {"Safari",                     nil, n, hs.layout.right50, nil, nil},
+         {"Firefox",                    nil, n, hs.layout.right50, nil, nil},
+         {"Firefox Developer Edition",  nil, n, hs.layout.right50, nil, nil},
+         {"Emacs",                      nil, n, hs.layout.left50, nil, nil},
+         {"Xcode",                      nil, n, hs.layout.left50, nil, nil},
+         {"iTerm2",                     nil, n, hs.layout.right50, nil, nil},
+         {"Slack",                      nil, n, hs.layout.right50, nil, nil},
+         {"Spotify",                    nil, n, hs.layout.right50, nil, nil},
+         {"KeePassX",                   nil, n, hs.layout.left50, nil, nil}
       }
       hs.layout.apply(layout)
    end
@@ -307,7 +307,7 @@ hs.hotkey.bind({"cmd", "ctrl", "alt"}, "3",
          {"Google Chrome",              nil, n, r, nil, nil},
          {"Safari",                     nil, n, r, nil, nil},
          {"Firefox",                    nil, n, r, nil, nil},
-         {"FirefoxDeveloperEdition",    nil, n, r, nil, nil},
+         {"Firefox Developer Edition",  nil, n, r, nil, nil},
          {"Emacs",                      nil, n, m, nil, nil},
          {"Xcode",                      nil, n, l, nil, nil},
          {"iTerm2",                     nil, n, l, nil, nil},
