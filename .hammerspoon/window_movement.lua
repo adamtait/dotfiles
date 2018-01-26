@@ -2,44 +2,6 @@
 -- Window Movement
 --------------------------------------------------------------------------------
 
--- TODO: review this
--- move the given window to the given screen, keeping the same relative
--- dimensions and placement.
-function wintoscreen(win, screen)
-   if not win or not screen then
-      return false
-   end
-
-   local old_screen       = win:screen()
-   local old_screen_frame = old_screen:frame()
-   local win_frame        = win:frame()
-   local new_screen       = screen
-   local new_frame        = new_screen:frame()
-   local off_x_pct        = (win_frame.x - old_screen_frame.x) / (old_screen_frame.w)
-   local off_y_pct        = (win_frame.y - old_screen_frame.y) / (old_screen_frame.h)
-
-   local w_pct = win_frame.w / old_screen_frame.w
-   local h_pct = win_frame.h / old_screen_frame.h
-
-   win_frame.x = new_frame.x + (off_x_pct * new_frame.w)
-   win_frame.y = new_frame.y + (off_y_pct * new_frame.h)
-   win_frame.w = w_pct * new_frame.w
-   win_frame.h = h_pct * new_frame.h
-
-   win:setframe(win_frame)
-end
-
--- move the given window to the position ('topleft', 'topright', etc),
--- also moving it to the provided screen if any.
-function move(win, where, screen)
-   if not win or not where then
-      return false
-   end
-   wintoscreen(win, screen)
-   _G[where](win)
-end
-
-
 
 -- position by relative screen size
 function positionRelativeTo(x, y, w, h)
@@ -54,6 +16,8 @@ function positionRelativeTo(x, y, w, h)
    f.h = max.h * h
    win:setFrame(f)
 end
+
+
 
 
 -- hard positions
@@ -213,41 +177,49 @@ hs.hotkey.bind({"cmd", "ctrl", "alt"}, "c",
 
 -- Nudging & Resizing
 
-function nudgeLeft(distance)
-   local w = hs.window.focusedWindow()
-   local f = w:frame()
-   f.x = f.x - distance
-   win:setframe(f)
-end
-
-function nudgeRight(distance)
-   local w = hs.window.focusedWindow()
-   local f = w:frame()
+function nudge(win, distance)
+   local f = win:frame()
    f.x = f.x + distance
-   win:setframe(f)
+   win:setFrame(f)
 end
 
-function resize(distance)
-   local w = hs.window.focusedWindow()
-   local size = w:size()
+function resize(win, distance)
+   local size = win:size()
    size.w = size.w + distance
-   win:setsize(size)
+   win:setSize(size)
 end
 
 
 
-hs.hotkey.bind({"cmd", "ctrl", "alt"}, "left",
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, "Left",
    function()
-      nudgeLeft(10)
-      resize(15)
+      local win = hs.window.focusedWindow()
+      local f = win:frame()
+      if f.x == 0 then
+         resize(win, -20)
+      else
+         nudge(win, -20)
+         resize(win, 20)
+      end
    end
 )
 
-hs.hotkey.bind({"cmd", "ctrl", "alt"}, "right",
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, "Right",
    function()
-      resize(20)
+      local win = hs.window.focusedWindow()
+      local f = win:frame()
+      if f.x == 0 then
+         resize(win, 20)
+      else
+         nudge(win, 20)
+         resize(win, -20)
+      end
    end
 )
+
+
+
+
 
 
 
