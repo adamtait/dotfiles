@@ -44,6 +44,7 @@ binaries=(
   ruby-build
   ninja
   ios-sim
+  hugo            # static site generator - https://gohugo.io
 )
 
 echo "installing binaries..."
@@ -62,7 +63,7 @@ fi
 
 
 # Brew Cask for OSX apps
-brew install caskroom/cask/brew-cask
+brew tap caskroom/cask
 
 # to search for more casks, visit http://caskroom.github.io/
 apps=(
@@ -77,14 +78,13 @@ apps=(
   flux
   skype
   keepassx
-  hugo            # static site generator - https://gohugo.io
   inkscape        # vector graphics tool
 )
 
 # Install apps to /Applications
 # Default is: /Users/$user/Applications
 echo "installing apps..."
-brew cask install --appdir="/Applications" ${apps[@]}
+brew cask install --appdir="/Applications" ${apps[@]}¯
 
 # Python Setup
 pip install --upgrade pip setuptools
