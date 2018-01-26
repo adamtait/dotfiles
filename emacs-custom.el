@@ -4,6 +4,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(explicit-shell-file-name "/usr/local/Cellar/bash/4.4.12/bin/bash")
+ '(shell-file-name "/usr/local/Cellar/bash/4.4.12/bin/bash")
  '(auto-word-wrap-default-function nil)
  '(backup-directory-alist (quote (("." . "/tmp/emacs-backups"))))
  '(backward-delete-char-untabify-method (quote all))
