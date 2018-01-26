@@ -27,12 +27,12 @@ if [[ ! -h $HOME/.lein ]]; then
     ln -s $DOTFILES_DIR/.lein $HOME/.lein
 fi
 
-if [[ ! -h $HOME/.mjolnir ]]; then
-    echo "--- adding .mjolnir"
-    ln -s $DOTFILES_DIR/.mjolnir $HOME/.mjolnir
+if [[ ! -d $HOME/.hammerspoon ]]; then
+    echo "--- adding .hammerspoon"
+    mkdir $HOME/.hammerspoon
 fi
 
-if [[ ! -h $HOME/.hammerspoon ]]; then
-    echo "--- adding .hammerspoon"
-    ln -s $DOTFILES_DIR/.hammerspoon $HOME/.hammerspoon
+if [[ ! -h $HOME/.hammerspoon/init.lua ]]; then
+    echo "--- adding .hammerspoon/*"
+    ln -s $DOTFILES_DIR/.hammerspoon/* $HOME/.hammerspoon/
 fi
