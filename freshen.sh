@@ -40,6 +40,7 @@ binaries=(
   tree
   ack
   git
+  wget
   rbenv
   ruby-build
   ninja
@@ -75,9 +76,11 @@ apps=(
   spotify
   vagrant
   iterm2
+  hammerspoon
   flux
   skype
   keepassx
+  xquartz         # pre-requisite for Inkscape
   inkscape        # vector graphics tool
 )
 
@@ -86,58 +89,18 @@ apps=(
 echo "installing apps..."
 brew cask install --appdir="/Applications" ${apps[@]}¯
 
-# Python Setup
+# Python lang
 pip install --upgrade pip setuptools
 
-# Mjolnir.app (window manager)
-if [[ ! -d /Applications/Mjolnir.app ]]; then
-    echo "Installing Mjolnir.app (window manager)"
-    CURRENT_DIR=$PWD
-    cd /tmp
-    curl -LOv https://github.com/sdegutis/mjolnir/releases/download/0.4.3/Mjolnir-0.4.3.tgz
-    tar -zxvf Mjolnir-0.4.3.tgz
-    sudo mv Mjolnir.app /Applications/
-    rm Mjolnir*
-    cd $CURRENT_DIR
-fi
-
-echo "Installing Lua -> window manager scripting language"
-brew install lua
-if [[ ! -s /usr/local/bin/luarocks ]]; then
-    echo "Installing LuaRocks; deployment tools for Lua modules"
-    CURRENT_DIR=$PWD
-    cd /tmp
-    curl -LOv http://keplerproject.github.io/luarocks/releases/luarocks-2.4.1.tar.gz
-    tar -zxvf luarocks-2.4.1.tar.gz
-    cd luarocks-2.4.1
-    ./configure
-    sudo make bootstrap
-    sudo luarocks install luasocket
-    cd ..
-    rm -rf luarocks*
-    cd $CURRENT_DIR
-fi
-
-
-
-if [[ ! -d ~/.luarocks ]]; then
-    mkdir ~/.luarocks
-fi
-echo 'rocks_servers = { "http://rocks.moonscript.org" }' >> /usr/local/etc/luarocks52/config-5.2.lua
-
-echo "Installing Mjolnir extensions"
-luarocks install mjolnir.hotkey
-luarocks install mjolnir.application
-
-echo "Installing Bazel.io (Google Build Tool) prerequesites"
-brew install protobuf libarchive
-echo "NOTE: for Bazel to work, you still need to install JDK 1.8"
-
-
+# Dart lang
 echo "Installing Dart Lang"
 brew tap dart-lang/dart
 brew install dart
 
+# Bazel build tool
+echo "Installing Bazel.io (Google Build Tool) prerequesites"
+brew install protobuf libarchive
+echo "NOTE: for Bazel to work, you still need to install JDK 1.8"
 
 
 echo -e "\n--- freshen.sh --- Complete."

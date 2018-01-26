@@ -1,27 +1,8 @@
 --------------------------------------------------------------------------------
--- locals
+-- Window Movement
 --------------------------------------------------------------------------------
-local application = require "mjolnir.application"
-local window      = require "mjolnir.window"
-local hotkey      = require "mjolnir.hotkey"
-local geometry    = require "mjolnir.geometry"
-local screen      = require "mjolnir.screen"
 
-
--- a couple of these functions were taken from https://github.com/ledbettj/config-files/blob/06bf36b3dec7be4536ccf8427e903ebbcc1de3e1/mjolnir.lua
-
--- find the main window belonging to the application with title 'title'
-function winfromtitle(title)
-   local apps = application.runningapplications()
-   for _, app in pairs(apps) do
-      if app:title() == title then
-         return app:mainwindow()
-      end
-   end
-
-   return nil
-end
-
+-- TODO: review this
 -- move the given window to the given screen, keeping the same relative
 -- dimensions and placement.
 function wintoscreen(win, screen)
@@ -58,6 +39,19 @@ function move(win, where, screen)
    _G[where](win)
 end
 
+
+
+-- position by relative screen size
+function positionRelativeTo(pos)
+   local w = hs.window.focusedWindow()
+   local f = w:frame()
+
+   f.x = 
+   f.y =
+   f.w =
+   f.h =
+   w:setFrame(f)
+end
 
 
 -- hard positions
