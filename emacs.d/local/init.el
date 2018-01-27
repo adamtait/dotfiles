@@ -405,7 +405,7 @@ ring."
 ;; mode subword-mode provides such functionality
 (add-hook 'cider-repl-mode-hook 'subword-mode)
 
-(require 'clojure-cheatsheet)
+;; (require 'clojure-cheatsheet)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; org-babel + Clojure
