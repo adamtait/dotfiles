@@ -68,11 +68,11 @@ function left2of3()
 end
 
 function right3()
-   positionRelativeTo(0.66, 0, 0.35, 1)
+   positionRelativeTo(0.66, 0, 0.34, 1)
 end
 
 function right2of3()
-   positionRelativeTo(0.33, 0, 0.68, 1)
+   positionRelativeTo(0.33, 0, 0.67, 1)
 end
 
 function center3()
