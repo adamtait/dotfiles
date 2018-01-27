@@ -9,8 +9,6 @@
 ;; Locally-installed packages (non-ELPA)
 
 (push "~/.dotfiles/emacs.d/restclient" load-path)
-(push "~/.dotfiles/emacs.d/clojure-mode" load-path)
-(push "~/.dotfiles/emacs.d/cider" load-path)
 (push "~/.dotfiles/emacs.d/org-mode/contrib/lisp" load-path)
 (push "~/.dotfiles/emacs.d/org-mode/lisp" load-path)
 (push "~/.dotfiles/emacs.d/leuven-theme/lisp" load-path)
