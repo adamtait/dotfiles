@@ -1,37 +1,45 @@
 (setq user-init-file "/tmp/.emacs")
 (require 'package)
 
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-;(add-to-list 'package-archives
-;    '("marmalade" .
-;      "http://marmalade-repo.org/packages/"))
 
-(add-to-list 'package-archives
-    '("melpa-stable" .
-      "http://stable.melpa.org/packages/"))
-
-(package-initialize)
-(package-refresh-contents)
 
 (defvar my-packages
   '(
     gh
     gist
-    markdown-mode
-    paredit
     pkg-info
-    protobuf-mode
-    ruby-mode
     s
     smex
+    yasnippet
+    magit    
+    paredit
+
+    cider
+    clojure-mode
+
+    markdown-mode
+    protobuf-mode
+    ruby-mode
     web-mode
     yaml-mode
-    yasnippet
     graphviz-dot-mode
-    magit
     swift-mode
     ))
 
+
+
+
+(package-initialize)
+
+(add-to-list 'package-archives
+             '("marmalade" .
+               "https://marmalade-repo.org/packages/"))
+
+(add-to-list 'package-archives
+             '("melpa-stable" .
+               "http://stable.melpa.org/packages/"))
+
+(package-refresh-contents)
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
