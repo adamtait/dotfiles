@@ -89,8 +89,23 @@ apps=(
 echo "installing apps..."
 brew cask install --appdir="/Applications" ${apps[@]}¯
 
+
+
+
 # Python lang
 pip install --upgrade pip setuptools
+
+
+# Ruby lang
+echo "Installing Ruby 2.5.0"
+rbenv install 2.5.0
+rbenv global 2.5.0
+
+# Cocoapods
+echo "Installing Cocoapods"
+gem install cocoapods
+
+
 
 # Dart lang
 echo "Installing Dart Lang"
@@ -101,6 +116,8 @@ brew install dart
 echo "Installing Bazel.io (Google Build Tool) prerequesites"
 brew install protobuf libarchive
 echo "NOTE: for Bazel to work, you still need to install JDK 1.8"
+
+
 
 
 echo -e "\n--- freshen.sh --- Complete."
