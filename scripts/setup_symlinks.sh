@@ -2,6 +2,7 @@
 
 DOTFILES_DIR=$(dirname $(realpath "$0"))/..
 
+
 if [[ ! -h $HOME/.bashrc ]]; then
     echo "--- overwriting .bashrc"
     ln -s $DOTFILES_DIR/bashrc.symlink $HOME/.bashrc
@@ -12,10 +13,17 @@ if [[ ! -h $HOME/.bash_profile ]]; then
     ln -s $DOTFILES_DIR/bashrc.symlink $HOME/.bash_profile
 fi
 
-if [[ ! -h $HOME/.bash.d ]]; then
-    echo "--- linking .bash.d"
-    ln -s $DOTFILES_DIR/bash.d $HOME/.bash.d
+if [[ ! -d $HOME/.bash.d ]]; then
+    echo "--- create .bash.d directory"
+    rm -f $HOME/.bash.d
+    mkdir $HOME/.bash.d
 fi
+
+if [[ ! -h $HOME/.bash.d/aliases.sh ]]; then
+    echo "--- linking .bash.d/*"
+    ln -s $DOTFILES_DIR/bash.d/* $HOME/.bash.d/
+fi
+
 
 if [[ ! -h $HOME/.emacs ]]; then
     echo "--- adding .emacs"
@@ -28,7 +36,8 @@ if [[ ! -h $HOME/.lein ]]; then
 fi
 
 if [[ ! -d $HOME/.hammerspoon ]]; then
-    echo "--- adding .hammerspoon"
+    echo "--- creating .hammerspoon directory"
+    rm -f $HOME/.hammerspoon
     mkdir $HOME/.hammerspoon
 fi
 
