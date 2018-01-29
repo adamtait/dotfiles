@@ -40,6 +40,7 @@ binaries=(
   tree
   ack
   git
+  tmux
   wget
   rbenv
   ruby-build
