@@ -31,7 +31,7 @@ fi
 
 if [[ ! -h $HOME/.lein ]]; then
     echo "--- adding .lein"
-    ln -s $DOTFILES_DIR/.lein $HOME/.lein
+    ln -s $DOTFILES_DIR/lein $HOME/.lein
 fi
 
 if [[ ! -d $HOME/.hammerspoon ]]; then
