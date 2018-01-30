@@ -8,11 +8,6 @@ emacs.d/smex-items
 emacs.d/.repl-history
 
 # generated files
-.lein/self-installs
+lein/self-installs
 gitconfig.symlink
-zsh.d/emacs
 .emacs.d
-
-
-# secrets
-.hammerspoon/paths
