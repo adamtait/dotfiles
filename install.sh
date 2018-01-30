@@ -19,5 +19,7 @@ sh $DOTFILES_DIR/install/ruby.sh
 sh $DOTFILES_DIR/install/cocoapods.sh
 sh $DOTFILES_DIR/install/dart.sh
 sh $DOTFILES_DIR/install/bazel.sh
+sh $DOTFILES_DIR/install/node.sh
+
 
 echo -e "\n--- install.sh --- Complete."
