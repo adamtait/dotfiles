@@ -24,7 +24,6 @@ if [[ ! -h $HOME/.bash.d/aliases.sh ]]; then
     ln -s $DOTFILES_DIR/bash.d/* $HOME/.bash.d/
 fi
 
-
 if [[ ! -h $HOME/.emacs ]]; then
     echo "--- adding .emacs"
     ln -s $DOTFILES_DIR/emacs.symlink $HOME/.emacs
@@ -46,4 +45,8 @@ if [[ ! -h $HOME/.hammerspoon/init.lua ]]; then
     ln -s $DOTFILES_DIR/hammerspoon/* $HOME/.hammerspoon/
 fi
 
+if [[ ! -h $HOME/.tmux.conf ]]; then
+    echo "--- adding .tmux.conf"
+    ln -s $DOTFILES_DIR/tmux.conf $HOME/.tmux.conf
+fi
 
