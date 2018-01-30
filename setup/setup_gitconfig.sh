@@ -20,7 +20,7 @@ if [[ ! -h $HOME/.gitconfig ]]; then
     read -p ' - What is your github author name? ' git_authorname
     read -p ' - What is your github author email? ' git_authoremail
 
-    emacs_client_script_path=$DOTFILES_DIR/scripts/emacsclient.sh
+    emacs_client_script_path=$DOTFILES_DIR/bin/emacsclient
 
     sed \
         -e "s/AUTHORNAME/$git_authorname/g" \

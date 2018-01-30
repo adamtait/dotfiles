@@ -43,5 +43,7 @@ fi
 
 if [[ ! -h $HOME/.hammerspoon/init.lua ]]; then
     echo "--- adding .hammerspoon/*"
-    ln -s $DOTFILES_DIR/.hammerspoon/* $HOME/.hammerspoon/
+    ln -s $DOTFILES_DIR/hammerspoon/* $HOME/.hammerspoon/
 fi
+
+

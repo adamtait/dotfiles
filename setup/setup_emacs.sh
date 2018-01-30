@@ -37,7 +37,7 @@ function install_elpa {
     rm -rf $DOTFILES_DIR/emacs.d/elpa
 
     # run ELPA script
-    /Applications/Emacs.app/Contents/MacOS/Emacs --script "${DOTFILES_DIR}/scripts/install_elpa.el" \
+    /Applications/Emacs.app/Contents/MacOS/Emacs --script "${DOTFILES_DIR}/setup/install_elpa.el" \
       >/tmp/emacs.install_elpa.stdout.log \
       2>/tmp/emacs.install_elpa.stderr.log
     echo "DONE installing Emacs packages"
