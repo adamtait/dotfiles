@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 DOTFILES_DIR=$(dirname $(realpath "$0"))/..
 
-echo "creating .path - ${DOTFILES_DIR}"
+echo -e "\n--- creating .path - ${DOTFILES_DIR}"
 cat > "$HOME/.path" <<EOF
 /bin
 /usr/bin
@@ -18,7 +18,7 @@ $DOTFILES_DIR/bin
 $DOTFILES_DIR/submodules/bazel/output
 EOF
 
-echo "creating .manpath"
+echo -e "\n--- creating .manpath"
 cat > "$HOME/.manpath" <<EOF
 /usr/local/opt/coreutils/libexec/gnuman
 EOF

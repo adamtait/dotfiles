@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 DOTFILES_DIR=$(dirname $(realpath "$0"))/..
 
 
 if [[ ! -f $DOTFILES_DIR/submodules/bazel/output/bazel ]]; then
-    echo "--- compiling Bazel"
+    echo -e "\n--- compiling Bazel"
     sh $DOTFILES_DIR/submodules/bazel/compile.sh
 fi

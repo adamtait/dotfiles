@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 DOTFILES_DIR=$(dirname $(realpath "$0"))/..
-echo "dotfiles dir: ${DOTFILES_DIR}"
+echo -e "\n--> dotfiles dir: ${DOTFILES_DIR}"
 
-echo "\n--- cleaning up any old emacs installation"
+echo -e "\n--- cleaning up any old emacs installation"
 if [[ -d $HOME/.emacs.d ]]; then
     echo "removing old emacs configuration"
     # safety in the case that you had already installed .emacs configuration
@@ -14,7 +14,7 @@ if [[ ! -h $HOME/.emacs.d ]]; then
 fi
 
 
-echo "\n--- checking Emacs installation"
+echo -e "\n--- checking Emacs installation"
 if [[ ! -d /Applications/Emacs.app ]]; then
     echo "XEmacs didn't get installed properly. Try running ./freshen.sh"
     exit 1
@@ -24,7 +24,7 @@ fi
 if [[ `emacs -version` != "25" ]]; then
     EMACS_EXEC="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
 
-    echo "Adding alias for command-line emacs"
+    echo -e "\n\nAdding alias for command-line emacs"
     touch $DOTFILES_DIR/bash.d/emacs
     echo "alias emacs=\"${EMACS_EXEC}\"" >> $DOTFILES_DIR/bash.d/emacs
     echo ">> you might want to: alias emacs=\"${EMACS_EXEC}\""
@@ -32,7 +32,7 @@ fi
 
 
 
-echo "\n--- installing Emacs packages"
+echo -e "\n--- installing Emacs packages"
 function install_elpa {
     rm -rf $DOTFILES_DIR/emacs.d/elpa
 
