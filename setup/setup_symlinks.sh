@@ -50,3 +50,8 @@ if [[ ! -h $HOME/.tmux.conf ]]; then
     ln -s $DOTFILES_DIR/tmux.conf $HOME/.tmux.conf
 fi
 
+if [[ ! -d $HOME/.nvm ]]; then
+    echo "--- creating .nvm directory"
+    rm -f $HOME/.nvm
+    mkdir $HOME/.nvm
+fi

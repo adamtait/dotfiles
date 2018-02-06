@@ -15,6 +15,7 @@ binaries=(
   ninja
   ios-sim
   hugo            # static site generator - https://gohugo.io
+  watchman
 )
 
 echo "installing binaries..."
