@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-# Python lang
+echo -e "\n--- Python lang"
 pip install --upgrade pip setuptools

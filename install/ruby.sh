@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-# Ruby lang
-echo "Installing Ruby 2.5.0"
+
+echo -e "\n--- rbenv & Ruby 2.5.0"
 rbenv install 2.5.0
 rbenv global 2.5.0

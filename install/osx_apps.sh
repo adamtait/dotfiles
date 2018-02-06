@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-# Brew Cask for OSX apps
+echo -e "\n--- Brew Cask for OSX apps"
 brew tap caskroom/cask
 
 # to search for more casks, visit http://caskroom.github.io/
@@ -23,6 +23,7 @@ apps=(
 
 # Install apps to /Applications
 # Default is: /Users/$user/Applications
-echo "installing apps..."
+echo -e "\n--- homebrew cask apps:"
+echo "${apps[@]}"
 brew cask install --appdir="/Applications" ${apps[@]}¯
-
+echo -e "\n\n"

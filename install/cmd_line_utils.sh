@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # install command line utils (via Homebrew)
 
@@ -18,6 +18,10 @@ binaries=(
   watchman
 )
 
-echo "installing binaries..."
+echo -e "\n---  Homebrew binaries installing: "
+echo "${binaries[@]}"
+
 brew install ${binaries[@]}
 brew cleanup
+
+echo -e "\n\n"

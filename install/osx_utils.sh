@@ -1,5 +1,5 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-# Install more recent versions of some OS X tools
+echo -e "\n--- Install more recent versions of some OS X tools"
 brew tap homebrew/dupes
 brew install homebrew/dupes/grep

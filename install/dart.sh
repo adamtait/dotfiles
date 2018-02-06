@@ -1,6 +1,5 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-# Dart lang
-echo "Installing Dart Lang"
+echo -e "\n--- Dart Lang"
 brew tap dart-lang/dart
 brew install dart

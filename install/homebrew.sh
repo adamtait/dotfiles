@@ -1,11 +1,11 @@
-#! /bin/sh
+#!/usr/bin/env bash
 
 # Check for Homebrew,
 # Install if we don't have it
 if test ! $(which brew); then
-  echo "Installing homebrew..."
+  echo -e "\n--- homebrew"
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
-# Update homebrew recipes
+echo -e "\n--- Update homebrew recipes"
 brew update
