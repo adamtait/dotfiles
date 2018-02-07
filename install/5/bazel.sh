@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-# Bazel build tool
 echo -e "\n--- Bazel.io (Google Build Tool) prerequesites"
 brew install protobuf libarchive
 
