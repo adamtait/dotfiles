@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 CURRENT_DIR=$PWD
 DOTFILES_DIR=$CURRENT_DIR
@@ -13,25 +13,9 @@ if [[ ! -d $HOME ]]; then
     exit 1
 fi
 
-echo "-- OSX SETTINGS ----------------"
-SUDO defaults write com.apple.Finder AppleShowAllFiles YES; killall Finder
-
-echo "-- PATHs -----------------------"
-sh $DOTFILES_DIR/setup/setup_paths.sh
-
-echo "-- SYMLINKs --------------------"
-sh $DOTFILES_DIR/setup/setup_symlinks.sh
-
-echo "-- FONT(s) ---------------------"
-sh $DOTFILES_DIR/setup/setup_fonts.sh
-
-echo "-- EMACS -----------------------"
-sh $DOTFILES_DIR/setup/setup_emacs.sh
-
-echo "-- GITCONFIG -------------------"
-sh $DOTFILES_DIR/setup/setup_gitconfig.sh
-
-echo "-- BAZEL (GOOGLE build tool) ---"
-sh $DOTFILES_DIR/setup/setup_bazel.sh
+# run all setup files
+for f in $DOTFILES_DIR/setup/*; do
+    sh $f;
+done
 
 cd $CURRENT_DIR
