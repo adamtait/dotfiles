@@ -89,35 +89,35 @@ custom_cursor_colors: false
 colors:
   # Default colors
   primary:
-    background: '0x000000'
-    foreground: '0xeaeaea'
+    background: '0x3b3b3b'
+    foreground: '0xd6d6d6'
 
   # Colors the cursor will use if `custom_cursor_colors` is true
   cursor:
-    text: '0x000000'
-    cursor: '0xffffff'
+    text: '0x3b3b3b'
+    cursor: '0xd6d6d6'
 
   # Normal colors
   normal:
     black:   '0x000000'
-    red:     '0xd54e53'
-    green:   '0xb9ca4a'
-    yellow:  '0xe6c547'
-    blue:    '0x7aa6da'
-    magenta: '0xc397d8'
-    cyan:    '0x70c0ba'
+    red:     '0xf78d8c'
+    green:   '0xa8d4a9'
+    yellow:  '0xffd479'
+    blue:    '0x78aad6'
+    magenta: '0xd7acd6'
+    cyan:    '0x76d4d6'
     white:   '0xffffff'
 
   # Bright colors
   bright:
-    black:   '0x666666'
-    red:     '0xff3334'
-    green:   '0x9ec400'
-    yellow:  '0xe7c547'
-    blue:    '0x7aa6da'
-    magenta: '0xb77ee0'
-    cyan:    '0x54ced6'
-    white:   '0xffffff'
+    black:   '0x000000'
+    red:     '0xf78d8c'
+    green:   '0xa8d4a9'
+    yellow:  '0xffd479'
+    blue:    '0x78aad6'
+    magenta: '0xd7acd6'
+    cyan:    '0x76d4d6'
+    white:   '0xffffff'    
 
   # Dim colors (Optional)
   dim:
