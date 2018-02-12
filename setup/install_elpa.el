@@ -24,6 +24,7 @@
     yaml-mode
     graphviz-dot-mode
     swift-mode
+    rjsx-mode
     ))
 
 
