@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # alias to search processes
 alias pgrep='ps -efa | grep'
