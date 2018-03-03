@@ -16,6 +16,7 @@ $(brew --prefix coreutils)/libexec/gnubin
 /usr/local/opt/libarchive/bin
 $DOTFILES_DIR/bin
 $DOTFILES_DIR/submodules/bazel/output
+$HOME/workspace/google-cloud-sdk/bin
 EOF
 
 echo -e "\n--- creating ~/.manpath"
