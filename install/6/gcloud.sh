@@ -17,6 +17,7 @@ echo -e "\n---- downloading..."
 curl -0L https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/$FILENAME > $DEST_DIR/$FILENAME
 cd $DEST_DIR
 tar -zxf $FILENAME
+rm -f $FILENAME
 
 echo -e "\n---- running installer"
 echo -e "---- !!IMPORTANT!!     DO NOT _Modify profile to update your $PATH and enable shell command completion?_"
