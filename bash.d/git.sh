@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # helpers for git
 
 echo .DS_Store >> ~/.gitignore_global
