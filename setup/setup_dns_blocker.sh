@@ -1,0 +1,1 @@
+../submodules/DNS_blocker/setup.sh
