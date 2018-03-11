@@ -25,4 +25,3 @@
 [submodule "submodules/xcbuild"]
 	path = submodules/xcbuild
 	url = git@github.com:facebook/xcbuild.git
-
