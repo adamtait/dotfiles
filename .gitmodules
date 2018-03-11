@@ -25,6 +25,4 @@
 [submodule "submodules/xcbuild"]
 	path = submodules/xcbuild
 	url = git@github.com:facebook/xcbuild.git
-[submodule "submodules/DNS_blocker"]
-	path = submodules/DNS_blocker
-	url = git@github.com:adamtait/DNS_blocker.git
+
