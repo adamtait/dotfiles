@@ -26,5 +26,5 @@
 	path = submodules/xcbuild
 	url = git@github.com:facebook/xcbuild.git
 [submodule "ciao"]
-	path = ciao
+	path = submodules/ciao
 	url = git@github.com:adamtait/ciao.git
