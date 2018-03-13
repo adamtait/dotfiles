@@ -19,6 +19,7 @@ apps=(
   keepassx
   xquartz         # pre-requisite for Inkscape
   inkscape        # vector graphics tool
+  docker
 )
 
 # Install apps to /Applications
