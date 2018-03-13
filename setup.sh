@@ -5,8 +5,7 @@ DOTFILES_DIR=$CURRENT_DIR
 cd $DOTFILES_DIR
 
 echo "loading git submodules"
-git submodule init
-git submodule update
+git submodule update --init --remote --checkout
 
 if [[ ! -d $HOME ]]; then
     echo "please set $HOME before proceeding"
