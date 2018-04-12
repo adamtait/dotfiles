@@ -659,3 +659,8 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
 (global-set-key [f3] 'end-kbd-macro)
 (global-set-key [f4] 'call-last-kbd-macro)
 
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; C++ mode
+(c-set-offset 'substatement-open 0)   ;; set indentation level for substatements
