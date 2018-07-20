@@ -110,7 +110,7 @@
 (add-to-list 'auto-mode-alist '("\\.st$" . fundamental-mode))
 (add-to-list 'auto-mode-alist '("\\.\\(cljs?\\|dtm\\|edn\\)$" . clojure-mode))
 (add-to-list 'auto-mode-alist '("\\.\\(rest\\|rst\\)$" . rst-mode))
-;;(add-to-list 'auto-mode-alist '("\\.\\(rest\\|rst\\)$" . rst-mode))
+(add-to-list 'auto-mode-alist '("\\.\\(json\\|gyp\\)$" . json-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LINUX-STYLE C CODE
@@ -650,6 +650,7 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
 (require 'yaml-mode)
 (require 'web-mode)
 (require 'protobuf-mode)
+(require 'json-mode)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
