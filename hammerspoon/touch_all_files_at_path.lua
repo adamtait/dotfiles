@@ -28,6 +28,6 @@ end
 local filePath = os.getenv("HOME") .. "/.hammerspoon/paths"
 
 for path in io.lines(filePath) do
-   local w = hs.pathwatcher.new(path, touchAllFilesAt):start()
+   hs.pathwatcher.new(path, touchAllFilesAt):start()
    print("set watcher on " .. path)
 end
