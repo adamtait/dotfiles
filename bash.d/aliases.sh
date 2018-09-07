@@ -69,3 +69,16 @@ alias ip='myip'
 
 # Time
 alias epochtime='date +%s'
+
+
+
+
+# from: https://remysharp.com/2018/08/23/cli-improved
+
+alias cat='bat'
+alias ping='prettyping --nolegend'
+alias preview="fzf --preview 'bat --color \"always\" {}'"
+alias top="htop"
+alias find="fd"
+alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
+alias help="tldr"
