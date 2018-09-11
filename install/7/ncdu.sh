@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-echo -e "\n--- bat (better cat)"
+echo -e "\n--- ncdu (better du; disk util)"
 brew install ncdu
