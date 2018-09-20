@@ -82,7 +82,3 @@ alias top="htop"
 alias find="fd"
 alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
 alias help="tldr"
-
-
-# C-the-World: https://github.com/adamtait/ctheworld
-alias ctheworld_new='~/workspace/ctheworld/new-project.sh'
