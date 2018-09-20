@@ -11,3 +11,4 @@ emacs.d/.repl-history
 lein/self-installs
 gitconfig.symlink
 .emacs.d
+dnscrypt/launchdaemon.plist
