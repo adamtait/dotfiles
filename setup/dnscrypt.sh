@@ -47,6 +47,3 @@ then
     sudo chown root:wheel $SRC_FILE_PATH
     sudo ln -s $DOTFILES_DIR/dnscrypt/launchdaemon.plist $LD_FILE_PATH
 fi
-
-#    <string>-config</string>
-#    <string>{{CONFIG_PATH}}</string>
