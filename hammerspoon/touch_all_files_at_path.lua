@@ -8,6 +8,10 @@ function getDirectoryPath(filePath)
    return string.gsub(filePath, "/[%.%w]-$", "")
 end
 
+function bashSafeString(s)
+   return string.gsub(s, "([ %(%)])", "\\%1")
+end
+   
 
 lastRunTime = 0
 
@@ -17,7 +21,7 @@ function touchAllFilesAt(files)
    if offset > 100 then
       for _,filePath in pairs(files) do
           local dirPath = getDirectoryPath(filePath)
-          os.execute("touch " .. dirPath .. "/*")
+          os.execute("touch " .. bashSafeString(dirPath) .. "/*")
           print('retouched ' .. dirPath)
       end
       lastRunTime = os.time()
