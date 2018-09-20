@@ -4,8 +4,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(explicit-shell-file-name "/usr/local/Cellar/bash/4.4.12/bin/bash")
- '(shell-file-name "/usr/local/Cellar/bash/4.4.12/bin/bash")
  '(auto-word-wrap-default-function nil)
  '(backup-directory-alist (quote (("." . "/tmp/emacs-backups"))))
  '(backward-delete-char-untabify-method (quote all))
@@ -16,6 +14,7 @@
  '(default-directory "~/workspace" t)
  '(delete-old-versions t)
  '(dired-listing-switches "-alg")
+ '(explicit-shell-file-name "/usr/local/Cellar/bash/4.4.12/bin/bash")
  '(fringe-mode nil nil (fringe))
  '(global-auto-revert-mode t)
  '(global-hl-line-mode t)
@@ -69,6 +68,9 @@
      ("offclock" . 111)
      ("product" . 112))))
  '(org-todo-keywords (quote ((sequence "TODO" "INPROGRESS" "DONE"))))
+ '(package-selected-packages
+   (quote
+    (json-mode yasnippet yaml-mode web-mode swift-mode smex s rjsx-mode protobuf-mode paredit markdown-mode magit graphviz-dot-mode gist cider)))
  '(safe-local-variable-values
    (quote
     ((eval setq org-export-htmlize-output-type
@@ -79,6 +81,7 @@
            (to-data
             (quote defun))))))
  '(sentence-end-double-space nil)
+ '(shell-file-name "/usr/local/Cellar/bash/4.4.12/bin/bash")
  '(text-scale-mode-step 1.1)
  '(tool-bar-mode nil)
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))
