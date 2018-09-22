@@ -1,1 +1,1 @@
-../submodules/ciao/cmd.sh
+../../../submodules/ciao/cmd.sh
