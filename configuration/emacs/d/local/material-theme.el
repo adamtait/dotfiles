@@ -1,1 +1,1 @@
-../../submodules/emacs-material-theme/material-theme.el
+../../../../submodules/emacs-material-theme/material-theme.el
