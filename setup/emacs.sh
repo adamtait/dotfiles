@@ -16,22 +16,25 @@ fi
 
 echo -e "\n--- checking Emacs installation"
 if [[ ! -d /Applications/Emacs.app ]]; then
-    echo "XEmacs didn't get installed properly. Try running ./freshen.sh"
+    echo -e "\n------------\nWARNING!! XEmacs didn't get installed properly. \nTry running .dotfiles/install.sh\n------------\n"
     exit 1
 fi
 
 
-if [[ `emacs -version` != "25" ]]; then
-    EMACS_EXEC="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
-    SCRIPT_PATH=$DOTFILES_DIR/configuration/bash/d/emacs.sh
-    
-    echo -e "\n\n--- Adding alias for command-line emacs"
+# replaced by bash/d/emacs.sh (I think)
+#
 
-    touch $SCRIPT_PATH
-    echo "alias emacs=\"${EMACS_EXEC}\"" >> $SCRIPT_PATH
-
-    echo "--->> you might want to: alias emacs=\"${EMACS_EXEC}\""
-fi
+#if [[ `emacs -version` != "25" ]]; then
+#    EMACS_EXEC="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
+#    SCRIPT_PATH=$DOTFILES_DIR/configuration/bash/d/emacs.sh
+#    
+#    echo -e "\n\n--- Adding alias for command-line emacs"
+#
+#    touch $SCRIPT_PATH
+#    echo "alias emacs=\"${EMACS_EXEC}\"" >> $SCRIPT_PATH
+#
+#    echo "--->> you might want to: alias emacs=\"${EMACS_EXEC}\""
+#fi
 
 
 

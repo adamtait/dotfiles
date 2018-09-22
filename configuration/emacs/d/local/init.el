@@ -111,6 +111,8 @@
 (add-to-list 'auto-mode-alist '("\\.\\(cljs?\\|dtm\\|edn\\)$" . clojure-mode))
 (add-to-list 'auto-mode-alist '("\\.\\(rest\\|rst\\)$" . rst-mode))
 (add-to-list 'auto-mode-alist '("\\.\\(json\\|gyp\\)$" . json-mode))
+(add-to-list 'auto-mode-alist '("\\.idl$" . fundamental-mode))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LINUX-STYLE C CODE
@@ -407,6 +409,7 @@ ring."
 
 ;; (require 'clojure-cheatsheet)
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; org-babel + Clojure
 
@@ -429,6 +432,7 @@ ring."
   (interactive)
   (let ((body (cadr (org-babel-get-src-block-info))))
     (cider-execute-in-current-repl body)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; General Text Manipulation
@@ -636,6 +640,7 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
 		          (add-hook 'after-save-hook
 				    'check-parens
 				    nil t))))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Dockerfile mode

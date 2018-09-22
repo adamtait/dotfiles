@@ -70,7 +70,21 @@
  '(org-todo-keywords (quote ((sequence "TODO" "INPROGRESS" "DONE"))))
  '(package-selected-packages
    (quote
-    (json-mode yasnippet yaml-mode web-mode swift-mode smex s rjsx-mode protobuf-mode paredit markdown-mode magit graphviz-dot-mode gist cider)))
+    (json-mode
+     yasnippet
+     yaml-mode
+     web-mode
+     swift-mode
+     smex
+     s
+     rjsx-mode
+     protobuf-mode
+     paredit
+     markdown-mode
+     magit
+     graphviz-dot-mode
+     gist
+     cider)))
  '(safe-local-variable-values
    (quote
     ((eval setq org-export-htmlize-output-type
