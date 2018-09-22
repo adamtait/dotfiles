@@ -62,9 +62,3 @@ The _setup phase_ scripts can be found in `setup/`. Unlike the
 _install phase_, this phase has no concept of order or dependencies.
 It assumes that symlink'ing configuration files shouldn't depend on
 any other.
-
-#### Caveat
-
-As you've probably noticed, not all the configuration files are in the
-`setup/` directory. I'd like to get them there, but they're not there
-yet.
