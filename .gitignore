@@ -9,7 +9,7 @@ configuration/emacs/d/.repl-history
 
 
 # generated files
-lein/self-installs
+configuration/lein/self-installs
 configuration/git/gitconfig
 .emacs.d
 configuration/dnscrypt/launchdaemon.plist
