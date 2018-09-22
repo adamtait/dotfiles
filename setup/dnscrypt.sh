@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 
 DOTFILES_DIR=$(dirname $(realpath "$0"))/..
-
+CONFIG_DIR=$DOTFILES_DIR/configuration/dnscrypt/config
 
 echo -e "\n--- DNS Crypt setup"
+
+
+echo -e "\n---- download latest blacklist"
+curl -0L https://download.dnscrypt.info/blacklists/domains/mybase.txt > $CONFIG_DIR/domains.blacklist.txt
+
 
 D=$HOME/.dnscrypt
 
@@ -12,8 +17,9 @@ if [[ ! -d $D ]]; then
     mkdir $D
 fi
 
+
 # link config files
-for file_path in $(find "$DOTFILES_DIR/configuration/dnscrypt/config/" -type f)
+for file_path in $(find "$CONFIG_DIR/" -type f)
 do
     file_name=$(basename "$file_path")
     if [[ ! -h $D/$file_name ]]; then

@@ -325,7 +325,7 @@ cache_neg_max_ttl = 600
 
   ## Path to the query log file (absolute, or relative to the same directory as the executable file)
 
-  # file = 'nx.log'
+  file = '/var/log/dnscrypt.nx.log'
 
 
   ## Query log format (currently supported: tsv and ltsv)
@@ -355,12 +355,12 @@ cache_neg_max_ttl = 600
 
   ## Path to the file of blocking rules (absolute, or relative to the same directory as the executable file)
 
-  # blacklist_file = 'blacklist.txt'
+  blacklist_file = 'domains.blacklist.txt'
 
 
   ## Optional path to a file logging blocked queries
 
-  # log_file = 'blocked.log'
+  log_file = '/var/log/dnscrypt.blocked.log'
 
 
   ## Optional log format: tsv or ltsv (default: tsv)
