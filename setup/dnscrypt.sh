@@ -13,7 +13,7 @@ if [[ ! -d $D ]]; then
 fi
 
 # link config files
-for file_path in $(find "${DOTFILES_DIR}/dnscrypt/config/" -type f)
+for file_path in $(find "$DOTFILES_DIR/configuration/dnscrypt/config/" -type f)
 do
     file_name=$(basename "$file_path")
     if [[ ! -h $D/$file_name ]]; then
@@ -28,7 +28,7 @@ if [[ ! -h $LD_PATH ]]
 then
     # setup Launch Daemon
 
-    PLIST_DIR=$DOTFILES_DIR/dnscrypt
+    PLIST_DIR=$DOTFILES_DIR/configuration/dnscrypt
     TEMPLATE_FILE_PATH=$PLIST_DIR/launchdaemon.plist.template
     SRC_FILE_PATH=$PLIST_DIR/launchdaemon.plist
 

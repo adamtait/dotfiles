@@ -23,24 +23,27 @@ fi
 
 if [[ `emacs -version` != "25" ]]; then
     EMACS_EXEC="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
+    SCRIPT_PATH=$DOTFILES_DIR/configuration/bash/d/emacs.sh
+    
+    echo -e "\n\n--- Adding alias for command-line emacs"
 
-    echo -e "\n\nAdding alias for command-line emacs"
-    touch $DOTFILES_DIR/bash.d/emacs
-    echo "alias emacs=\"${EMACS_EXEC}\"" >> $DOTFILES_DIR/bash.d/emacs
-    echo ">> you might want to: alias emacs=\"${EMACS_EXEC}\""
+    touch $SCRIPT_PATH
+    echo "alias emacs=\"${EMACS_EXEC}\"" >> $SCRIPT_PATH
+
+    echo "--->> you might want to: alias emacs=\"${EMACS_EXEC}\""
 fi
 
 
 
 echo -e "\n--- installing Emacs packages"
 function install_elpa {
-    rm -rf $DOTFILES_DIR/emacs.d/elpa
+    rm -rf $DOTFILES_DIR/emacs/d/elpa
 
     # run ELPA script
     /Applications/Emacs.app/Contents/MacOS/Emacs --script "${DOTFILES_DIR}/setup/install_elpa.el" \
       >/tmp/emacs.install_elpa.stdout.log \
       2>/tmp/emacs.install_elpa.stderr.log
-    echo "DONE installing Emacs packages"
+    echo "--> DONE installing Emacs packages"
 }
 
 echo "Would you like to install emacs elpa packages? ('yes' or 'no'): "

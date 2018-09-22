@@ -1,16 +1,18 @@
 #!/usr/bin/env bash
 
 DOTFILES_DIR=$(dirname $(realpath "$0"))/..
+CONFIG_DIR=$DOTFILES_DIR/configuration
+
 
 
 if [[ ! -h $HOME/.bashrc ]]; then
     echo -e "\n--- overwriting .bashrc"
-    ln -s $DOTFILES_DIR/bashrc.symlink $HOME/.bashrc
+    ln -s $CONFIG_DIR/bash/bashrc $HOME/.bashrc
 fi
 
 if [[ ! -h $HOME/.bash_profile ]]; then
     echo -e "\n--- replacing .bash_profile"
-    ln -s $DOTFILES_DIR/bashrc.symlink $HOME/.bash_profile
+    ln -s $CONFIG_DIR/bash/bashrc $HOME/.bash_profile
 fi
 
 if [[ ! -d $HOME/.bash.d ]]; then
@@ -21,17 +23,17 @@ fi
 
 if [[ ! -h $HOME/.bash.d/aliases.sh ]]; then
     echo -e "\n--- linking .bash.d/*"
-    ln -s $DOTFILES_DIR/bash.d/* $HOME/.bash.d/
+    ln -s $CONFIG_DIR/bash/d/* $HOME/.bash.d/
 fi
 
 if [[ ! -h $HOME/.emacs ]]; then
     echo -e "\n--- adding .emacs"
-    ln -s $DOTFILES_DIR/emacs.symlink $HOME/.emacs
+    ln -s $CONFIG_DIR/emacs/emacs $HOME/.emacs
 fi
 
 if [[ ! -h $HOME/.lein ]]; then
     echo -e "\n--- adding .lein"
-    ln -s $DOTFILES_DIR/lein $HOME/.lein
+    ln -s $CONFIG_DIR/lein $HOME/.lein
 fi
 
 if [[ ! -d $HOME/.hammerspoon ]]; then
@@ -42,12 +44,12 @@ fi
 
 if [[ ! -h $HOME/.hammerspoon/init.lua ]]; then
     echo -e "\n--- adding .hammerspoon/*"
-    ln -s $DOTFILES_DIR/hammerspoon/* $HOME/.hammerspoon/
+    ln -s $CONFIG_DIR/hammerspoon/* $HOME/.hammerspoon/
 fi
 
 if [[ ! -h $HOME/.tmux.conf ]]; then
     echo -e "\n--- adding .tmux.conf"
-    ln -s $DOTFILES_DIR/tmux.conf $HOME/.tmux.conf
+    ln -s $CONFIG_DIR/tmux/tmux.conf $HOME/.tmux.conf
 fi
 
 if [[ ! -d $HOME/.nvm ]]; then

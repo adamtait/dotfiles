@@ -2,13 +2,14 @@
 *~
 \#*\#
 .\#*
-emacs.d/elpa
-emacs.d/ido.last
-emacs.d/smex-items
-emacs.d/.repl-history
+configuration/emacs/d/elpa
+configuration/emacs/d/ido.last
+configuration/emacs/d/smex-items
+configuration/emacs/d/.repl-history
+
 
 # generated files
 lein/self-installs
-gitconfig.symlink
+configuration/git/gitconfig
 .emacs.d
-dnscrypt/launchdaemon.plist
+configuration/dnscrypt/launchdaemon.plist

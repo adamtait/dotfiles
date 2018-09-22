@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
 
 DOTFILES_DIR=$(dirname $(realpath "$0"))/..
+GITCONFIG_DIR=$DOTFILES_DIR/configuration/git
+
 
 
 if [[ (-f $HOME/.gitconfig) && (! -h $HOME/.gitconfig) ]]; then
     echo -e "\n--- removing your old .gitconfig"
     rm $HOME/.gitconfig
 fi
+
 
 if [[ ! -h $HOME/.gitconfig ]]; then
     echo -e '\n--- creating a new .gitconfig'
@@ -28,7 +31,7 @@ if [[ ! -h $HOME/.gitconfig ]]; then
         -e "s/AUTHOREMAIL/$git_authoremail/g" \
         -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" \
         -e "s#EMACSCLIENTSCRIPT#$emacs_client_script_path#g" \
-        gitconfig.template > gitconfig.symlink
+        $GITCONFIG_DIR/gitconfig.template > $GITCONFIG_DIR/gitconfig
 
-    ln -s $DOTFILES_DIR/gitconfig.symlink $HOME/.gitconfig
+    ln -s $GITCONFIG_DIR/gitconfig $HOME/.gitconfig
 fi

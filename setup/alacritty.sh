@@ -12,5 +12,5 @@ DOTFILES_DIR=$(dirname $(realpath "$0"))/..
 
 if [[ ! -h $HOME/.config/alacritty ]]; then
     echo "----- adding symlink for .config/alacritty"
-    ln -s $DOTFILES_DIR/alacritty $HOME/.config/alacritty
+    ln -s $DOTFILES_DIR/configuration/alacritty $HOME/.config/alacritty
 fi
