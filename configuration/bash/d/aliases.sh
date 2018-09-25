@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# alias to search processes
-alias pgrep='ps -efa | grep'
-
 # alias to show the date
 alias da='date "+%Y-%m-%d %A %T %Z"'
 
@@ -12,8 +9,8 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -iv'
 alias mkdir='mkdir -p'
-alias ps='ps auxf'
-alias ping='ping -c 10'
+alias ps='ps aux'
+alias pgrep='ps | grep'
 alias less='less -R'
 alias cls='clear'
 
@@ -55,10 +52,6 @@ alias ldir='ld'
 alias h="history | grep "
 
 
-# just for fun
-alias d="cd ~/.dotfiles"
-
-
 # IP addresses
 alias publicip='dig +short myip.opendns.com @resolver1.opendns.com'
 alias wanip='publicip'
@@ -82,3 +75,8 @@ alias top="htop"
 alias find="fd"
 alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
 alias help="tldr"
+
+
+
+# just for fun
+alias d="cd ~/.dotfiles"
