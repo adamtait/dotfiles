@@ -29,8 +29,8 @@ do
 done
 
 
-LD_FILE_PATH=/Library/LaunchDaemons/info.dnscrypt.proxy.plist
-if [[ ! -h $LD_PATH ]]
+LD_FILE_PATH=/Library/LaunchDaemons/dnscrypt-proxy.plist
+if [[ ! -h $LD_FILE_PATH ]]
 then
     # setup Launch Daemon
 
@@ -51,5 +51,5 @@ then
     echo -e "\n---- linking system LaunchDaemon for DNS Crypt"
     chmod 544 $SRC_FILE_PATH
     sudo chown root:wheel $SRC_FILE_PATH
-    sudo ln -s $DOTFILES_DIR/dnscrypt/launchdaemon.plist $LD_FILE_PATH
+    sudo ln -s $SRC_FILE_PATH $LD_FILE_PATH
 fi
