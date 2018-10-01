@@ -28,7 +28,8 @@ curl -0L https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/f
 echo "----- build domain black list at "
 echo -e "\n\n\n\n\n" >> $1
 sed \
-    -e '/127\.0\.0\.1 localhost/,/End of custom host records\./d' \
-    -e "s/0.0.0.0 //g" \
+    -e '/127\.0\.0\.1 localhost/,/End of custom host records\./d' \     # remove localhost definitions
+    -e "s/0.0.0.0 //g" \       # remove /etc/hosts redirection rules
+    -e "s/\#.*//" \            # strip comments
     $TMP_PATH >> $1
 rm -f $TMP_PATH
