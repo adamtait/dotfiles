@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 
 
-echo -e "\n---- download latest open source DNS domain blacklists"
+echo -e "\n---- DNSCrypt blacklist generator"
 
 # --- check usage + argument count
 if [ $# == 0 ] || [ $# -gt 1 ]
 then
+    SCRIPT_NAME=$(basename "$0")
     echo ""
     echo "Use this script to generate a DNSCrypt compatible black list file."
-    echo "Usage: dnscrypt.blacklist.sh /PATH/TO/OUTPUT/FILE"
-    echo "example: dnscrypt.blacklist.sh \"~/.dnscrypt/domains.blacklist.txt\""
+    echo "Usage: $SCRIPT_NAME /PATH/TO/OUTPUT/FILE"
+    echo "example: $SCRIPT_NAME \"~/.dnscrypt/domains.blacklist.txt\""
     echo ""
     exit 0
 fi

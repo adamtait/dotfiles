@@ -14,7 +14,7 @@ fi
 
 
 # create local blacklist
-./dnscrypt.blacklist.sh "$D/domains.blacklist.txt"
+$DOTFILES_DIR/configuration/dnscrypt/blacklist.sh "$D/domains.blacklist.txt"
 
 
 # link config files
