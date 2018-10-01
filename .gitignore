@@ -13,5 +13,4 @@ configuration/lein/self-installs
 configuration/git/gitconfig
 .emacs.d
 configuration/dnscrypt/launchdaemon.plist
-configuration/dnscrypt/config/domains.blacklist.txt
-configuration/dnscrypt/config/public-resolvers.md*
+
