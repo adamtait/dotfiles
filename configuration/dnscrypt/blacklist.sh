@@ -16,7 +16,7 @@ then
 fi
 
 
-echo "----- download download.dnscrypt.info/blacklists/domains/mybase.txt"
+echo "----- download.dnscrypt.info/blacklists/domains/mybase.txt"
 curl -0L https://download.dnscrypt.info/blacklists/domains/mybase.txt > $1
 
 
