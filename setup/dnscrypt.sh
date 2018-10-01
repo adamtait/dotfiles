@@ -1,15 +1,10 @@
 #!/usr/bin/env bash
 
-DOTFILES_DIR=$(dirname $(realpath "$0"))/..
-CONFIG_DIR=$DOTFILES_DIR/configuration/dnscrypt/config
-
 echo -e "\n--- DNS Crypt setup"
 
 
-echo -e "\n---- download latest blacklist"
-curl -0L https://download.dnscrypt.info/blacklists/domains/mybase.txt > $CONFIG_DIR/domains.blacklist.txt
-
-
+DOTFILES_DIR=$(dirname $(realpath "$0"))/..
+CONFIG_DIR=$DOTFILES_DIR/configuration/dnscrypt/config
 D=$HOME/.dnscrypt
 
 if [[ ! -d $D ]]; then
@@ -18,11 +13,15 @@ if [[ ! -d $D ]]; then
 fi
 
 
+# create local blacklist
+./dnscrypt.blacklist.sh "$D/domains.blacklist.txt"
+
+
 # link config files
 for file_path in $(find "$CONFIG_DIR/" -type f)
 do
     file_name=$(basename "$file_path")
-    if [[ ! -h $D/$file_name ]]; then
+    if [ ! -e $D/$file_name ]; then
         echo "--- linking ${file_name} to ${D}"
         ln -s $file_path $D/
     fi
@@ -30,7 +29,7 @@ done
 
 
 LD_FILE_PATH=/Library/LaunchDaemons/dnscrypt-proxy.plist
-if [[ ! -h $LD_FILE_PATH ]]
+if [[ ! -e $LD_FILE_PATH ]]
 then
     # setup Launch Daemon
 
