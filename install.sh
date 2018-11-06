@@ -4,7 +4,12 @@
 # re-install (or install fresh) all the apps you like (where you = Adam)
 # code & ideas are largely taken from http://lapwinglabs.com/blog/hacker-guide-to-setting-up-your-mac
 
+CURRENT_DIR=$PWD
+DOTFILES_DIR=$(dirname $(realpath "$0"))
+
+
 echo -e "\n--- install.sh --- Begin."
+
 
 for f in $DOTFILES_DIR/install/**/*
 do

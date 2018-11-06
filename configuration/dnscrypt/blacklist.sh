@@ -21,15 +21,27 @@ curl -0L https://download.dnscrypt.info/blacklists/domains/mybase.txt > $1
 
 
 echo "----- github.com/StevenBlack/fakenews-gambling-porn/hosts"
+
+SB_URL=https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts
 TMP_PATH=/tmp/domains.blacklist.StevenBlack.txt
-curl -0L https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts > $TMP_PATH
+
+curl -0L $SB_URL > $TMP_PATH
+if [[ ! -f $TMP_PATH ]]
+then
+    echo "ERROR: unable to download [$SB_URL]"
+    echo "[$SB_URL]"
+    echo "Please investigate and re-run"
+    exit 0
+fi
 
 
 echo "----- build domain black list at "
+
 echo -e "\n\n\n\n\n" >> $1
-sed \
-    -e '/127\.0\.0\.1 localhost/,/End of custom host records\./d' \     # remove localhost definitions
-    -e "s/0.0.0.0 //g" \       # remove /etc/hosts redirection rules
-    -e "s/\#.*//" \            # strip comments
-    $TMP_PATH >> $1
+
+
+# remove localhost definitions
+# remove /etc/hosts redirection rules
+# strip comments
+sed -e '/127\.0\.0\.1 localhost/,/End of custom host records\./d' -e "s/0.0.0.0 //g" -e "s/\#.*//"  $TMP_PATH >> $1
 rm -f $TMP_PATH

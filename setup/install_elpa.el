@@ -2,29 +2,27 @@
 (require 'package)
 
 
-
 (defvar my-packages
   '(
-    gh
-    gist
-    pkg-info
-    s
-    smex
-    yasnippet
-    magit    
-    paredit
-
     cider
     clojure-mode
-
+    gh
+    gist
+    graphviz-dot-mode
+    json-mode
+    magit
     markdown-mode
+    paredit
+    pkg-info
     protobuf-mode
+    rjsx-mode
     ruby-mode
+    s
+    smex
+    swift-mode
     web-mode
     yaml-mode
-    graphviz-dot-mode
-    swift-mode
-    rjsx-mode
+    yasnippet
     ))
 
 
