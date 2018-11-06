@@ -20,9 +20,9 @@ echo "----- download.dnscrypt.info/blacklists/domains/mybase.txt"
 curl -0L https://download.dnscrypt.info/blacklists/domains/mybase.txt > $1
 
 
-echo "----- github.com/StevenBlack/fakenews-gambling-porn-social/hosts"
+echo "----- github.com/StevenBlack/fakenews-gambling-porn/hosts"
 TMP_PATH=/tmp/domains.blacklist.StevenBlack.txt
-curl -0L https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn-social/hosts > $TMP_PATH
+curl -0L https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts > $TMP_PATH
 
 
 echo "----- build domain black list at "
