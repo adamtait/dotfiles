@@ -1,0 +1,1 @@
+../submodules/ctheworld-cli/ctheworld-cli.sh

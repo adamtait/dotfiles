@@ -25,3 +25,6 @@
 [submodule "ciao"]
 	path = submodules/ciao
 	url = git@github.com:adamtait/ciao.git
+[submodule "submodules/ctheworld-cli"]
+	path = submodules/ctheworld-cli
+	url = git@github.com:adamtait/ctheworld-cli.git
