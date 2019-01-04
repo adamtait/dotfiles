@@ -2,7 +2,8 @@
 
 DOTFILES_DIR=$(dirname $(realpath "$0"))/..
 
-echo -e "\n--- creating ~/.path"
+echo ""
+echo "--- creating ~/.path"
 cat > "$HOME/.path" <<EOF
 /bin
 /usr/bin
@@ -19,7 +20,8 @@ $DOTFILES_DIR/submodules/bazel/output
 $HOME/workspace/google-cloud-sdk/bin
 EOF
 
-echo -e "\n--- creating ~/.manpath"
+echo ""
+echo "--- creating ~/.manpath"
 cat > "$HOME/.manpath" <<EOF
 /usr/local/opt/coreutils/libexec/gnuman
 EOF

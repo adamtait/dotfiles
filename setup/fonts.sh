@@ -8,7 +8,8 @@ FONTS_DIR=$HOME/Library/Fonts
 
 ### --------------- Anonymous Pro ---------------
 if [[ ! -e $FONTS_DIR/AnonymousPro.regular.ttf ]]; then
-    echo -e "\n--- Anonymous Pro font"
+    echo ""
+    echo "--- Anonymous Pro font"
 
     curl http://fonts.gstatic.com/s/anonymouspro/v10/Zhfjj_gat3waL4JSju74E-V_5zh5b-_HiooIRUBwn1A.ttf > $FONTS_DIR/AnonymousPro.regular.ttf
     curl http://fonts.gstatic.com/s/anonymouspro/v10/q0u6LFHwttnT_69euiDbWKwIsuKDCXG0NQm7BvAgx-c.ttf > $FONTS_DIR/AnonymousPro.italic.ttf
@@ -19,7 +20,8 @@ fi
 
 ### --------------- Roboto Mono ---------------
 if [[ ! -e $FONTS_DIR/RobotoMono.regular.ttf ]]; then
-    echo -e "\n--- Roboto Mono (terminal font)"
+    echo ""
+    echo "--- Roboto Mono (terminal font)"
 
     curl http://fonts.gstatic.com/s/robotomono/v4/aOIeRp72J9_Hp_8KwQ9M-YAWxXGWZ3yJw6KhWS7MxOk.ttf > $FONTS_DIR/RobotoMono.100.ttf
     curl http://fonts.gstatic.com/s/robotomono/v4/rqQ1zSE-ZGCKVZgew-A9dgyDtfpXZi-8rXUZYR4dumU.ttf > $FONTS_DIR/RobotoMono.100italic.ttf
@@ -36,7 +38,8 @@ fi
 
 ### --------------- Hack ---------------
 if [[ ! -e $FONTS_DIR/Hack-Regular.ttf ]]; then
-    echo -e "\n--- Hack font"   # unfortunately, not available on Google Fonts
+    echo ""
+    echo "--- Hack font"   # unfortunately, not available on Google Fonts
 
     OLD_DIR=`pwd`
     TEMP_DIR=/tmp/hack-font

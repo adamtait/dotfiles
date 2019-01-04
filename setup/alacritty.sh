@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-echo -e "\n---- add Alacritty config file"
+echo ""
+echo "---- add Alacritty config file"
 
 if [[ ! -d $HOME/.config ]]; then
     echo "----- creating ~/.config directory"

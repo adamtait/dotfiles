@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-echo -e "\n--- DNS Crypt setup"
+echo ""
+echo "--- DNS Crypt setup"
 
 
 DOTFILES_DIR=$(dirname $(realpath "$0"))/..
@@ -38,7 +39,8 @@ then
     SRC_FILE_PATH=$PLIST_DIR/launchdaemon.plist
 
     if [[ -f $SRC_FILE_PATH ]]; then
-        echo -e "\n---- removing old system LaunchDaemon for DNS Crypt"
+        echo ""
+        echo "---- removing old system LaunchDaemon for DNS Crypt"
         sudo rm -f $SRC_FILE_PATH
     fi
         
@@ -47,7 +49,9 @@ then
         -e "s#{{WORKING_DIR}}#$D#g" \
         $TEMPLATE_FILE_PATH > $SRC_FILE_PATH
 
-    echo -e "\n---- linking system LaunchDaemon for DNS Crypt"
+    
+    echo ""
+    echo "---- linking system LaunchDaemon for DNS Crypt"
     chmod 544 $SRC_FILE_PATH
     sudo chown root:wheel $SRC_FILE_PATH
     sudo ln -s $SRC_FILE_PATH $LD_FILE_PATH

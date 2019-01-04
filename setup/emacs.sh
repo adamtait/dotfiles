@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
 DOTFILES_DIR=$(dirname $(realpath "$0"))/..
-echo -e "\n--> dotfiles dir: ${DOTFILES_DIR}"
+echo ""
+echo "--> dotfiles dir: ${DOTFILES_DIR}"
 
-echo -e "\n--- cleaning up any old emacs installation"
+echo ""
+echo "--- cleaning up any old emacs installation"
 if [[ -d $HOME/.emacs.d ]]; then
     echo "removing old emacs configuration"
     # safety in the case that you had already installed .emacs configuration
@@ -14,9 +16,14 @@ if [[ ! -h $HOME/.emacs.d ]]; then
 fi
 
 
-echo -e "\n--- checking Emacs installation"
+echo ""
+echo "--- checking Emacs installation"
 if [[ ! -d /Applications/Emacs.app ]]; then
-    echo -e "\n------------\nWARNING!! XEmacs didn't get installed properly. \nTry running .dotfiles/install.sh\n------------\n"
+    echo "------------"
+    echo "WARNING!! XEmacs didn't get installed properly."
+    echo "Try running .dotfiles/install.sh"
+    echo "------------"
+    echo ""
     exit 1
 fi
 
@@ -38,7 +45,8 @@ fi
 
 
 
-echo -e "\n--- installing Emacs packages"
+echo ""
+echo "--- installing Emacs packages"
 function install_elpa {
     rm -rf $DOTFILES_DIR/emacs/d/elpa
 

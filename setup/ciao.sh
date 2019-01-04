@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-echo -e "\n--- CIAO setup"
+echo ""
+echo "--- CIAO setup"
 
 DOTFILES_DIR=$(dirname $(realpath "$0"))/..
 CIAO_SCRIPT_DIR=$DOTFILES_DIR/submodules/ciao
@@ -18,5 +19,6 @@ if [[ -f $CIAO_HOME_DIR/config ]]; then
 fi
 
 
-echo -e "\n--- symlink ~/.ciao/config"
+echo ""
+echo "--- symlink ~/.ciao/config"
 ln -s $CONFIG_DIR/config $CIAO_HOME_DIR/config

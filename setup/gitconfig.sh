@@ -6,13 +6,15 @@ GITCONFIG_DIR=$DOTFILES_DIR/configuration/git
 
 
 if [[ (-f $HOME/.gitconfig) && (! -h $HOME/.gitconfig) ]]; then
-    echo -e "\n--- removing your old .gitconfig"
+    echo ""
+    echo "--- removing your old .gitconfig"
     rm $HOME/.gitconfig
 fi
 
 
 if [[ ! -h $HOME/.gitconfig ]]; then
-    echo -e '\n--- creating a new .gitconfig'
+    echo ""
+    echo "--- creating a new .gitconfig"
 
     git_credential='cache'
     if [ "$(uname -s)" '==' "Darwin" ]
@@ -20,7 +22,8 @@ if [[ ! -h $HOME/.gitconfig ]]; then
         git_credential='osxkeychain'
     fi
 
-    echo -e "\n\n"
+    echo ""
+    echo ""
     read -p ' - What is your github author name? ' git_authorname
     read -p ' - What is your github author email? ' git_authoremail
 
