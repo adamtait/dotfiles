@@ -7,7 +7,7 @@ START_DIR=`pwd`
 
 if [[ ! -d $HOME/workspace ]]; then
     echo ""
-echo "--- creating ~/workspace directory"
+    echo "--- creating ~/workspace directory"
     mkdir $HOME/workspace
 fi
 

@@ -36,4 +36,3 @@ echo "${apps[@]}"
 brew cask install --appdir="/Applications" ${apps[@]}
 echo ""
 echo ""
-

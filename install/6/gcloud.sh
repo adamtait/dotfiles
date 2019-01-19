@@ -3,7 +3,7 @@
 
 if [[ ! -d $HOME/workspace ]]; then
     echo ""
-echo "--- creating ~/workspace directory"
+    echo "--- creating ~/workspace directory"
     mkdir $HOME/workspace
 fi
 
@@ -24,8 +24,8 @@ rm -f $FILENAME
 
 echo ""
 echo "---- running installer"
-echo -e "---- !!IMPORTANT!!     DO NOT _Modify profile to update your $PATH and enable shell command completion?_"
-echo -e "----    When the installer asks to modify your $PATH, just say NO. We've already done that!"
+echo "---- !!IMPORTANT!!     DO NOT _Modify profile to update your $PATH and enable shell command completion?_"
+echo "----    When the installer asks to modify your $PATH, just say NO. We've already done that!"
 ./google-cloud-sdk/install.sh
 
 cd $START_DIR

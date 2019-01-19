@@ -27,11 +27,11 @@ cd $START_DIR
 # FOR UNINSTALLING
 # REPO_NAME=Carthage
 # echo ""
-echo "----> cloning Carthage/$REPO_NAME..."
+# echo "----> cloning Carthage/$REPO_NAME..."
 # git clone git@github.com:Carthage/$REPO_NAME
 # cd $REPO_NAME
 # git checkout tags/0.31.0
 # echo ""
-echo "----> building Carthage/$REPO_NAME..."
+# echo "----> building Carthage/$REPO_NAME..."
 # make install
 # make uninstall

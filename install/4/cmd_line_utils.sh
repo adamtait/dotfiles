@@ -26,4 +26,4 @@ brew install ${binaries[@]}
 brew cleanup
 
 echo ""
-echo "\n"
+echo ""
