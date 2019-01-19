@@ -7,4 +7,5 @@ brew install protobuf libarchive
 echo ""
 echo "---------------------------"
 echo "NOTE: for Bazel to work, you still need to install JDK 1.8"
-echo -e "---------------------------\n"
+echo ""
+echo "---------------------------\n"

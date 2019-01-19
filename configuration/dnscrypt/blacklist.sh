@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 
-echo -e "\n---- DNSCrypt blacklist generator"
+echo ""
+echo "---- DNSCrypt blacklist generator"
 
 # --- check usage + argument count
 if [ $# == 0 ] || [ $# -gt 1 ]

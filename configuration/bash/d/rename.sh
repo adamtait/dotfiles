@@ -6,7 +6,10 @@
 
 rename() {
     if [[ ! $1 || ! $2 ]]; then
-        echo -e "rename \nusage: rename <fileglob> <sed-script> \nexample: rename *.ft s/\.ft/\.tt/g"
+        echo ""
+        echo "rename"
+        echo "usage: rename <fileglob> <sed-script>"
+        echo "example: rename *.ft s/\.ft/\.tt/g"
         return 0
     fi
     

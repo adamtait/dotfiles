@@ -35,7 +35,8 @@ fi
 #    EMACS_EXEC="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
 #    SCRIPT_PATH=$DOTFILES_DIR/configuration/bash/d/emacs.sh
 #    
-#    echo -e "\n\n--- Adding alias for command-line emacs"
+#    echo ""
+#    echo "--- Adding alias for command-line emacs"
 #
 #    touch $SCRIPT_PATH
 #    echo "alias emacs=\"${EMACS_EXEC}\"" >> $SCRIPT_PATH

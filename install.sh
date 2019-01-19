@@ -8,7 +8,8 @@ CURRENT_DIR=$PWD
 DOTFILES_DIR=$(cd "$(dirname "install.sh")" && pwd -P)
 
 
-echo -e "\n--- install.sh --- Begin."
+echo ""
+echo "--- install.sh --- Begin."
 
 
 for f in $DOTFILES_DIR/install/**/*
@@ -16,4 +17,5 @@ do
     sh $f
 done
 
-echo -e "\n--- install.sh --- Complete."
+echo ""
+echo "--- install.sh --- Complete."
