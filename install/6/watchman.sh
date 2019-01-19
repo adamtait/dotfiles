@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
-echo -e "\n--- watchman"
+echo ""
+echo "--- watchman"
 brew install watchman

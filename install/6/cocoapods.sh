@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
 
-echo -e "\n--- Cocoapods"
+echo ""
+echo "--- Cocoapods"
 gem install cocoapods

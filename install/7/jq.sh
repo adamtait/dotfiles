@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
-echo -e "\n--- jq"
+echo ""
+echo "--- jq"
 brew install jq

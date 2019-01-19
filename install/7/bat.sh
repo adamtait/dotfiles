@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
-echo -e "\n--- bat (better cat)"
+echo ""
+echo "--- bat (better cat)"
 brew install bat

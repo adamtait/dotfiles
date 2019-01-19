@@ -2,7 +2,8 @@
 
 
 if [[ ! -d $HOME/workspace ]]; then
-    echo -e "\n--- creating ~/workspace directory"
+    echo ""
+echo "--- creating ~/workspace directory"
     mkdir $HOME/workspace
 fi
 
@@ -12,14 +13,17 @@ FILENAME="google-cloud-sdk-191.0.0-darwin-x86_64.tar.gz"
 START_DIR=`pwd`
 
 
-echo -e "\n--- gcloud (Google Cloud cmd-line SDK)"
-echo -e "\n---- downloading..."
+echo ""
+echo "--- gcloud (Google Cloud cmd-line SDK)"
+echo ""
+echo "---- downloading..."
 curl -0L https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/$FILENAME > $DEST_DIR/$FILENAME
 cd $DEST_DIR
 tar -zxf $FILENAME
 rm -f $FILENAME
 
-echo -e "\n---- running installer"
+echo ""
+echo "---- running installer"
 echo -e "---- !!IMPORTANT!!     DO NOT _Modify profile to update your $PATH and enable shell command completion?_"
 echo -e "----    When the installer asks to modify your $PATH, just say NO. We've already done that!"
 ./google-cloud-sdk/install.sh

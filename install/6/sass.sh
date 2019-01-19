@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
-echo -e "\n--- SASS"
+echo ""
+echo "--- SASS"
 gem install sass

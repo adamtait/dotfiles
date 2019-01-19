@@ -18,10 +18,12 @@ binaries=(
   watchman
 )
 
-echo -e "\n---  Homebrew binaries installing: "
+echo ""
+echo "---  Homebrew binaries installing: "
 echo "${binaries[@]}"
 
 brew install ${binaries[@]}
 brew cleanup
 
-echo -e "\n\n"
+echo ""
+echo "\n"
