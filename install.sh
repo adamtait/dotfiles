@@ -5,7 +5,7 @@
 # code & ideas are largely taken from http://lapwinglabs.com/blog/hacker-guide-to-setting-up-your-mac
 
 CURRENT_DIR=$PWD
-DOTFILES_DIR=$(dirname $(realpath "$0"))
+DOTFILES_DIR=$(cd "$(dirname "install.sh")" && pwd -P)
 
 
 echo -e "\n--- install.sh --- Begin."
