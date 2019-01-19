@@ -8,8 +8,11 @@ CURRENT_DIR=$PWD
 DOTFILES_DIR=$CURRENT_DIR
 cd $DOTFILES_DIR
 
+
 echo "loading git submodules"
-git submodule update --init --remote --checkout
+git submodule foreach --recursive git reset --hard
+git submodule update --init --remote --checkout --recursive
+
 
 if [[ ! -d $HOME ]]; then
     echo "please set $HOME before proceeding"
