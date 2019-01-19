@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+echo ""
+echo "--- Apple's license agreement"
+echo "---- please accept 'sudo xcodebuild -license accept' by entering your password"
+sudo xcodebuild -license accept
+
+
 echo -e "\n--- Brew Cask for OSX apps"
 brew tap caskroom/cask
 
@@ -17,14 +23,14 @@ apps=(
   flux
   skype
   keepassx
-  xquartz         # pre-requisite for Inkscape
-  inkscape        # vector graphics tool
+  xquartz
+  inkscape
   docker
 )
 
 # Install apps to /Applications
 # Default is: /Users/$user/Applications
-echo -e "\n--- homebrew cask apps:"
+echo  "\n--- homebrew cask apps:"
 echo "${apps[@]}"
-brew cask install --appdir="/Applications" ${apps[@]}¯
-echo -e "\n\n"
+brew cask install --appdir="/Applications" ${apps[@]}
+echo  "\n\n"
