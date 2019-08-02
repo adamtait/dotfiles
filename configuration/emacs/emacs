@@ -5,7 +5,7 @@
 (load custom-file)
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;------------------------------------------------
 ;; Locally-installed packages (non-ELPA)
 
 (push "~/.dotfiles/configuration/emacs/d/restclient" load-path)
@@ -15,7 +15,7 @@
 (push "~/.dotfiles/configuration/emacs/d/local/" load-path)
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;------------------------------------------------
 ;; Init
 
 (load "init")

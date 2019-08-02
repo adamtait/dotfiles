@@ -14,6 +14,7 @@
  '(default-directory "~/workspace" t)
  '(delete-old-versions t)
  '(dired-listing-switches "-alg")
+ '(shell-file-name "/usr/local/Cellar/bash/4.4.12/bin/bash")
  '(explicit-shell-file-name "/usr/local/Cellar/bash/4.4.12/bin/bash")
  '(fringe-mode nil nil (fringe))
  '(global-auto-revert-mode t)
@@ -78,7 +79,6 @@
            (to-data
             (quote defun))))))
  '(sentence-end-double-space nil)
- '(shell-file-name "/usr/local/Cellar/bash/4.4.12/bin/bash")
  '(text-scale-mode-step 1.1)
  '(tool-bar-mode nil)
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))

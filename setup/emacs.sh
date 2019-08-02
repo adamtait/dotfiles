@@ -11,9 +11,9 @@ if [[ -d $HOME/.emacs.d ]]; then
     # safety in the case that you had already installed .emacs configuration
     sudo rm -rf $HOME/.emacs.d
 fi
-if [[ ! -h $HOME/.emacs.d ]]; then
-    ln -s $DOTFILES_DIR/emacs.d $HOME/.emacs.d
-fi
+#if [[ ! -h $HOME/.emacs.d ]]; then
+#    ln -s $DOTFILES_DIR/emacs.d $HOME/.emacs.d
+#fi
 
 
 echo ""
@@ -49,7 +49,8 @@ fi
 echo ""
 echo "--- installing Emacs packages"
 function install_elpa {
-    rm -rf $DOTFILES_DIR/emacs/d/elpa
+    rm -rf $DOTFILES_DIR/emacs.d/elpa
+    rm -f /tmp/.emacs
 
     # run ELPA script
     /Applications/Emacs.app/Contents/MacOS/Emacs --script "${DOTFILES_DIR}/setup/install_elpa.el" \

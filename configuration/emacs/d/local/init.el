@@ -1,4 +1,7 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+;;-----------------------------------------------------------
 ;; find-file-in-project
 
 (require 'find-file-in-project)
@@ -10,7 +13,7 @@
 (push "*.clj" ffip-patterns)
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;-----------------------------------------------------------
 ;; Customizations
 
 (put 'narrow-to-region 'disabled nil)
@@ -18,7 +21,7 @@
 (put 'erase-buffer 'disabled nil)
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;-----------------------------------------------------------
 ;; Dired
 
 ;; From https://github.com/candera/emacs/blob/master/init.el
@@ -32,7 +35,7 @@
             (define-key dired-mode-map (kbd "I") 'dired-insert-this-directory-recursively)))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;-----------------------------------------------------------
 ;; Magit
 ;; http://github.com/magit/magit/downloads
 
@@ -103,7 +106,7 @@
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;-----------------------------------------------------------
 ;; FILE ASSOCIATIONS
 
 (add-to-list 'auto-mode-alist '("\\.\\(rdfs?\\|owl\\)$" . nxml-mode))
@@ -114,7 +117,7 @@
 (add-to-list 'auto-mode-alist '("\\.idl$" . fundamental-mode))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;-----------------------------------------------------------
 ;; LINUX-STYLE C CODE
 
 (defun linux-c-mode ()
@@ -128,7 +131,7 @@
                        auto-mode-alist))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;-----------------------------------------------------------
 ;; JAVA
 
 (defun my-electric-brace ()
@@ -148,13 +151,13 @@
   '(define-key java-mode-map (kbd "{") 'my-electric-brace))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;-----------------------------------------------------------
 ;; find-on-github
 
 (require 'find-on-github)
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;-----------------------------------------------------------
 ;; IDO
 ;; http://www.emacswiki.org/emacs/InteractivelyDoThings
 
@@ -163,7 +166,7 @@
 (setq ido-enable-flex-matching t)
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;-----------------------------------------------------------
 ;; SMEX
 ;; http://github.com/nonsequitur/smex/
 
@@ -173,7 +176,7 @@
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;-----------------------------------------------------------
 ;; Org-mode and Day Pages
 ;; http://almostobsolete.net/daypage.html
 
@@ -294,25 +297,24 @@ and CDR is beginning position."
 (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;-----------------------------------------------------------
 ;; CLOJURE/LISP/NREPL/CIDER
 
 (require 'cider)
 (require 'clojure-mode)
+(require 'smartparens-config)
 (require 'paredit)
 (require 'align-cljlet)
 
 (show-paren-mode 1)
-
-(defun clojure-paredit-hook () (paredit-mode +1))
-(add-hook 'clojure-mode-hook 'clojure-paredit-hook)
-
 (define-key clojure-mode-map (kbd "C-c M-k") 'cider-copy-current-ns)
-(define-key clojure-mode-map "{" 'paredit-open-brace)
-(define-key clojure-mode-map "}" 'paredit-close-brace)
 
-(define-key paredit-mode-map (kbd "M-)") 'paredit-forward-slurp-sexp)
-(define-key paredit-mode-map (kbd "M-[") nil)
+(add-hook 'clojure-mode-hook #'smartparens-mode)
+(define-key smartparens-mode-map (kbd "M-)") 'sp-forward-slurp-sexp)
+
+;(define-key clojure-mode-map "{" 'paredit-open-brace)
+;(define-key clojure-mode-map "}" 'paredit-close-brace)
+;(define-key paredit-mode-map (kbd "M-)") 'paredit-forward-slurp-sexp)
 
 ;; Custom indentation rules; see clojure-indent-function
 (define-clojure-indent
@@ -410,7 +412,7 @@ ring."
 ;; (require 'clojure-cheatsheet)
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;-----------------------------------------------------------
 ;; org-babel + Clojure
 
 (load "org-babel-cider")
@@ -434,7 +436,7 @@ ring."
     (cider-execute-in-current-repl body)))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;-----------------------------------------------------------
 ;; General Text Manipulation
 
 ;; from http://www.emacswiki.org/emacs/UnfillRegion
@@ -465,7 +467,7 @@ Goes backward if ARG is negative; error if CHAR not found."
 (global-set-key "\M-z" 'zap-up-to-char)
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;-----------------------------------------------------------
 ;; Create temporary buffer
 
 (defun temp-buffer ()
@@ -475,14 +477,14 @@ Goes backward if ARG is negative; error if CHAR not found."
 (global-set-key (kbd "C-c o t") 'temp-buffer)
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;-----------------------------------------------------------
 ;; Line-numbering
 
 (require 'linum-off)
 (require 'hlinum)
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;-----------------------------------------------------------
 ;; Whitespace
 
 ;; from https://github.com/candera/emacs/blob/3cc572daf3148a1aebe2fc69c1c93e462dba2fee/init.el#L298
@@ -492,7 +494,7 @@ Goes backward if ARG is negative; error if CHAR not found."
   (interactive)
   (untabify (point-min) (point-max)))
 
-(defvar detabify-modes '(javascript-mode emacs-lisp-mode ruby-mode clojure-mode java-mode)
+(defvar detabify-modes '(javascript-mode emacs-lisp-mode enh-ruby-mode clojure-mode java-mode)
   "A list of the modes that will have tabs converted to spaces before saving.")
 
 (defun mode-aware-detabify ()
@@ -525,7 +527,7 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
         (not show-trailing-whitespace)))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;-----------------------------------------------------------
 ;; Window (pane) management
 
 ;; from http://emacswiki.org/emacs/TransposeWindows
@@ -556,7 +558,7 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;-----------------------------------------------------------
 ;; Text scaling (zoom)
 
 (defun text-scale-reset ()
@@ -573,7 +575,7 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;-----------------------------------------------------------
 ;; color themes
 
 ;(require 'gentooish-theme)
@@ -587,7 +589,7 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;-----------------------------------------------------------
 ;;  Cocoa Emacs stuff
 
 (when (fboundp 'tabbar-mode) (tabbar-mode -1))
@@ -606,7 +608,7 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
   (menu-bar-mode 1))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;-----------------------------------------------------------
 ;; Executable $PATH from ~/.path
 
 (defun slurp (path)
@@ -628,7 +630,7 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
   (cd "~/"))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;-----------------------------------------------------------
 ;; Markdown mode
 
 (require 'markdown-mode)
@@ -642,23 +644,31 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
 				    nil t))))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;-----------------------------------------------------------
 ;; Dockerfile mode
 
 (require 'dockerfile-mode)
 (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;-----------------------------------------------------------
 ;; Extra modes
 
-(require 'yaml-mode)
 (require 'web-mode)
 (require 'protobuf-mode)
+
+(require 'enh-ruby-mode)
+(add-to-list 'auto-mode-alist '("\\.rb\\'" . enh-ruby-mode))
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
 (require 'json-mode)
+(add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))
+(require 'js2-mode)
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;-----------------------------------------------------------
 ;; keyboard macros
 
 (global-set-key [f2] 'start-kbd-macro)
@@ -667,6 +677,6 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;-----------------------------------------------------------
 ;; C++ mode
 (c-set-offset 'substatement-open 0)   ;; set indentation level for substatements
