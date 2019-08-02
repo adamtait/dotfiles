@@ -311,6 +311,7 @@ and CDR is beginning position."
 
 (add-hook 'clojure-mode-hook #'smartparens-mode)
 (define-key smartparens-mode-map (kbd "M-)") 'sp-forward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "M-s") 'sp-splice-sexp)
 
 ;(define-key clojure-mode-map "{" 'paredit-open-brace)
 ;(define-key clojure-mode-map "}" 'paredit-close-brace)
