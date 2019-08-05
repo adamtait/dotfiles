@@ -302,20 +302,17 @@ and CDR is beginning position."
 
 (require 'cider)
 (require 'clojure-mode)
-(require 'smartparens-config)
 (require 'paredit)
 (require 'align-cljlet)
 
 (show-paren-mode 1)
 (define-key clojure-mode-map (kbd "C-c M-k") 'cider-copy-current-ns)
 
-(add-hook 'clojure-mode-hook #'smartparens-mode)
-(define-key smartparens-mode-map (kbd "M-)") 'sp-forward-slurp-sexp)
-(define-key smartparens-mode-map (kbd "M-s") 'sp-splice-sexp)
+(add-hook 'clojure-mode-hook #'paredit-mode)
+(define-key clojure-mode-map "{" 'paredit-open-brace)
+(define-key clojure-mode-map "}" 'paredit-close-brace)
+(define-key paredit-mode-map (kbd "M-)") 'paredit-forward-slurp-sexp)
 
-;(define-key clojure-mode-map "{" 'paredit-open-brace)
-;(define-key clojure-mode-map "}" 'paredit-close-brace)
-;(define-key paredit-mode-map (kbd "M-)") 'paredit-forward-slurp-sexp)
 
 ;; Custom indentation rules; see clojure-indent-function
 (define-clojure-indent
@@ -667,6 +664,10 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
 (require 'js2-mode)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
+(require 'smartparens-config)
+(add-hook 'j2-mode-hook #'smartparens-mode)
+(define-key smartparens-mode-map (kbd "M-)") 'sp-forward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "M-s") 'sp-splice-sexp)
 
 
 ;;-----------------------------------------------------------
