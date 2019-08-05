@@ -4,7 +4,18 @@ echo ""
 echo "--- Remove Java symlinks from /usr/local/bin"
 echo ""
 
-filenames=$(ls /usr/local/jdk-12.0.2.jdk/Contents/Home/bin/)
+# -- check usage with 1st argument 
+if [ $# == 0 ]
+then
+    echo "JDK bin source path required!"
+    echo "usage: ./remove-java-symlinks-from-usr-local-bin.sh /usr/local/jdk-12.0.2.jdk/Contents/Home/bin/"
+    echo ""
+    echo ""
+    exit 0
+fi
+
+
+filenames=$(ls $1)
 for fname in ${filenames[@]}
 do
     echo "rm /usr/local/bin/$fname"
