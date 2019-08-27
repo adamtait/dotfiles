@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# Taken from: https://docs.datomic.com/cloud/getting-started/connecting.html
+
+# -- check usage
+if [ $# != 2 ]
+then
+    echo "required parameters: system-name & region"
+    echo "usage: ./datomic-socks-proxy-test api-private-content-dev us-east-2"
+    echo ""
+    echo ""
+    exit 0
+fi
+
+
+echo "---- Test Datomic SOCKS Proxy"
+echo "response should have looked like: {:s3-auth-path <bucket-name>}"
+
+export DATOMIC_SYSTEM=$1
+export DATOMIC_REGION=$2
+export DATOMIC_SOCKS_PORT=8182
+
+curl -x socks5h://localhost:$DATOMIC_SOCKS_PORT http://entry.$DATOMIC_SYSTEM.$DATOMIC_REGION.datomic.net:8182/
+
+echo ""
