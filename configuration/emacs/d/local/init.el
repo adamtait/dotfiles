@@ -308,8 +308,7 @@ and CDR is beginning position."
 (define-key clojure-mode-map (kbd "C-c M-k") 'cider-copy-current-ns)
 
 (require 'paredit)
-(defun clojure-paredit-hook () (paredit-mode +1))
-(add-hook 'clojure-mode-hook 'clojure-paredit-hook)
+(add-hook 'clojure-mode-hook #'paredit-mode)
 (add-hook 'cider-repl-mode-hook 'paredit-mode)
 
 (define-key clojure-mode-map "{" 'paredit-open-brace)
