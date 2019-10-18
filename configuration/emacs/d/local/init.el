@@ -152,12 +152,6 @@
 
 
 ;;-----------------------------------------------------------
-;; find-on-github
-
-(require 'find-on-github)
-
-
-;;-----------------------------------------------------------
 ;; IDO
 ;; http://www.emacswiki.org/emacs/InteractivelyDoThings
 
@@ -223,15 +217,6 @@
 
 (global-set-key "\C-con" 'todays-daypage)
 (global-set-key "\C-coN" 'find-daypage)
-
-(defun org-to-confluence ()
-  "Convert region from org-mode to Confluence wiki syntax"
-  (interactive)
-  (save-excursion
-   (let ((start (region-beginning))
-         (end (region-end)))
-     (replace-regexp "^\\*\\*\\* \\(.+\\)$" "\nh2. \\1\n" nil start end)
-     (replace-regexp "^\\*\\*\\*" "" nil start end))))
 
 (defun my-agenda ()
   (interactive)
@@ -637,11 +622,11 @@ if the major mode is one of 'delete-trailing-whitespace-modes'"
 
 ;; Checks that parens are closed on save
 (add-hook 'markdown-mode-hook
-	    (lambda ()
-	          (when buffer-file-name
-		          (add-hook 'after-save-hook
-				    'check-parens
-				    nil t))))
+	  (lambda ()
+	    (when buffer-file-name
+	      (add-hook 'after-save-hook
+			'check-parens
+			nil t))))
 
 
 ;;-----------------------------------------------------------
