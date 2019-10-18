@@ -48,21 +48,10 @@ fi
 
 echo ""
 echo "--- installing Emacs packages"
-function install_elpa {
-    rm -rf $DOTFILES_DIR/emacs.d/elpa
-    rm -f /tmp/.emacs
 
-    # run ELPA script
-    /Applications/Emacs.app/Contents/MacOS/Emacs --script "${DOTFILES_DIR}/setup/install_elpa.el" \
-      >/tmp/emacs.install_elpa.stdout.log \
-      2>/tmp/emacs.install_elpa.stderr.log
-    echo "--> DONE installing Emacs packages"
-}
+rm -f /tmp/.emacs
 
-echo "Would you like to install emacs elpa packages? ('yes' or 'no'): "
-select user_choice in "yes" "no"; do
-    case $user_choice in
-        yes ) install_elpa; break;;
-        no ) exit;;
-    esac
-done
+# run ELPA script
+/Applications/Emacs.app/Contents/MacOS/Emacs --script "${DOTFILES_DIR}/setup/install_elpa.el"
+
+echo "--> DONE installing Emacs packages"
