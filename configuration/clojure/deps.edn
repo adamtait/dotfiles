@@ -9,7 +9,7 @@
 ;; For all attributes other than :paths, these config files are merged left to right.
 ;; Only the last :paths is kept and others are dropped.
 
-{
+;;{
   ;; Paths
   ;;   Directories in the current project to include in the classpath
 
@@ -41,7 +41,7 @@
   ;;   "central" {:url "https://repo1.maven.org/maven2/"}
   ;;   "clojars" {:url "https://repo.clojars.org/"}
   ;; }
-}
+;;}
 
 {:aliases
  {:ion-dev
