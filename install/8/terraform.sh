@@ -2,7 +2,8 @@
 
 DEST_DIR=/usr/local/bin
 TMP_DIR=/tmp
-FILENAME=terraform_0.12.12_darwin_amd64.zip
+VERSION=0.12.16
+FILENAME=terraform_${VERSION}_darwin_amd64.zip
 OLD_PWD=`pwd`
 
 echo ""
@@ -11,7 +12,7 @@ echo ""
 echo "---- downloading..."
 
 cd $TMP_DIR
-curl -L0 https://releases.hashicorp.com/terraform/0.12.12/$FILENAME > $FILENAME
+curl -L0 https://releases.hashicorp.com/terraform/${VERSION}/$FILENAME > $FILENAME
 unzip $FILENAME
 rm -f $FILENAME
 
