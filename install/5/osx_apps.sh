@@ -25,6 +25,7 @@ apps=(
   keepassx
   xquartz
   inkscape
+  gimp
   docker
 )
 
