@@ -11,22 +11,23 @@ brew tap caskroom/cask
 
 # to search for more casks, visit http://caskroom.github.io/
 apps=(
-  appcleaner
-  emacs
-  dropbox
-  google-chrome
-  firefox
-  spotify
-  vagrant
-  iterm2
-  hammerspoon
-  flux
-  skype
-  keepassx
-  xquartz
-  inkscape
-  gimp
-  docker
+    alacritty
+    appcleaner
+    emacs
+    docker
+    dropbox
+    google-chrome
+    firefox
+    flux
+    gimp
+    hammerspoon
+    inkscape
+    iterm2    
+    keepassx
+    spotify
+    vagrant
+    skype
+    xquartz
 )
 
 # Install apps to /Applications
