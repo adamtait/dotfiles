@@ -7,9 +7,6 @@
 [submodule "submodules/org-mode"]
 	path = submodules/org-mode
 	url = https://github.com/stuartsierra/org-mode
-[submodule "submodules/bazel"]
-	path = submodules/bazel
-	url = https://github.com/google/bazel
 [submodule "submodules/leuven-theme"]
 	path = submodules/leuven-theme
 	url = git://github.com/fniessen/emacs-leuven-theme.git
