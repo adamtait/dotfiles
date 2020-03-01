@@ -1,11 +1,23 @@
 #!/usr/bin/env bash
 
-echo ""
-echo "--- Bazel.io (Google Build Tool) prerequesites"
-brew install protobuf libarchive
+DEST_DIR=/usr/local/bin
+TMP_DIR=/tmp
+VERSION=2.1.1
+FILENAME=bazel-${VERSION}-installer-darwin-x86_64.sh
+OLD_PWD=`pwd`
+
 
 echo ""
-echo "---------------------------"
-echo "NOTE: for Bazel to work, you still need to install JDK 1.8"
+echo "--- Bazel"
 echo ""
-echo "---------------------------\n"
+echo "---- downloading..."
+
+cd $TMP_DIR
+curl -L0 https://github.com/bazelbuild/bazel/releases/download/${VERSION}/$FILENAME > $FILENAME
+chmod +x $FILENAME
+./$FILENAME
+
+rm -f $FILENAME
+
+cd $OLD_PWD
+echo "--- fin ---"
