@@ -2,7 +2,7 @@
 
 DEST_DIR=/usr/local/bin
 TMP_DIR=/tmp
-VERSION=0.12.16
+VERSION=0.12.21
 FILENAME=terraform_${VERSION}_darwin_amd64.zip
 OLD_PWD=`pwd`
 
