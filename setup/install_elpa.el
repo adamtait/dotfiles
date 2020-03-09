@@ -45,6 +45,7 @@ There are two things you can do about this warning:
     smartparens
     smex
     swift-mode
+    terraform-mode
     web-mode
     yaml-mode
     yasnippet
