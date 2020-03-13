@@ -28,30 +28,12 @@ if [[ ! -d /Applications/Emacs.app ]]; then
 fi
 
 
-# replaced by bash/d/emacs.sh (I think)
-#
-
-#if [[ `emacs -version` != "25" ]]; then
-#    EMACS_EXEC="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
-#    SCRIPT_PATH=$DOTFILES_DIR/configuration/bash/d/emacs.sh
-#    
-#    echo ""
-#    echo "--- Adding alias for command-line emacs"
-#
-#    touch $SCRIPT_PATH
-#    echo "alias emacs=\"${EMACS_EXEC}\"" >> $SCRIPT_PATH
-#
-#    echo "--->> you might want to: alias emacs=\"${EMACS_EXEC}\""
-#fi
-
-
-
 echo ""
 echo "--- installing Emacs packages"
 
 rm -f /tmp/.emacs
-
-# run ELPA script
-/Applications/Emacs.app/Contents/MacOS/Emacs --script "${DOTFILES_DIR}/setup/install_elpa.el"
+ln -sf /usr/local/Cellar/emacs/26.3/bin/emacs* /usr/local/bin/
+cp -r ~/.dotfiles/configuration/emacs.d ~/.emacs.d
+/usr/local/bin/emacs --script ~/.emacs.d/install-my-packages.el
 
 echo "--> DONE installing Emacs packages"

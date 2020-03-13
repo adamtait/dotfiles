@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
-
 # Set the default editor
-export EDITOR=emacs
-export VISUAL=emacs
+export EDITOR=emacsclient -t
+export VISUAL=emacsclient -t
