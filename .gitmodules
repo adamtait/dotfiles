@@ -1,21 +1,3 @@
-[submodule "submodules/find-file-in-project"]
-	path = submodules/find-file-in-project
-	url = https://github.com/technomancy/find-file-in-project
-[submodule "submodules/align-cljlet"]
-	path = submodules/align-cljlet
-	url = https://github.com/gstamp/align-cljlet.git
-[submodule "submodules/org-mode"]
-	path = submodules/org-mode
-	url = https://github.com/stuartsierra/org-mode
-[submodule "submodules/leuven-theme"]
-	path = submodules/leuven-theme
-	url = git://github.com/fniessen/emacs-leuven-theme.git
-[submodule "submodules/restclient"]
-	path = submodules/restclient
-	url = git@github.com:pashky/restclient.el.git
-[submodule "submodules/emacs-material-theme"]
-	path = submodules/emacs-material-theme
-	url = git@github.com:cpaulik/emacs-material-theme.git
 [submodule "submodules/xcbuild"]
 	path = submodules/xcbuild
 	url = git@github.com:facebook/xcbuild.git
