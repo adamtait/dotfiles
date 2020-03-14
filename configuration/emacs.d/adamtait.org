@@ -848,7 +848,7 @@ As if they had been typed into the REPL buffer.
   (when (string-equal system-type "darwin")
     (set-fontset-font "fontset-default"
                       'unicode
-                      '("Menlo" . "iso10646-1")))
+                      '("Hack" . "iso10646-1")))
 #+END_SRC
 
 * Local extensions
@@ -870,5 +870,18 @@ Add keyboard macros from F2, F3, F4.
   (global-set-key [f2] 'start-kbd-macro)
   (global-set-key [f3] 'end-kbd-macro)
   (global-set-key [f4] 'call-last-kbd-macro)
+#+END_SRC
+
+
+
+* Terminal background
+
+  Clear out terminal background so that emacs color appears correctly.
+  
+#+BEGIN_SRC emacs-lisp
+  (defun on-after-init ()
+    (unless (display-graphic-p (selected-frame))
+      (set-face-background 'default "unspecified-bg" (selected-frame))))
+  (add-hook 'window-setup-hook 'on-after-init)
 #+END_SRC
 

@@ -14,10 +14,11 @@
 
 (setq adamtait/stable-packages
   '(
+    abyss-theme
     cider
     clojure-mode
     clojure-mode-extra-font-locking
-    color-theme-sanityinc-solarized
+    ;color-theme-sanityinc-solarized
     enh-ruby-mode
     exec-path-from-shell
     find-file-in-project
@@ -47,7 +48,7 @@
     s
     ;smartparens
     smex
-    solarized-theme
+    ;solarized-theme
     swift-mode
     terraform-mode
     typescript-mode
