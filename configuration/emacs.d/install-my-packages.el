@@ -19,6 +19,7 @@
     clojure-mode
     clojure-mode-extra-font-locking
     ;color-theme-sanityinc-solarized
+    color-theme-sanityinc-tomorrow
     enh-ruby-mode
     exec-path-from-shell
     find-file-in-project

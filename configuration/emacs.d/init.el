@@ -22,9 +22,8 @@
 ;  for a more technical explanation.
 
 ;(load-theme 'solarized-dark t)
-;(color-theme-tomorrow--define-theme night-eighties)
-;(load-theme 'tomorrow-night-eighties t)
-(load-theme 'abyss t)
+(require 'color-theme-sanityinc-tomorrow)
+(color-theme-sanityinc-tomorrow--define-theme eighties)
 
 
 ;; Non-disabled commands
