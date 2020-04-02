@@ -8,7 +8,7 @@
         helper = GIT_CREDENTIAL_HELPER
 [core]
 	pager = "less -FXRS -x2"
-	editor = /Applications/Emacs.app/Contents/MacOS/bin/emacsclient -t --alternate-editor "EMACSCLIENTSCRIPT"
+	editor = emacsclient -t
 [include]
 	path = .gituser
 [alias]
