@@ -12,13 +12,14 @@ Available commands:
 
   up        Start the access gateway
   down      Stop the access gateway
-  restart   Restart the access gateway
+  restart   Restart the analytics support on an access gateway
 
 Options:
   -p <profile>  AWS Profile to use with permissions to the system
   -r <region>   AWS Region of the system
   --wait        Wait until the command against the access gateway has finished.
                 When not provided, this command will exit immediately.
+                Only valid for up and down commands
 
 USAGE
     exit -1
@@ -45,6 +46,98 @@ gateway_id() {
     echo $gateway_id
 }
 
+# Get S3 Bucket for System
+# Exits if no bucket found
+# Arguments:
+#   system - required
+#   region arg - optional
+#   profile command - optional
+# Returns:
+#   S3 Bucket Name
+s3_bucket() {
+    local system=$1
+    local region_arg=$2
+    local profile_command=$3
+    local s3
+    s3=$(aws resourcegroupstaggingapi get-resources $region_arg --resource-type-filters s3 --tag-filters Key=datomic:system,Values=$system --query "ResourceTagMappingList | [].ResourceARN" --output text $profile_command | sed -e 's/.*://g')
+    if [ "$s3" == None ] || [ "$s3" == "" ]; then
+        echo "Datomic system $system not found, make sure your system name and AWS creds are correct." >&2
+        exit 1
+    fi
+    echo "$s3"
+}
+
+# Get Private Key for System, stores locally
+# Exits if no gateway key found
+# Arguments:
+#   system - required
+#   S3 bucket: required
+#   region - optional
+#   profile command - optional
+# Returns:
+#   local disk path to private key
+fetch-pk() {
+    local system=$1
+    local s3_bucket=$2
+    local region=$3
+    local region_arg=$4
+    local profile_command=$5
+    local pk=~/.ssh/datomic-${region}-${system}-bastion
+    aws s3 --quiet cp $profile_command $region_arg s3://${s3_bucket}/${system}/datomic/access/private-keys/bastion $pk >&2
+    if [ "$?" -ne 0 ]; then
+        echo "Unable to read gateway key, make sure your AWS creds are correct." >&2
+        exit 1
+    fi
+    chmod 600 $pk
+    echo $pk
+}
+
+# Get Host Key for System, stores locally
+# Exits if no gateway key found
+# Arguments:
+#   system - required
+#   S3 bucket: required
+#   region - optional
+#   profile command - optional
+# Returns:
+#   local disk path to host key
+fetch-hostkey() {
+    local system=$1
+    local s3_bucket=$2
+    local region=$3
+    local region_arg=$4
+    local profile_command=$5
+    local hk=~/.ssh/datomic-${region}-${system}-bastion.hostkey
+    aws s3 --quiet cp $profile_command $region_arg s3://${s3_bucket}/${system}/datomic/access/private-keys/bastion.hostkey $hk >&2
+    if [ "$?" -ne 0 ]; then
+        echo "Unable to read gateway hostkey, make sure your AWS creds are correct." >&2
+        exit 1
+    fi
+    chmod 600 $hk
+    echo $hk
+}
+
+# Gets the gateway ip for the system
+# Exits if gateway ip not found
+# Arguments:
+#   system - required
+#   region arg - optional
+#   profile command - optional
+# Returns:
+#   gateway ip
+gateway_ip() {
+    local system=$1
+    local region_arg=$2
+    local profile_command=$3
+    local gateway_ip
+    gateway_ip=$(aws ec2 describe-instances $region_arg --filters Name=tag:Name,Values=${system}-bastion Name=instance-state-name,Values=running --query Reservations[0].Instances[0].PublicIpAddress --output text $profile_command)
+    if [ "$?" -ne 0 ] || [ "${bastion_ip}" == None ]; then
+        echo "Gateway not found, make sure gateway is running." >&2
+        exit 1
+    fi
+    echo $gateway_ip
+}
+
 # Waits for gateway to start
 # Arguments:
 #   system - required
@@ -58,7 +151,6 @@ wait_for_instance_start() {
 
     local gateway_id
     gateway_id=$(gateway_id $system "$region_arg" "$profile_command")
-    echo gateway $gateway_id >&2
     if [ "$?" -ne 0 ]; then
         exit $?
     fi
@@ -164,36 +256,36 @@ up() {
     fi
 }
 
-# Sets the gateway instance to unhealthy
+# Restarts the analytics support on the access gateway
 # Exits if gateway not found
 # Arguments:
 #   system - required
 #   region arg - optional
 #   profile command - optional
-#   wait for instance status - optional 'y' to wait
 
 restart() {
     local system=$1
-    local region_arg=$2
-    local profile_command=$3
-    local instance_wait=$4
+    local region=$2
+    local region_arg=$3
+    local profile_command=$4
 
-    local gateway_id
-    gateway_id=$(gateway_id $system "$region_arg" "$profile_command")
-    if [ "$?" -ne 0 ]; then
-        exit $?
+    local s3
+    s3=$(s3_bucket "$system" "$region_arg" "$profile_command")
+    local pk
+    pk=$(fetch-pk "$system" "$s3" "$region" "$region_arg" "$profile_command")
+    local hk
+    hk=$(fetch-hostkey "$system" "$s3" "$region" "$region_arg" "$profile_command")
+    local ip
+    ip=$(gateway_ip "$system" "$region_arg" "$profile_command")
+
+    ssh -o UserKnownHostsFile="$hk" -i "$pk" -CT ec2-user@${ip} '(sudo "/opt/datomic/presto-stop")' > /dev/null
+
+    if [ "$?" -ne 0 ] ; then
+        echo "Error reloading analytics support." >&2
+        exit 1
     fi
 
-    $(aws autoscaling set-instance-health $region_arg $profile_command --instance-id ${gateway_id} --health-status Unhealthy --no-should-respect-grace-period) >&2 || exit $?
-
-    if [ "$instance_wait" == "y" ]; then
-        echo "Waiting for gateway to restart." >&2
-        $(wait_for_instance_terminate $gateway_id "$region_arg" "$profile_command") || exit $?
-        $(wait_for_instance_start $system "$region_arg" "$profile_command") || exit $?
-        echo "Done" >&2
-    else
-        echo "Access Gateway is restarting, it may take up to a few minutes before it is available for re-establishing connections" >&2
-    fi
+    echo "Access Gateway is restarting" >&2
 }
 
 # parse params, set globals
@@ -241,13 +333,13 @@ fi
 
 case "$1" in
     up)
-        $(up $SYSTEM "$REGION_ARG" "$PROFILE_COMMAND" $INSTANCE_WAIT)
+        $(up "$SYSTEM" "$REGION_ARG" "$PROFILE_COMMAND" "$INSTANCE_WAIT")
         ;;
     down)
-        $(down $SYSTEM "$REGION_ARG" "$PROFILE_COMMAND" $INSTANCE_WAIT)
+        $(down "$SYSTEM" "$REGION_ARG" "$PROFILE_COMMAND" "$INSTANCE_WAIT")
         ;;
     restart)
-        $(restart $SYSTEM "$REGION_ARG" "$PROFILE_COMMAND" $INSTANCE_WAIT)
+        $(restart "$SYSTEM" "$REGION" "$REGION_ARG" "$PROFILE_COMMAND")
         ;;
     *)
         usage

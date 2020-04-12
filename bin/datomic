@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+clojure -Sdeps "{:deps {com.datomic/tools.ops {:mvn/version \"0.10.81\"}}}" -m datomic.tools.ops "$@"

@@ -69,6 +69,31 @@ fetch-pk() {
     echo $pk
 }
 
+# Get Host Key for System, stores locally
+# Exits if no gateway key found
+# Arguments:
+#   system - required
+#   S3 bucket: required
+#   region - optional
+#   profile command - optional
+# Returns:
+#   local disk path to host key
+fetch-hostkey() {
+    local system=$1
+    local s3_bucket=$2
+    local region=$3
+    local region_arg=$4
+    local profile_command=$5
+    local hk=~/.ssh/datomic-${region}-${system}-bastion.hostkey
+    aws s3 cp $profile_command $region_arg s3://${s3_bucket}/${system}/datomic/access/private-keys/bastion.hostkey $hk >&2
+    if [ "$?" -ne 0 ]; then
+        echo "Unable to read gateway hostkey, make sure your AWS creds are correct." >&2
+        exit 1
+    fi
+    chmod 600 $hk
+    echo $hk
+}
+
 # Gets the gateway ip for the system
 # Exits if gateway ip not found
 # Arguments:
@@ -102,23 +127,27 @@ gateway_ip() {
 #   local disk path to private key
 client() {
     local s3
-    s3=$(s3_bucket $SYSTEM "$REGION_ARG" "$PROFILE_COMMAND")
+    s3=$(s3_bucket "$SYSTEM" "$REGION_ARG" "$PROFILE_COMMAND")
     local pk
-    pk=$(fetch-pk $SYSTEM $s3 $REGION "$REGION_ARG" "$PROFILE_COMMAND")
+    pk=$(fetch-pk "$SYSTEM" "$s3" "$REGION" "$REGION_ARG" "$PROFILE_COMMAND")
+    local hk
+    hk=$(fetch-hostkey "$SYSTEM" "$s3" "$REGION" "$REGION_ARG" "$PROFILE_COMMAND")
     local ip
-    ip=$(gateway_ip $SYSTEM "$REGION_ARG" "$PROFILE_COMMAND")
-    ssh -v "${SSH_OPTIONS[@]}" -i $pk -CND ${PORT:=8182} ec2-user@${ip}
+    ip=$(gateway_ip "$SYSTEM" "$REGION_ARG" "$PROFILE_COMMAND")
+    ssh -v -o UserKnownHostsFile="$hk" "${SSH_OPTIONS[@]}" -i "$pk" -CND ${PORT:=8182} ec2-user@${ip}
 }
 
 analytics() {
     local s3
-    s3=$(s3_bucket $SYSTEM "$REGION_ARG" "$PROFILE_COMMAND")
+    s3=$(s3_bucket "$SYSTEM" "$REGION_ARG" "$PROFILE_COMMAND")
     local pk
-    pk=$(fetch-pk $SYSTEM "$s3" $REGION "$REGION_ARG" "$PROFILE_COMMAND")
+    pk=$(fetch-pk "$SYSTEM" "$s3" "$REGION" "$REGION_ARG" "$PROFILE_COMMAND")
+    local hk
+    hk=$(fetch-hostkey "$SYSTEM" "$s3" "$REGION" "$REGION_ARG" "$PROFILE_COMMAND")
     local ip
-    ip=$(gateway_ip $SYSTEM "$REGION_ARG" "$PROFILE_COMMAND")
+    ip=$(gateway_ip "$SYSTEM" "$REGION_ARG" "$PROFILE_COMMAND")
 
-    ssh -v "${SSH_OPTIONS[@]}" -i $pk -CNT -L ${PORT:=8989}:localhost:8989 ec2-user@${ip}
+    ssh -v -o UserKnownHostsFile="$hk" "${SSH_OPTIONS[@]}" -i "$pk" -CNT -L ${PORT:=8989}:localhost:8989 ec2-user@${ip}
 }
 
 # parse params, set globals
