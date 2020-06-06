@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+echo ""
+echo "--- Boot"
+echo "---- (Clojure build tool)"
+echo "---- install via homebrew..."
+
+brew install boot-clj
