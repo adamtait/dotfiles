@@ -43,9 +43,22 @@
   ;; }
 ;;}
 
-{:aliases
- {:ion-dev
+{
+
+ :aliases
+ {
+  :httpd
+  {:extra-deps {nasus {:mvn/version "0.1.7"}}
+   :main-opts  ["-m" "http.server"]}
+
+  :ion-dev
   {:deps {com.datomic/ion-dev {:mvn/version "0.9.243"}}
    :main-opts ["-m" "datomic.ion.dev"]}
-  :mvn/repos
-  {"datomic-cloud" {:url "s3://datomic-releases-1fc2183a/maven/releases"}}}}
+  
+  :new
+  {:extra-deps {seancorfield/clj-new {:mvn/version "0.7.7"}}
+   :main-opts  ["-m" "clj-new.create"]}}
+
+
+ :mvn/repos
+ {"datomic-cloud" {:url "s3://datomic-releases-1fc2183a/maven/releases"}}}
