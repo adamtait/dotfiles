@@ -9,56 +9,34 @@
 ;; For all attributes other than :paths, these config files are merged left to right.
 ;; Only the last :paths is kept and others are dropped.
 
-;;{
-  ;; Paths
-  ;;   Directories in the current project to include in the classpath
+;; see: https://github.com/seancorfield/dot-clojure
 
-  ;; :paths ["src"]
-
-  ;; External dependencies
- 
-  ;; :deps {
-  ;;   org.clojure/clojure {:mvn/version "1.10.1"}
-  ;; }
-
-  ;; Aliases
-	;;   resolve-deps aliases (-R) affect dependency resolution, options:
-	;;     :extra-deps - specifies extra deps to add to :deps
-	;;     :override-deps - specifies a coordinate to use instead of that in :deps
-	;;     :default-deps - specifies a coordinate to use for a lib if one isn't found
-	;;   make-classpath aliases (-C) affect the classpath generation, options:
-	;;     :extra-paths - vector of additional paths to add to the classpath
-	;;     :classpath-overrides - map of lib to path that overrides the result of resolving deps
-
-  ;; :aliases {
-  ;;   :deps {:extra-deps {org.clojure/tools.deps.alpha {:mvn/version "0.7.541"}}}
-  ;;   :test {:extra-paths ["test"]}
-  ;; }
-
-  ;; Provider attributes
-
-  ;; :mvn/repos {
-  ;;   "central" {:url "https://repo1.maven.org/maven2/"}
-  ;;   "clojars" {:url "https://repo.clojars.org/"}
-  ;; }
-;;}
 
 {
+ :mvn/repos
+ {"datomic-cloud" {:url "s3://datomic-releases-1fc2183a/maven/releases"}}
 
  :aliases
  {
+  :new
+  {:extra-deps {seancorfield/clj-new {:mvn/version "0.7.7"}}
+   :main-opts  ["-m" "clj-new.create"]}
+  
+  :ion-dev
+  {:deps {com.datomic/ion-dev {:mvn/version "0.9.265"}}
+   :main-opts ["-m" "datomic.ion.dev"]}
+
+  :dev
+  {:extra-deps
+   {com.datomic/client-cloud     {:mvn/version "0.8.96"}
+    com.datomic/ion-dev          {:mvn/version "0.9.265"
+                                  :exclusions  [org.slf4j/slf4j-nop]}}}
+  
+  :cider-nrepl
+  {:extra-deps {cider/cider-nrepl {:mvn/version "0.25.1"}}
+   :main-opts ["-m" "nrepl.cmdline" "--middleware" "[cider.nrepl/cider-middleware]"]}
+
   :httpd
   {:extra-deps {nasus {:mvn/version "0.1.7"}}
    :main-opts  ["-m" "http.server"]}
-
-  :ion-dev
-  {:deps {com.datomic/ion-dev {:mvn/version "0.9.243"}}
-   :main-opts ["-m" "datomic.ion.dev"]}
-  
-  :new
-  {:extra-deps {seancorfield/clj-new {:mvn/version "0.7.7"}}
-   :main-opts  ["-m" "clj-new.create"]}}
-
-
- :mvn/repos
- {"datomic-cloud" {:url "s3://datomic-releases-1fc2183a/maven/releases"}}}
+  }}
