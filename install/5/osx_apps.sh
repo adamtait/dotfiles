@@ -23,7 +23,7 @@ apps=(
     hammerspoon
     inkscape
     iterm2    
-    keepassx
+    keepassxc
     spotify
     vagrant
     skype
