@@ -497,31 +497,6 @@ Mode-specific versions of the built-in ~<e~ and ~<s~ abbreviations:
 #+end_src
 
 
-* org-roam
-
-#+begin_src emacs-lisp :results silent
-;  (require 'org-roam
-;  :hook
-;  (after-init . org-roam-mode)
-;  :custom
-;  (org-roam-directory "/path/to/org-files/")
-;  :bind (:map org-roam-mode-map
-;          (("C-c n l" . org-roam)
-;           ("C-c n f" . org-roam-find-file)
-;           ("C-c n g" . org-roam-show-graph))
-;          :map org-mode-map
-;          (("C-c n i" . org-roam-insert))))
-
-(defvar adamtait/org-roam-dir "~/org-roam")
-
-(when (not (file-directory-p adamtait/org-roam-dir))
-  (make-directory "~/org-roam"))
-
-(setq org-roam-directory "~/org-roam")
-(add-hook 'after-init-hook 'org-roam-mode)
-#+end_src  
-
-
 * CIDER
 
 ** Link to last CIDER session

@@ -42,7 +42,6 @@
     multiple-cursors
     org-plus-contrib
     org-re-reveal
-    org-roam
     paredit
     rainbow-delimiters
     rjsx-mode
