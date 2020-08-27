@@ -77,7 +77,7 @@
 (adamtait/install-all-packages adamtait/stable-packages)
 
 (add-to-list 'package-archives
-	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
+	     '("melpa" . "http://melpa.org/packages/") t)
 
 (adamtait/install-all-packages adamtait/unstable-packages)
 
