@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+# https://github.com/Eloston/ungoogled-chromium
+
+brew cask fetch eloston-chromium
+brew cask install eloston-chromium
