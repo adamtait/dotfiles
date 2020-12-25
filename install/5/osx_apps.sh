@@ -35,6 +35,6 @@ apps=(
 echo ""
 echo "--- homebrew cask apps:"
 echo "${apps[@]}"
-brew cask install --appdir="/Applications" ${apps[@]}
+brew install --cask --appdir="/Applications" ${apps[@]}
 echo ""
 echo ""

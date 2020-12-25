@@ -5,4 +5,4 @@ echo "--- Chrome Driver"
 echo "---- (web driver for chrome browser)"
 echo "---- install via homebrew..."
 
-brew cask install chromedriver
+brew install --cask chromedriver
