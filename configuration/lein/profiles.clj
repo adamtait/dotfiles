@@ -10,7 +10,7 @@
 
   ;; magic
   :plugins
-  [[cider/cider-nrepl "0.25.1"]
+  [[cider/cider-nrepl "0.25.8"]
    [io.aviso/pretty "0.1.37"]]
   
   :middleware     [io.aviso.lein-pretty/inject]

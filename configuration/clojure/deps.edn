@@ -33,7 +33,7 @@
                                   :exclusions  [org.slf4j/slf4j-nop]}}}
   
   :cider-nrepl
-  {:extra-deps {cider/cider-nrepl {:mvn/version "0.25.1"}}
+  {:extra-deps {cider/cider-nrepl {:mvn/version "0.25.8"}}
    :main-opts ["-m" "nrepl.cmdline" "--middleware" "[cider.nrepl/cider-middleware]"]}
 
   :httpd
