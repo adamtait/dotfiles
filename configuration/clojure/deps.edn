@@ -23,20 +23,61 @@
    :main-opts  ["-m" "clj-new.create"]}
   
   :ion-dev
-  {:deps {com.datomic/ion-dev {:mvn/version "0.9.265"}}
+  {:deps {com.datomic/ion-dev {:mvn/version "0.9.282"}}
    :main-opts ["-m" "datomic.ion.dev"]}
 
   :dev
-  {:extra-deps
-   {com.datomic/client-cloud     {:mvn/version "0.8.96"}
-    com.datomic/ion-dev          {:mvn/version "0.9.265"
-                                  :exclusions  [org.slf4j/slf4j-nop]}}}
+  {
+   :extra-deps
+   {com.datomic/client-cloud         {:mvn/version "0.8.105"}
+    com.datomic/ion-dev              {:mvn/version "0.9.282"
+                                      :exclusions  [org.slf4j/slf4j-nop]}
+    com.stuartsierra/component.repl  {:mvn/version "0.2.0"}
+    io.aviso/pretty                  {:mvn/version "0.1.37"}
+    spyscope                         {:mvn/version "0.1.6"}}
+   :extra-paths ["dev"]}
+
   
-  :cider-nrepl
-  {:extra-deps {cider/cider-nrepl {:mvn/version "0.25.8"}}
+  :test
+  {
+   :extra-deps
+   {
+    com.cognitect/test-runner
+    {:git/url "https://github.com/cognitect-labs/test-runner.git"
+     ;; "b6b3193fcc42659d7e46ecd1884a228993441182"
+     :sha "209b64504cb3bd3b99ecfec7937b358a879f55c1"}
+    
+    lambdaisland/kaocha {:mvn/version "1.0.829"}}
+   
+   :extra-paths ["test" "resources/test"]}
+
+  :run-tests
+  {
+   :main-opts ["-m" "kaocha.runner"]
+   ;;:main-opts ["-m" "cognitect.test-runner"]
+   }
+  
+  :repl
+  {
+   :extra-deps
+   {
+    cider/cider-nrepl                {:mvn/version "0.25.8"}}
    :main-opts ["-m" "nrepl.cmdline" "--middleware" "[cider.nrepl/cider-middleware]"]}
 
   :httpd
   {:extra-deps {nasus {:mvn/version "0.1.7"}}
    :main-opts  ["-m" "http.server"]}
+
+  :log
+  {
+   :extra-deps
+   {
+    ch.qos.logback/logback-classic         {:mvn/version "1.2.3"
+                                            :exclusions  [org.slf4j/slf4j-api]}
+    org.slf4j/slf4j-api                    {:mvn/version "1.7.14"}
+    org.slf4j/jul-to-slf4j                 {:mvn/version "1.7.14"}
+    org.slf4j/jcl-over-slf4j               {:mvn/version "1.7.14"}
+    org.slf4j/log4j-over-slf4j             {:mvn/version "1.7.14"}}
+
+   :extra-paths ["resources/logging/dev"]}
   }}
