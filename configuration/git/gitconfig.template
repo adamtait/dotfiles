@@ -12,22 +12,23 @@
 [include]
 	path = .gituser
 [alias]
-	ci = commit
-	co = checkout
-	st = status
-        df = diff --color --color-words --abbrev
-        ds = diff --color --color-words --abbrev --staged
-	br = branch
-	sta = stash
+	ci      = commit
+	co      = checkout
+	st      = status
+        df      = diff --color --color-words --abbrev
+        ds      = diff --color --color-words --abbrev --staged
+        drop    = reset --soft HEAD~1
+	br      = branch
+	sta     = stash
 	unstage = "reset HEAD"
-	llog = "log --date=local"
-	flog = "log --pretty=fuller --decorate"
-	lg = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
-        lga = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all
-        lgd = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit -p
-	lol = "log --graph --decorate --oneline"
-	lola = "log --graph --decorate --oneline --all"
-	blog = "log origin/master... --left-right"
+	llog    = "log --date=local"
+	flog    = "log --pretty=fuller --decorate"
+	lg      = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
+        lga     = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all
+        lgd     = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit -p
+	lol     = "log --graph --decorate --oneline"
+	lola    = "log --graph --decorate --oneline --all"
+	blog    = "log origin/master... --left-right"
 [color]
 	ui = auto
 	branch = auto
