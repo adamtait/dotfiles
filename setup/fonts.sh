@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# Google fonts API key: AIzaSyBms6HpvhPRKRqLf2cWz9faRMrqzlhi6Ag
-
 
 FONTS_DIR=$HOME/Library/Fonts
 
