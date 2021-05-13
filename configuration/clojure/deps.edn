@@ -65,7 +65,9 @@
    :extra-deps
    {
     com.clojure-goes-fast/clj-async-profiler
-    {:mvn/version "0.5.0"}}}
+    {:mvn/version "0.5.0"}}
+
+   :jvm-opts ["-Djdk.attach.allowAttachSelf"]}
 
   :repl
   {
