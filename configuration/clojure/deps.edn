@@ -29,7 +29,8 @@
   :dev
   {
    :extra-deps
-   {com.datomic/client-cloud         {:mvn/version "0.8.105"}
+   {
+    com.datomic/client-cloud         {:mvn/version "0.8.105"}
     com.datomic/ion-dev              {:mvn/version "0.9.282"
                                       :exclusions  [org.slf4j/slf4j-nop]}
     com.stuartsierra/component.repl  {:mvn/version "0.2.0"}

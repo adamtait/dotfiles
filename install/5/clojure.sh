@@ -3,6 +3,6 @@
 echo ""
 echo "--- Clojure CLI"
 
-brew install clojure
+brew install clojure/tools/clojure
 
 echo "--- Installed. (Clojure CLI)"
