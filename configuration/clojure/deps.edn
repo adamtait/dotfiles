@@ -39,19 +39,18 @@
 
   :ion-dev
   {
-   :deps {com.datomic/ion-dev {:mvn/version "0.9.282"}}
+   :extra-deps {com.datomic/ion-dev {:mvn/version "0.9.282"}}
    :main-opts ["-m" "datomic.ion.dev"]}
 
   :log
   {
    :extra-deps
    {
-    ch.qos.logback/logback-classic         {:mvn/version "1.2.3"
-                                            :exclusions  [org.slf4j/slf4j-api]}
-    org.slf4j/slf4j-api                    {:mvn/version "1.7.14"}
-    org.slf4j/jul-to-slf4j                 {:mvn/version "1.7.14"}
-    org.slf4j/jcl-over-slf4j               {:mvn/version "1.7.14"}
-    org.slf4j/log4j-over-slf4j             {:mvn/version "1.7.14"}}
+    ch.qos.logback/logback-classic {:mvn/version "1.2.3" :exclusions  [org.slf4j/slf4j-api]}
+    org.slf4j/slf4j-api {:mvn/version "1.7.14"}
+    org.slf4j/jul-to-slf4j {:mvn/version "1.7.14"}
+    org.slf4j/jcl-over-slf4j {:mvn/version "1.7.14"}
+    org.slf4j/log4j-over-slf4j {:mvn/version "1.7.14"}}
 
    :extra-paths ["resources/logging/dev"]}
 
@@ -71,9 +70,7 @@
 
   :repl
   {
-   :extra-deps
-   {
-    cider/cider-nrepl                {:mvn/version "0.26.0"}}
+   :extra-deps {cider/cider-nrepl {:mvn/version "0.26.0"}}
    :main-opts ["-m" "nrepl.cmdline" "--middleware" "[cider.nrepl/cider-middleware]"]}
 
   :run-tests
