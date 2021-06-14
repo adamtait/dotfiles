@@ -29,12 +29,12 @@
                                       :exclusions  [org.slf4j/slf4j-nop]}
     com.stuartsierra/component.repl  {:mvn/version "0.2.0"}
     io.aviso/pretty                  {:mvn/version "0.1.37"}
-    spyscope                         {:mvn/version "0.1.6"}}
+    spyscope/spyscope                {:mvn/version "0.1.6"}}
    :extra-paths ["dev"]}
 
   :httpd
   {
-   :extra-deps {nasus {:mvn/version "0.1.7"}}
+   :extra-deps {nasus/nasus {:mvn/version "0.1.7"}}
    :main-opts  ["-m" "http.server"]}
 
   :ion-dev
