@@ -7,26 +7,20 @@ sudo xcodebuild -license accept
 
 
 echo "--- Brew Cask for OSX apps"
-brew tap caskroom/cask
+brew tap homebrew/cask
 
 # to search for more casks, visit http://caskroom.github.io/
 apps=(
-    alacritty
     appcleaner
     emacs
-    docker
-    dropbox
     google-chrome
     firefox
-    flux
     gimp
     hammerspoon
     inkscape
     iterm2    
     keepassxc
     spotify
-    vagrant
-    skype
     xquartz
 )
 
@@ -35,6 +29,6 @@ apps=(
 echo ""
 echo "--- homebrew cask apps:"
 echo "${apps[@]}"
-brew install --cask --appdir="/Applications" ${apps[@]}
+brew install --cask ${apps[@]}
 echo ""
 echo ""
