@@ -7,9 +7,8 @@ echo "--- creating ~/.path"
 cat > "$HOME/.path" <<EOF
 $(brew --prefix coreutils)/libexec/gnubin
 $DOTFILES_DIR/bin
-$DOTFILES_DIR/submodules/bazel/output
 $HOME/workspace/google-cloud-sdk/bin
-/usr/local/opt/openjdk@11/bin
+/opt/homebrew/bin
 /usr/local/bin
 /opt/local/bin
 /usr/local/opt/libarchive/bin

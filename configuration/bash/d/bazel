@@ -1,3 +1,0 @@
-#/usr/bin/env bash
-
-source /usr/local/lib/bazel/bin/bazel-complete.bash
