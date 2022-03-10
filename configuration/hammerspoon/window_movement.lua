@@ -80,94 +80,94 @@ function center3()
 end
 
 
+hotkey = {"cmd", "ctrl", "alt"}
 
-
-hs.hotkey.bind({"cmd", "ctrl", "alt"}, "j",
+hs.hotkey.bind(hotkey, "j",
    function()
       left()
    end
 )
 
-hs.hotkey.bind({"cmd", "ctrl", "alt"}, "k",
+hs.hotkey.bind(hotkey, "k",
    function()
       full()
    end
 )
 
-hs.hotkey.bind({"cmd", "ctrl", "alt"}, "l",
+hs.hotkey.bind(hotkey, "l",
    function()
       right()
    end
 )
 
-hs.hotkey.bind({"cmd", "ctrl", "alt"}, "u",
+hs.hotkey.bind(hotkey, "u",
    function()
       top()
    end
 )
 
-hs.hotkey.bind({"cmd", "ctrl", "alt"}, "n",
+hs.hotkey.bind(hotkey, "n",
    function()
       bottom()
    end
 )
 
-hs.hotkey.bind({"cmd", "ctrl", "alt"}, "i",
+hs.hotkey.bind(hotkey, "i",
    function()
       topleft()
    end
 )
 
-hs.hotkey.bind({"cmd", "ctrl", "alt"}, "m",
+hs.hotkey.bind(hotkey, "m",
    function()
       bottomleft()
    end
 )
 
-hs.hotkey.bind({"cmd", "ctrl", "alt"}, "o",
+hs.hotkey.bind(hotkey, "o",
    function()
       topright()
    end
 )
 
-hs.hotkey.bind({"cmd", "ctrl", "alt"}, ",",
+hs.hotkey.bind(hotkey, ",",
    function()
       bottomright()
    end
 )
 
-hs.hotkey.bind({"cmd", "ctrl", "alt"}, "[",
+hs.hotkey.bind(hotkey, "[",
    function()
       local win = window.focusedwindow()
       wintoscreen(win, win:screen():next())
    end
 )
 
-hs.hotkey.bind({"cmd", "ctrl", "alt"}, "y",
+hs.hotkey.bind(hotkey, "y",
    function()
       left3()
    end
 )
 
-hs.hotkey.bind({"cmd", "ctrl", "alt"}, "p",
+hs.hotkey.bind(hotkey, "p",
    function()
       left2of3()
    end
 )
 
-hs.hotkey.bind({"cmd", "ctrl", "alt"}, "f",
+hs.hotkey.bind(hotkey, "f",
    function()
       center3()
    end
 )
 
-hs.hotkey.bind({"cmd", "ctrl", "alt"}, "g",
+hs.hotkey.bind(hotkey, "g",
    function()
       right3()   
    end
 )
 
-hs.hotkey.bind({"cmd", "ctrl", "alt"}, "c",
+hs.hotkey.bind(hotkey, "c",
    function()
       right2of3()
    end
@@ -191,7 +191,7 @@ end
 
 
 
-hs.hotkey.bind({"cmd", "ctrl", "alt"}, "Left",
+hs.hotkey.bind(hotkey, "Left",
    function()
       local win = hs.window.focusedWindow()
       local f = win:frame()
@@ -204,7 +204,7 @@ hs.hotkey.bind({"cmd", "ctrl", "alt"}, "Left",
    end
 )
 
-hs.hotkey.bind({"cmd", "ctrl", "alt"}, "Right",
+hs.hotkey.bind(hotkey, "Right",
    function()
       local win = hs.window.focusedWindow()
       local f = win:frame()
@@ -230,7 +230,7 @@ function screenName()
 end
   
 
-hs.hotkey.bind({"cmd", "ctrl", "alt"}, "1",
+hs.hotkey.bind(hotkey, "1",
    function()
       local n = screenName()
       local layout = {
@@ -249,7 +249,7 @@ hs.hotkey.bind({"cmd", "ctrl", "alt"}, "1",
    end
 )
 
-hs.hotkey.bind({"cmd", "ctrl", "alt"}, "2",
+hs.hotkey.bind(hotkey, "2",
    function()
       local n = screenName()
       local layout = {
@@ -268,7 +268,7 @@ hs.hotkey.bind({"cmd", "ctrl", "alt"}, "2",
    end
 )
 
-hs.hotkey.bind({"cmd", "ctrl", "alt"}, "3",
+hs.hotkey.bind(hotkey, "3",
    function()
       local n = screenName()
       local l = hs.geometry.rect(0, 0, 0.33, 1)
