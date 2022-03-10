@@ -27,7 +27,6 @@ fi
 for f in ~/.bash.d/*; do
     source $f;
 done
-source ~/.bash.d/bash-powerline.sh    # can't figure out why this doesn't source correctly with the other env scripts
 
 if [[ -e ~/.localrc ]]
 then

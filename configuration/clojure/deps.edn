@@ -24,8 +24,8 @@
   {
    :extra-deps
    {
-    com.datomic/client-cloud         {:mvn/version "1.0.119"}
-    com.datomic/ion-dev              {:mvn/version "1.0.298"
+    com.datomic/client-cloud         {:mvn/version "0.8.105"}  ;;"0.8.105" 1.0.119
+    com.datomic/ion-dev              {:mvn/version "0.9.282"  ;; "0.9.282" 1.0.298
                                       :exclusions  [org.slf4j/slf4j-nop]}
     com.stuartsierra/component.repl  {:mvn/version "0.2.0"}
     io.aviso/pretty                  {:mvn/version "0.1.37"}
@@ -39,7 +39,7 @@
 
   :ion-dev
   {
-   :extra-deps {com.datomic/ion-dev {:mvn/version "1.0.298"}}
+   :extra-deps {com.datomic/ion-dev {:mvn/version "0.9.282"}} ;; "0.9.282" 1.0.298
    :main-opts ["-m" "datomic.ion.dev"]}
 
   :log
@@ -64,7 +64,7 @@
    :extra-deps
    {
     com.clojure-goes-fast/clj-async-profiler
-    {:mvn/version "0.5.0"}}
+    {:mvn/version "1.0.0-alpha1"}}
 
    :jvm-opts ["-Djdk.attach.allowAttachSelf"]}
 

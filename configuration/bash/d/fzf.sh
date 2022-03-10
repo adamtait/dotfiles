@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 # required for auto-completion
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
