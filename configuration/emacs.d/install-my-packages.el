@@ -49,7 +49,7 @@
     s
     ;smartparens
     smex
-    ;solarized-theme
+    solarized-theme
     swift-mode
     terraform-mode
     typescript-mode

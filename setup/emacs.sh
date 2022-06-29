@@ -32,7 +32,7 @@ echo ""
 echo "--- installing Emacs packages"
 
 rm -f /tmp/.emacs
-sudo ln -sf /opt/homebrew/Cellar/emacs/27.2/bin/emacs* /usr/local/bin/
+sudo ln -sf /usr/local/Cellar/emacs/28.1/bin/emacs* /usr/local/bin/
 cp -r ~/.dotfiles/configuration/emacs.d ~/.emacs.d
 /usr/local/bin/emacs --script ~/.emacs.d/install-my-packages.el
 
