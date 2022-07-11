@@ -21,9 +21,10 @@
 ;  https://www.gnu.org/software/emacs/manual/html_node/emacs/Custom-Themes.html
 ;  for a more technical explanation.
 
+(load-theme 'material t)
 ;(load-theme 'solarized-dark t)
-(require 'color-theme-sanityinc-tomorrow)
-(color-theme-sanityinc-tomorrow--define-theme eighties)
+;(require 'color-theme-sanityinc-tomorrow)
+;(color-theme-sanityinc-tomorrow--define-theme eighties)
 
 
 ;; Non-disabled commands
