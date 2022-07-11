@@ -14,12 +14,10 @@
 
 (setq adamtait/stable-packages
   '(
-    abyss-theme
     cider
     clojure-mode
     clojure-mode-extra-font-locking
-    ;color-theme-sanityinc-solarized
-    color-theme-sanityinc-tomorrow
+    elpy
     enh-ruby-mode
     exec-path-from-shell
     find-file-in-project
@@ -33,7 +31,8 @@
     ido-vertical-mode
     inf-clojure
     js2-mode
-    json-mode    
+    json-mode
+    ;jupyter
     ledger-mode
     lua-mode
     magit
@@ -49,7 +48,6 @@
     s
     ;smartparens
     smex
-    ;solarized-theme
     swift-mode
     terraform-mode
     typescript-mode
@@ -59,6 +57,13 @@
     xml-rpc
     yaml-mode
     yasnippet
+
+    ; color themes
+    ;abyss-theme
+    ;color-theme-sanityinc-solarized
+    ;color-theme-sanityinc-tomorrow    
+    material-theme
+    ;solarized-theme
     ))
 
 (setq adamtait/unstable-packages
