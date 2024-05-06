@@ -8,7 +8,9 @@ cat > "$HOME/.path" <<EOF
 $(brew --prefix coreutils)/libexec/gnubin
 $DOTFILES_DIR/bin
 $HOME/workspace/google-cloud-sdk/bin
+$HOME/.cargo/bin
 /opt/homebrew/bin
+/opt/homebrew/sbin
 /usr/local/bin
 /opt/local/bin
 /usr/local/opt/libarchive/bin
