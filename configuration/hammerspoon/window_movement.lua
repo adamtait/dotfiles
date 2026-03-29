@@ -136,16 +136,39 @@ hs.hotkey.bind(hotkey, ",",
    end
 )
 
+function moveToNextScreen()
+   local win = hs.window.focusedWindow()
+   if not win then return end
+   local nextScreen = win:screen():next()
+   if nextScreen then
+      win:moveToScreen(nextScreen, true)
+   end
+end
+
+function moveToPreviousScreen()
+   local win = hs.window.focusedWindow()
+   if not win then return end
+   local prevScreen = win:screen():previous()
+   if prevScreen then
+      win:moveToScreen(prevScreen, true)
+   end
+end
+
 hs.hotkey.bind(hotkey, "[",
    function()
-      local win = window.focusedwindow()
-      wintoscreen(win, win:screen():next())
+      moveToPreviousScreen()
+   end
+)
+
+hs.hotkey.bind(hotkey, "]",
+   function()
+      moveToNextScreen()
    end
 )
 
 hs.hotkey.bind(hotkey, "y",
    function()
-      left3()
+      left()
    end
 )
 
@@ -157,13 +180,13 @@ hs.hotkey.bind(hotkey, "p",
 
 hs.hotkey.bind(hotkey, "f",
    function()
-      center3()
+      center()
    end
 )
 
 hs.hotkey.bind(hotkey, "g",
    function()
-      right3()   
+      right()
    end
 )
 
