@@ -42,10 +42,11 @@
 [push]
 	default = simple
         tags = true
+	autoSetupRemote = true
 [pull]
         rebase = true
 [rebase]
 	autosquash = true
 [pager]
         diff = diff-so-fancy | less --tabs=1,5 -RFX
-        show = diff-so-fancy | less --tabs=1,5 -RFX        
+        show = diff-so-fancy | less --tabs=1,5 -RFX
