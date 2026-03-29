@@ -5,8 +5,9 @@
 if [[ -e "$HOME/.path" ]]; then
     path=""
     while read -r; do
+        eval "item=\"$REPLY\""
         if [[ ! -z "$path" ]]; then path="$path:"; fi
-        path="$path$REPLY"
+        path="$path$item"
     done < "$HOME/.path"
     export PATH="$path"
 fi
@@ -15,8 +16,9 @@ fi
 if [[ -e "$HOME/.manpath" ]]; then
     manpath=""
     while read -r; do
+        eval "item=\"$REPLY\""
         if [[ ! -z "$manpath" ]]; then manpath="$manpath:"; fi
-        manpath="$manpath$REPLY"
+        manpath="$manpath$item"
     done < "$HOME/.manpath"
     export MANPATH="$manpath"
 fi
@@ -32,3 +34,4 @@ if [[ -e ~/.localrc ]]
 then
   source ~/.localrc
 fi
+. "$HOME/.cargo/env"
