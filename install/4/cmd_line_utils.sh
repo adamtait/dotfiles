@@ -9,8 +9,10 @@ binaries=(
     hugo
     ios-sim
     ninja
+    pipx
     python
     rbenv
+    ripgrep
     ruby-build
     tree
     tmux
