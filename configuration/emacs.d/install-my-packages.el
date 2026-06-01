@@ -24,7 +24,6 @@
     flycheck-clj-kondo
     gh
     gist
-    git-commit
     gnuplot
     graphviz-dot-mode
     htmlize

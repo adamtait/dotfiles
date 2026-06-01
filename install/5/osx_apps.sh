@@ -12,7 +12,6 @@ brew tap homebrew/cask
 # to search for more casks, visit http://caskroom.github.io/
 apps=(
     appcleaner
-    emacs
     google-chrome
     firefox
     gimp

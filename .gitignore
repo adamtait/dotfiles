@@ -2,10 +2,15 @@
 *~
 \#*\#
 .\#*
-configuration/emacs/d/elpa
-configuration/emacs/d/ido.last
-configuration/emacs/d/smex-items
-configuration/emacs/d/.repl-history
+configuration/emacs.d/elpa/
+configuration/emacs.d/ido.last
+configuration/emacs.d/smex-items
+configuration/emacs.d/.repl-history
+configuration/emacs.d/adamtait.el
+configuration/emacs.d/tramp
+configuration/emacs.d/savefile/
+configuration/emacs.d/transient/
+configuration/emacs.d/auto-save-list/
 
 
 # generated files

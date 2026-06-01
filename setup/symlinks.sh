@@ -30,11 +30,6 @@ if [[ ! -h $HOME/.bash.d/aliases.sh ]]; then
     ln -s $CONFIG_DIR/bash/d/* $HOME/.bash.d/
 fi
 
-if [[ ! -h $HOME/.emacs ]]; then
-    echo ""
-    echo "--- adding .emacs"
-    ln -s $CONFIG_DIR/emacs/emacs $HOME/.emacs
-fi
 
 if [[ ! -h $HOME/.lein ]]; then
     echo ""

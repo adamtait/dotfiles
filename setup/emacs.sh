@@ -9,7 +9,7 @@ echo "--- cleaning up any old emacs installation"
 if [[ -d $HOME/.emacs.d ]]; then
     echo "removing old emacs configuration"
     # safety in the case that you had already installed .emacs configuration
-    sudo rm -rf $HOME/.emacs.d
+    rm -rf $HOME/.emacs.d
 fi
 #if [[ ! -h $HOME/.emacs.d ]]; then
 #    ln -s $DOTFILES_DIR/emacs.d $HOME/.emacs.d
@@ -17,11 +17,11 @@ fi
 
 
 echo ""
-echo "--- checking Emacs installation"
-if [[ ! -d /Applications/Emacs.app ]]; then
+echo "--- checking CLI Emacs installation"
+if ! command -v emacs &> /dev/null; then
     echo "------------"
-    echo "WARNING!! XEmacs didn't get installed properly."
-    echo "Try running .dotfiles/install.sh"
+    echo "WARNING!! CLI Emacs is not installed or on the PATH."
+    echo "Try running brew install emacs"
     echo "------------"
     echo ""
     exit 1
@@ -32,8 +32,15 @@ echo ""
 echo "--- installing Emacs packages"
 
 rm -f /tmp/.emacs
-#sudo ln -sf /opt/homebrew/Cellar/emacs/28.1/bin/emacs* /usr/local/bin/
-cp -r ~/.dotfiles/configuration/emacs.d ~/.emacs.d
+
+# Remove old config directory/link if it exists
+if [[ -e $HOME/.emacs.d || -L $HOME/.emacs.d ]]; then
+    rm -rf $HOME/.emacs.d
+fi
+
+# Symlink dotfiles config directory to ~/.emacs.d
+ln -s $DOTFILES_DIR/configuration/emacs.d $HOME/.emacs.d
+
 /opt/homebrew/bin/emacs --script ~/.emacs.d/install-my-packages.el
 
 echo "--> DONE installing Emacs packages"

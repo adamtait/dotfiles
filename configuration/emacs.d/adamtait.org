@@ -912,3 +912,27 @@ Add keyboard macros from F2, F3, F4.
   ;(add-to-list 'python-shell-completion-native-disabled-interpreters
 ;	       "jupyter")
 #+END_SRC 
+
+* Terminal & Ghostty enhancements
+
+  Improve terminal usability including mouse integration and clipboard sync for CLI emacs inside Ghostty.
+
+#+BEGIN_SRC emacs-lisp
+  ;; Enable mouse support in terminals (like Ghostty)
+  (unless (display-graphic-p)
+    (xterm-mouse-mode 1))
+
+  ;; Share system clipboard (pbcopy/pbpaste) in terminal mode
+  (unless (display-graphic-p)
+    (setq interprogram-cut-function
+          (lambda (text &optional push)
+            (let ((process-connection-type nil))
+              (let ((proc (start-process "pbcopy" nil "pbcopy")))
+                (process-send-string proc text)
+                (process-send-eof proc)))))
+    (setq interprogram-paste-function
+          (lambda ()
+            (let ((clipboard (shell-command-to-string "pbpaste")))
+              (unless (string= clipboard "")
+                clipboard)))))
+#+END_SRC 

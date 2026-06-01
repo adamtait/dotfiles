@@ -2,11 +2,8 @@
 
 
 # check for existing emacs install
-if [[ ! `emacs -version` =~ "26" ]]; then
+if ! command -v emacs &> /dev/null; then
     echo ""
-    echo "--- removing old emacs version"
-    sudo rm -f /usr/bin/emacs
-    sudo rm -rf /usr/share/emacs
+    echo "--- installing native CLI emacs"
     brew install emacs
-    brew services start emacs
 fi

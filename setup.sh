@@ -20,7 +20,7 @@ if [[ ! -d $HOME ]]; then
 fi
 
 # run all setup files
-for f in $DOTFILES_DIR/setup/*
+for f in $DOTFILES_DIR/setup/*.sh
 do
     sh $f;
 done
