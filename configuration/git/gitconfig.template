@@ -8,7 +8,7 @@
         helper = GIT_CREDENTIAL_HELPER
 [core]
 	pager = "less -FXRS -x2"
-	editor = emacsclient -t
+	editor = emacs -nw
 [include]
 	path = .gituser
 [alias]
