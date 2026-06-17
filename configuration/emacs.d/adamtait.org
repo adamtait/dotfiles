@@ -848,7 +848,8 @@ As if they had been typed into the REPL buffer.
     (menu-bar-mode 1))
 
   ;; Fix Unicode character spacing; see http://stackoverflow.com/q/8779351
-  (when (string-equal system-type "darwin")
+  (when (and (string-equal system-type "darwin")
+             (fboundp 'set-fontset-font))
     (set-fontset-font "fontset-default"
                       'unicode
                       '("Hack" . "iso10646-1")))

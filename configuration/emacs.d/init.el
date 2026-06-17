@@ -1,3 +1,6 @@
+;; Temporarily raise garbage collection threshold to speed up startup
+(setq gc-cons-threshold (* 50 1024 1024))
+
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
@@ -55,8 +58,8 @@
  '(default-directory "~/workspace" t)
  '(delete-old-versions t)
  '(dired-listing-switches "-alg")
- '(shell-file-name "/opt/homebrew/Cellar/bash/5.2.12/bin/bash")
- '(explicit-shell-file-name "/opt/homebrew/Cellar/bash/5.2.12/bin/bash")
+;; '(shell-file-name "/opt/homebrew/Cellar/bash/5.2.12/bin/bash")
+;; '(explicit-shell-file-name "/opt/homebrew/Cellar/bash/5.2.12/bin/bash")
  '(fringe-mode nil nil (fringe))
  '(global-auto-revert-mode t)
  '(global-hl-line-mode t)
@@ -124,3 +127,8 @@
  '(highlight ((t (:foreground nil :background nil))))
  '(hl-line ((t (:background "#2d2d2d")))))
   ;; "#2d2d2d" "#ffcccc"
+
+;; Reset garbage collection threshold after startup completes
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (setq gc-cons-threshold (* 2 1024 1024))))
