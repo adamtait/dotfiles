@@ -1,0 +1,26 @@
+# PATH / MANPATH — cross-platform, built from Homebrew's shellenv (no hardcoded prefixes).
+# Replaces the old ~/.path line-by-line reader entirely.
+
+{{ if eq .chezmoi.os "darwin" -}}
+{{   if eq .chezmoi.arch "arm64" -}}
+export HOMEBREW_PREFIX="/opt/homebrew"
+{{   else -}}
+export HOMEBREW_PREFIX="/usr/local"
+{{   end -}}
+[ -x "$HOMEBREW_PREFIX/bin/brew" ] && eval "$($HOMEBREW_PREFIX/bin/brew shellenv)"
+# GNU coreutils ahead of BSD utils when installed.
+[ -d "$HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin" ] && path=("$HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin" $path)
+[ -d "$HOMEBREW_PREFIX/opt/coreutils/libexec/gnuman" ] && manpath=("$HOMEBREW_PREFIX/opt/coreutils/libexec/gnuman" $manpath)
+{{ else -}}
+for _brew in /home/linuxbrew/.linuxbrew/bin/brew "$HOME/.linuxbrew/bin/brew"; do
+  [ -x "$_brew" ] && eval "$($_brew shellenv)" && break
+done
+unset _brew
+{{ end -}}
+
+# Personal bins.
+path=("$HOME/.local/bin" $path)
+
+# De-duplicate while preserving order.
+typeset -U path manpath
+export PATH MANPATH

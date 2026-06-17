@@ -1,1 +1,0 @@
-../../../submodules/ciao/cmd.sh

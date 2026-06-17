@@ -1,0 +1,17 @@
+{{/* Prompted once on `chezmoi init`; values cached in the local config and reused. */}}
+{{- $name := promptStringOnce . "name" "Full name for git" -}}
+{{- $email := promptStringOnce . "email" "Git email" -}}
+{{- $machine := promptChoiceOnce . "machine" "Machine type" (list "personal" "work" "cloud-workstation") -}}
+
+[data]
+    name = {{ $name | quote }}
+    email = {{ $email | quote }}
+    machine = {{ $machine | quote }}
+    isCloud = {{ eq $machine "cloud-workstation" }}
+
+[diff]
+    exclude = ["scripts"]
+
+[git]
+    autoCommit = false
+    autoPush = false

@@ -1,0 +1,16 @@
+# Java — resolve JAVA_HOME dynamically (no hardcoded vendor/version path).
+# Loads before clojure (which needs a JDK).
+
+{{ if eq .chezmoi.os "darwin" -}}
+if /usr/libexec/java_home -v 21 >/dev/null 2>&1; then
+  export JAVA_HOME="$(/usr/libexec/java_home -v 21)"
+elif /usr/libexec/java_home >/dev/null 2>&1; then
+  export JAVA_HOME="$(/usr/libexec/java_home)"
+fi
+{{ else -}}
+# Follow the javac symlink back to the JDK home.
+if (( $+commands[javac] )); then
+  export JAVA_HOME="$(dirname "$(dirname "$(readlink -f "$(command -v javac)")")")"
+fi
+{{ end -}}
+[[ -n "$JAVA_HOME" ]] && path=("$JAVA_HOME/bin" $path)

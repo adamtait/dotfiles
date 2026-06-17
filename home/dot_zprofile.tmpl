@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+# ~/.zprofile — sourced for login shells, before ~/.zshrc. Bootstraps the package
+# manager environment (Homebrew) so PATH is correct for login sessions.
+
+{{ if eq .chezmoi.os "darwin" -}}
+{{   if eq .chezmoi.arch "arm64" -}}
+[ -x /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+{{   else -}}
+[ -x /usr/local/bin/brew ] && eval "$(/usr/local/bin/brew shellenv)"
+{{   end -}}
+{{ else -}}
+[ -x /home/linuxbrew/.linuxbrew/bin/brew ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+[ -x "$HOME/.linuxbrew/bin/brew" ] && eval "$($HOME/.linuxbrew/bin/brew shellenv)"
+{{ end -}}

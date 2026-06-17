@@ -1,0 +1,24 @@
+{{- /* Targets listed here are NOT applied on machines matching the condition. */ -}}
+
+{{- if ne .chezmoi.os "darwin" }}
+{{/* macOS-only files: skip on Linux */}}
+.hammerspoon
+Library
+{{- end }}
+
+{{- if .isCloud }}
+{{/* Headless cloud workstation (code-oss in a browser): no GUI terminal, no mac apps */}}
+.hammerspoon
+Library
+.config/ghostty
+{{- end }}
+
+{{- /* Always-ignore: coding-agent runtime state must never be managed/clobbered */}}
+.claude/projects
+.claude/history.jsonl
+.claude/todos
+.claude/statsig
+.claude/.credentials.json
+.codex/history.jsonl
+.codex/sessions
+.codex/log

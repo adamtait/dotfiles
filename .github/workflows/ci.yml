@@ -1,0 +1,53 @@
+name: chezmoi
+
+# Validates that the dotfiles render and apply cleanly on both macOS and Linux.
+# This is the cross-platform guard that can't be fully exercised from a single OS locally.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  apply:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        machine: [personal, cloud-workstation]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install chezmoi
+        run: sh -c "$(curl -fsSL https://get.chezmoi.io)" -- -b "$HOME/.local/bin"
+
+      - name: Seed chezmoi config (skip interactive prompts)
+        run: |
+          mkdir -p "$HOME/.config/chezmoi"
+          cat > "$HOME/.config/chezmoi/chezmoi.toml" <<EOF
+          [data]
+          name = "CI User"
+          email = "ci@example.com"
+          machine = "${{ matrix.machine }}"
+          isCloud = ${{ matrix.machine == 'cloud-workstation' }}
+          EOF
+
+      - name: doctor
+        run: "$HOME/.local/bin/chezmoi doctor --source ./home" || true
+
+      - name: Render whole tree (dry-run apply — does not run scripts)
+        run: "$HOME/.local/bin/chezmoi apply --source ./home --dry-run --verbose"
+
+      - name: Lint rendered zsh
+        run: |
+          set -e
+          command -v zsh >/dev/null || { sudo apt-get update && sudo apt-get install -y zsh; } 2>/dev/null || true
+          "$HOME/.local/bin/chezmoi" archive --source ./home -o /tmp/dotfiles.tar
+          mkdir -p /tmp/rendered && tar -xf /tmp/dotfiles.tar -C /tmp/rendered
+          if command -v zsh >/dev/null; then
+            for f in /tmp/rendered/.zshenv /tmp/rendered/.zshrc /tmp/rendered/.config/zsh/conf.d/*.zsh; do
+              [ -f "$f" ] && zsh -n "$f"
+            done
+            echo "zsh syntax OK"
+          fi

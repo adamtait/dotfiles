@@ -1,0 +1,20 @@
+# Ghostty terminal configuration. https://ghostty.org/docs/config
+# (Ignored on cloud-workstation machines — code-oss has no local terminal emulator.)
+
+font-family = "JetBrainsMono Nerd Font"
+font-size = {{ if eq .chezmoi.os "darwin" }}14{{ else }}12{{ end }}
+
+theme = "catppuccin-mocha"
+background-opacity = 0.98
+
+cursor-style = block
+shell-integration = zsh
+mouse-hide-while-typing = true
+copy-on-select = clipboard
+window-padding-x = 8
+window-padding-y = 6
+scrollback-limit = 10000
+
+{{ if eq .chezmoi.os "darwin" -}}
+macos-option-as-alt = true
+{{ end -}}

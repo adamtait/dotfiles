@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Install a default Python via pyenv (if not already present). Non-fatal.
+set -uo pipefail
+
+if ! command -v pyenv >/dev/null 2>&1; then
+  export PYENV_ROOT="$HOME/.pyenv"
+  [ -d "$PYENV_ROOT/bin" ] && export PATH="$PYENV_ROOT/bin:$PATH"
+fi
+if ! command -v pyenv >/dev/null 2>&1; then
+  echo "WARN: pyenv not found; skipping Python install" >&2
+  exit 0
+fi
+
+PY_VERSION="{{ .pythonVersion | default "3.12" }}"
+# Resolve to the latest patch of the requested minor series.
+LATEST="$(pyenv install --list 2>/dev/null | tr -d ' ' | grep -E "^${PY_VERSION}\.[0-9]+$" | tail -1)"
+LATEST="${LATEST:-$PY_VERSION}"
+
+if ! pyenv versions --bare 2>/dev/null | grep -qx "$LATEST"; then
+  echo "==> pyenv install $LATEST"
+  pyenv install -s "$LATEST" || { echo "WARN: pyenv install failed" >&2; exit 0; }
+fi
+pyenv global "$LATEST" || true
+echo "==> Python $LATEST set as global"

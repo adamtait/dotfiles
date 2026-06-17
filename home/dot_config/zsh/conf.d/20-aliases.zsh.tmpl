@@ -1,0 +1,55 @@
+# Aliases — ported from the old bash aliases.sh. Tool-replacement aliases are guarded
+# so they only bind when the replacement is actually installed (cross-machine safe).
+
+# Date
+alias da='date "+%Y-%m-%d %A %T %Z"'
+alias epochtime='date +%s'
+
+# Safer modified commands
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -iv'
+alias mkdir='mkdir -p'
+alias cls='clear'
+
+# Directory navigation
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias bd='cd "$OLDPWD"'
+
+# Listing ({{ if eq .chezmoi.os "darwin" }}BSD ls{{ else }}GNU ls{{ end }} colour flag)
+{{ if eq .chezmoi.os "darwin" -}}
+alias ls='ls -G'
+{{ else -}}
+alias ls='ls --color=auto'
+{{ end -}}
+alias l='ls -1F'
+alias ll='ls -lAh'
+alias la='ls -Alh'
+alias lt='ls -ltrh'      # by date
+alias lk='ls -lSrh'      # by size
+alias lf="ls -l | grep -v '^d'"   # files only
+alias ld="ls -l | grep '^d'"      # dirs only
+
+# History search
+alias h='history | grep'
+
+# Public IP (cross-platform)
+alias publicip='dig +short myip.opendns.com @resolver1.opendns.com'
+{{ if eq .chezmoi.os "darwin" -}}
+alias localip="ipconfig getifaddr en0"
+{{ else -}}
+alias localip="ip -4 -o addr show scope global | awk '{print \$2\": \"\$4}'"
+{{ end -}}
+
+# Modern CLI replacements — only when present.
+(( $+commands[bat] ))        && alias cat='bat'
+(( $+commands[prettyping] )) && alias ping='prettyping --nolegend'
+(( $+commands[htop] ))       && alias top='htop'
+(( $+commands[fzf] ))        && (( $+commands[bat] )) && \
+  alias preview="fzf --preview 'bat --color=always {}'"
+
+# Jump to the chezmoi source dir.
+(( $+commands[chezmoi] )) && alias dotfiles='cd "$(chezmoi source-path)"'

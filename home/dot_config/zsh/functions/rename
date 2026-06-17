@@ -1,0 +1,17 @@
+#compdef rename
+# rename — bulk-rename similar files via a sed script.
+#   usage:   rename <fileglob> <sed-script>
+#   example: rename '*.ft' 's/\.ft/\.tt/g'
+
+emulate -L zsh
+
+if [[ -z "$1" || -z "$2" ]]; then
+  print -u2 "usage: rename <fileglob> <sed-script>"
+  print -u2 "example: rename '*.ft' 's/\\.ft/\\.tt/g'"
+  return 1
+fi
+
+local f
+for f in **/${~1}(N); do
+  mv -- "$f" "$(print -- "$f" | sed -e "$2")"
+done

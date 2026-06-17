@@ -1,0 +1,44 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/usr/bin/env bash
+# Install Linux packages: apt for base, Homebrew-on-Linux for tools apt lacks/ships stale.
+# Re-runs whenever the rendered package lists below change.
+set -euo pipefail
+
+echo "==> Linux package install"
+
+{{ if has .chezmoi.osRelease.id (list "debian" "ubuntu" "pop" "linuxmint") -}}
+APT_PACKAGES=(
+{{ range .packages.common -}}
+  {{ . | quote }}
+{{ end -}}
+{{ range .packages.linux.apt -}}
+  {{ . | quote }}
+{{ end -}}
+)
+if command -v apt-get >/dev/null 2>&1; then
+  echo "==> apt-get install ${APT_PACKAGES[*]}"
+  sudo apt-get update -y
+  # Some "common" names differ on apt; install best-effort and don't abort the whole run.
+  sudo apt-get install -y "${APT_PACKAGES[@]}" || \
+    echo "WARN: some apt packages failed; continuing" >&2
+fi
+{{ else -}}
+echo "WARN: unsupported Linux distro '{{ .chezmoi.osRelease.id }}'; skipping apt step" >&2
+{{ end -}}
+
+# Homebrew-on-Linux for fnm/clojure/pyenv/starship/git-delta/awscli/terraform/pulumi.
+if ! command -v brew >/dev/null 2>&1; then
+  echo "==> Installing Homebrew (Linux)"
+  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || {
+    echo "WARN: linuxbrew install failed; some tools will be missing" >&2
+  }
+fi
+if command -v brew >/dev/null 2>&1 || [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv 2>/dev/null || brew shellenv)"
+  brew install \
+{{ range .packages.linux.brew }}    {{ . | quote }} \
+{{ end }}    || echo "WARN: some brew packages failed; continuing" >&2
+fi
+
+echo "==> Linux packages installed"
+{{ end -}}

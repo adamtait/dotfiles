@@ -1,0 +1,25 @@
+# Global gitignore (core.excludesfile). Replaces the old shell-startup append of .DS_Store.
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Editors
+*~
+\#*\#
+.\#*
+*.swp
+.idea/
+.vscode/
+
+# Direnv / env
+.envrc.local
+.env.local
+
+# Build / deps noise that should never be committed accidentally
+.cpcache/
+node_modules/
+__pycache__/
+*.pyc

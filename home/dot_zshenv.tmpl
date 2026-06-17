@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+# ~/.zshenv — sourced for every zsh (login, interactive, scripts). Keep it minimal:
+# only environment that non-interactive tools also need.
+
+export ZDOTDIR="${ZDOTDIR:-$HOME}"
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+
+# Editor (Emacs in client/terminal mode; auto-start a daemon if none is running).
+export EDITOR='emacsclient -a "" -t'
+export VISUAL="$EDITOR"
+
+# Personal bin dir always on PATH (PATH is fully built in conf.d/00-path.zsh).
+export PATH="$HOME/.local/bin:$PATH"

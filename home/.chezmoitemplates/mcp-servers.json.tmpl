@@ -1,0 +1,17 @@
+{{- /* Canonical MCP server map. Each agent's config renders this into its own schema.
+       Secrets are referenced as ${ENV_VAR} (or swap in chezmoi's onepasswordRead/pass
+       functions if you use a vault) — never inline a token here. */ -}}
+{
+  "filesystem": {
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-filesystem", "{{ .chezmoi.homeDir }}/workspace"]
+  },
+  "git": {
+    "command": "uvx",
+    "args": ["mcp-server-git"]
+  },
+  "fetch": {
+    "command": "uvx",
+    "args": ["mcp-server-fetch"]
+  }
+}
