@@ -3,6 +3,8 @@
 # Re-runs whenever init.el changes (hash embedded below). Non-fatal.
 set -uo pipefail
 
+{{ template "brew-shellenv.sh.tmpl" . }}
+
 # init.el hash (forces re-run when the config changes):
 # {{ include "dot_config/emacs/init.el" | sha256sum }}
 

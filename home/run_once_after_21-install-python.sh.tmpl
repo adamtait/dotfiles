@@ -2,10 +2,11 @@
 # Install a default Python via pyenv (if not already present). Non-fatal.
 set -uo pipefail
 
-if ! command -v pyenv >/dev/null 2>&1; then
-  export PYENV_ROOT="$HOME/.pyenv"
-  [ -d "$PYENV_ROOT/bin" ] && export PATH="$PYENV_ROOT/bin:$PATH"
-fi
+{{ template "brew-shellenv.sh.tmpl" . }}
+
+# pyenv may be a brew formula (now on PATH via shellenv) or a standalone clone.
+export PYENV_ROOT="${PYENV_ROOT:-$HOME/.pyenv}"
+[ -d "$PYENV_ROOT/bin" ] && export PATH="$PYENV_ROOT/bin:$PATH"
 if ! command -v pyenv >/dev/null 2>&1; then
   echo "WARN: pyenv not found; skipping Python install" >&2
   exit 0

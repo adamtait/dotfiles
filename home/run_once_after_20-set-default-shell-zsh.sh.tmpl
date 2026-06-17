@@ -3,6 +3,8 @@
 # disallow chsh, so we warn rather than fail the whole `chezmoi apply`.
 set -uo pipefail
 
+{{ template "brew-shellenv.sh.tmpl" . }}
+
 ZSH_BIN="$(command -v zsh || true)"
 if [ -z "$ZSH_BIN" ]; then
   echo "WARN: zsh not found on PATH yet; skipping default-shell change" >&2

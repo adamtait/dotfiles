@@ -13,7 +13,8 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' show-all-if-ambiguous true
 
-# Homebrew-provided completions (macOS + linuxbrew).
-if (( $+commands[brew] )); then
-  fpath=("$(brew --prefix)/share/zsh/site-functions" $fpath)
+# Homebrew-provided completions (macOS + linuxbrew). Use the prefix exported by
+# `brew shellenv` in 00-path.zsh rather than forking `brew --prefix` on every shell start.
+if [[ -n "${HOMEBREW_PREFIX:-}" && -d "$HOMEBREW_PREFIX/share/zsh/site-functions" ]]; then
+  fpath=("$HOMEBREW_PREFIX/share/zsh/site-functions" $fpath)
 fi

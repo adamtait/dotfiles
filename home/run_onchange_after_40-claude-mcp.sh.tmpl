@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Register user-scoped MCP servers with Claude Code. Claude reads MCP from ~/.claude.json
+# (not settings.json), so they must be added via the CLI. Re-runs whenever the canonical
+# server map changes. Non-fatal. Single source of truth: the shared mcp-servers template.
+set -uo pipefail
+
+{{ template "brew-shellenv.sh.tmpl" . }}
+
+if ! command -v claude >/dev/null 2>&1; then
+  echo "WARN: claude CLI not found; skipping MCP registration" >&2
+  exit 0
+fi
+if ! command -v jq >/dev/null 2>&1; then
+  echo "WARN: jq not found; skipping MCP registration" >&2
+  exit 0
+fi
+
+# Canonical server map (same template the other agents render).
+SERVERS_JSON='{{ template "mcp-servers.json.tmpl" . }}'
+
+echo "$SERVERS_JSON" | jq -r 'keys[]' | while read -r name; do
+  cfg="$(echo "$SERVERS_JSON" | jq -c --arg n "$name" '.[$n]')"
+  # Idempotent: remove any existing user-scoped server of this name, then re-add.
+  claude mcp remove "$name" --scope user >/dev/null 2>&1 || true
+  if claude mcp add-json "$name" "$cfg" --scope user >/dev/null 2>&1; then
+    echo "==> registered MCP server: $name"
+  else
+    echo "WARN: failed to register MCP server: $name" >&2
+  fi
+done

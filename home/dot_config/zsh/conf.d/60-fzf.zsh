@@ -5,9 +5,10 @@ if (( $+commands[fzf] )); then
   if fzf --zsh >/dev/null 2>&1; then
     source <(fzf --zsh)
   else
-    # Older fzf: source brew-installed integration files if present.
-    if (( $+commands[brew] )); then
-      _fzf_base="$(brew --prefix)/opt/fzf/shell"
+    # Older fzf: source brew-installed integration files if present (reuse the prefix
+    # exported by `brew shellenv`, no extra fork).
+    if [[ -n "${HOMEBREW_PREFIX:-}" ]]; then
+      _fzf_base="$HOMEBREW_PREFIX/opt/fzf/shell"
       [[ -f "$_fzf_base/key-bindings.zsh" ]] && source "$_fzf_base/key-bindings.zsh"
       [[ -f "$_fzf_base/completion.zsh" ]] && source "$_fzf_base/completion.zsh"
       unset _fzf_base

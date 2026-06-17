@@ -78,11 +78,17 @@ Removed `:mvn/repos` (datomic-cloud), `:dev`, `:ion-dev`, `:log` (Datomic/logbac
 - Claude `CLAUDE.md` includes it via `{{ template ... }}` (Claude wants its own file).
 - The neutral canonical `~/.config/agents/AGENTS.md` is rendered from the same template.
 - Codex + Antigravity get a **symlink** `AGENTS.md -> ~/.config/agents/AGENTS.md` (no dup).
-- MCP servers: canonical map in `.chezmoitemplates/mcp-servers.json.tmpl` rendered into each
-  tool's schema (Claude `settings.json` JSON, Codex `config.toml` TOML, Antigravity JSON).
+- MCP servers: canonical map in `.chezmoitemplates/mcp-servers.json.tmpl`. Codex renders it into
+  TOML, Antigravity into JSON. **Claude is different** (see review fix below).
 - **Secrets**: no tokens inlined. MCP entries that need keys reference `${ENV_VAR}` and a comment
   points at chezmoi's `onepasswordRead`/`pass` functions for those who want vault integration.
   Left as env-var references by default to keep zero external dependencies.
+- **Claude MCP correction (from code review):** Claude Code does **not** read MCP servers from
+  `~/.claude/settings.json` — user-scoped MCP lives in `~/.claude.json` (which also holds mutable
+  runtime state, so it must not be managed wholesale). The shared map is therefore registered via
+  `run_onchange_after_40-claude-mcp.sh.tmpl`, which runs `claude mcp add-json --scope user` per
+  server, reading the **same** canonical template through `jq` (single source of truth preserved;
+  re-runs when the map changes). `settings.json` no longer carries an (ignored) `mcpServers` key.
 
 ### 13. Antigravity config path is a best-effort guess
 Google Antigravity is new and its exact dotfile location/schema isn't something I can verify
@@ -154,3 +160,36 @@ throwaway HOMEs (`machine=personal` and `machine=cloud-workstation`):
 Installed during verification; it's the actual tool these dotfiles use, so it was left in place
 (outside the repo, not part of the PR). The stale v1 binary from the failed `go install` was
 removed.
+
+## Code review (8 finder angles, high effort) — fixes applied
+
+Fixed:
+1. **After-scripts couldn't find brew-installed tools on a fresh bootstrap** (correctness).
+   chezmoi runs scripts in an env that hasn't sourced `~/.zprofile`, so pyenv/zsh/emacs/claude/jq
+   installed by the package step weren't on PATH. Added a shared
+   `.chezmoitemplates/brew-shellenv.sh.tmpl` and sourced it at the top of every `*_after_*` script
+   (20-shell, 21-python, 30-emacs, 40-claude-mcp).
+2. **Claude `mcpServers` in settings.json was silently ignored** (correctness). Verified via the
+   Claude Code docs; moved MCP registration to `run_onchange_after_40-claude-mcp.sh.tmpl`
+   (`claude mcp add-json --scope user`) — see decision #12.
+3. **Repeated `$(brew --prefix)` subshell forks** on every interactive shell start (efficiency).
+   Replaced with the `$HOMEBREW_PREFIX` already exported by `brew shellenv` in 00-path, in
+   30-completion, 60-fzf, and 80-gcloud.
+4. Removed redundant `typeset -U path` in 73-go.zsh (00-path already declares it; the property
+   persists for later additions).
+5. Deleted dead `74-clojure.zsh` (was a `:` no-op).
+6. Restored two dropped git aliases (`lgd`, `blog`); `blog` now uses `@{upstream}` instead of the
+   old hardcoded `origin/master`.
+
+Considered and **skipped** (not real issues):
+- "Brewfile tap paths (`brew "hashicorp/tap/terraform"`) need explicit `tap` first" — `brew bundle`
+  auto-taps formula paths; verified idiomatic.
+- "emacs exit code lost to `| tail -5`" — the script sets `pipefail`, so the emacs failure
+  propagates and the warning fires; and the script is intentionally non-fatal anyway.
+- "ghostty managed in git but ignored on cloud" — that's the intended `.chezmoiignore` templating
+  (apply on desktop, skip on headless cloud), not an inconsistency.
+- Dropped `GREP_OPTIONS` — deprecated in modern grep (emits a warning); intentional.
+- Trimmed `ls` alias variants (`lx`/`lu`/`lr`/…) — intentional cleanup (decision #5); the common
+  ones (`ll`/`la`/`lt`/`lk`/`lf`/`ld`) are kept.
+- MCP JSON-vs-TOML duplication for Codex — only three small servers; documented tradeoff. (Claude
+  now reuses the canonical template via jq, so only Codex's TOML is a separate rendering.)

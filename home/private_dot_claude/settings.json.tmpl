@@ -4,6 +4,9 @@
   "includeCoAuthoredBy": true,
   "env": {
     "EDITOR": "emacsclient -a '' -t"
-  },
-  "mcpServers": {{ template "mcp-servers.json.tmpl" . }}
+  }
 }
+{{- /* NOTE: Claude Code does NOT read MCP servers from settings.json — user-scoped MCP
+       lives in ~/.claude.json and must be registered via `claude mcp add`. That is done
+       by run_onchange_after_40-claude-mcp.sh.tmpl, which reads the same canonical map in
+       .chezmoitemplates/mcp-servers.json.tmpl. See IMPLEMENTATION-NOTES.md (decision #12). */ -}}
