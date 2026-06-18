@@ -7,3 +7,6 @@
 
 # chezmoi local state (should never be committed)
 home/.chezmoi.toml
+
+# Locally downloaded binaries (e.g. chezmoi)
+bin/
