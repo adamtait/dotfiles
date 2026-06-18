@@ -26,6 +26,7 @@ packages:
       - coreutils
       - fnm
       - git-delta
+      - jj
       - openjdk
       - pyenv
       - rv
@@ -56,6 +57,7 @@ packages:
       - clojure/tools/clojure
       - fnm
       - git-delta
+      - jj
       - pyenv
       - rv
       - starship

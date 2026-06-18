@@ -1,0 +1,10 @@
+# Jujutsu (jj) configuration. jj reads $XDG_CONFIG_HOME/jj/config.toml.
+# Identity is templated from the same chezmoi vars as ~/.gitconfig so both VCSs agree.
+
+[user]
+name = "{{ .name }}"
+email = "{{ .email }}"
+
+[ui]
+# Bare `jj` shows the log instead of erroring with a usage message.
+default-command = "log"
