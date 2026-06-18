@@ -19,6 +19,23 @@ if ! command -v brew >/dev/null 2>&1; then
   exit 1
 fi
 
+# On a fresh machine the third-party taps we use aren't tapped, and Homebrew 6.x won't
+# auto-tap or load formulae from an untrusted tap — so `brew bundle` aborts. Tap and trust
+# them up front. (Derived from the formula list below — any entry with a "/" is
+# "<owner>/<tap>/<formula>".) `|| true` keeps `brew trust` a no-op on older Homebrew.
+{{- $taps := list -}}
+{{- range .packages.darwin.brew -}}
+{{- if contains "/" . -}}
+{{- $parts := splitList "/" . -}}
+{{- $taps = append $taps (printf "%s/%s" (index $parts 0) (index $parts 1)) -}}
+{{- end -}}
+{{- end }}
+for _tap in {{ $taps | uniq | join " " }}; do
+  brew tap "$_tap" >/dev/null 2>&1 || true
+  brew trust --tap "$_tap" >/dev/null 2>&1 || true
+done
+unset _tap
+
 brew bundle --file=/dev/stdin <<'BREWFILE'
 {{ range .packages.common -}}
 brew {{ . | quote }}
