@@ -1,0 +1,57 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/usr/bin/env bash
+# Install the Google Cloud CLI on Linux from Google's official apt repo. macOS gets gcloud
+# via the google-cloud-sdk Homebrew cask (see packages.yaml); brew has no Linux equivalent,
+# so we wire up the apt source here. Installs to /usr/lib/google-cloud-sdk, which the
+# 80-gcloud.zsh.tmpl shell module already sources. Idempotent and non-fatal: a locked-down
+# workstation may disallow apt-repo changes, so we warn rather than fail `chezmoi apply`.
+set -uo pipefail
+
+if command -v gcloud >/dev/null 2>&1; then
+  exit 0
+fi
+
+{{ if has .chezmoi.osRelease.id (list "debian" "ubuntu" "pop" "linuxmint") -}}
+if ! command -v apt-get >/dev/null 2>&1; then
+  echo "WARN: apt-get not found; skipping gcloud install" >&2
+  exit 0
+fi
+
+KEYRING="/usr/share/keyrings/cloud.google.gpg"
+SOURCE_LIST="/etc/apt/sources.list.d/google-cloud-sdk.list"
+
+echo "==> Installing Google Cloud CLI (apt)"
+
+sudo apt-get install -y apt-transport-https ca-certificates gnupg curl || {
+  echo "WARN: could not install gcloud apt prerequisites; skipping" >&2
+  exit 0
+}
+
+# Fetch and dearmor Google's signing key into a dedicated keyring.
+if [ ! -f "$KEYRING" ]; then
+  curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg \
+    | sudo gpg --dearmor -o "$KEYRING" || {
+      echo "WARN: could not install Google apt signing key; skipping gcloud install" >&2
+      exit 0
+    }
+fi
+
+# Register the cloud-sdk apt source, pinned to the keyring above.
+if [ ! -f "$SOURCE_LIST" ]; then
+  echo "deb [signed-by=$KEYRING] https://packages.cloud.google.com/apt cloud-sdk main" \
+    | sudo tee "$SOURCE_LIST" >/dev/null || {
+      echo "WARN: could not write $SOURCE_LIST; skipping gcloud install" >&2
+      exit 0
+    }
+fi
+
+sudo apt-get update -y || echo "WARN: apt-get update failed; continuing" >&2
+if sudo apt-get install -y google-cloud-cli; then
+  echo "==> Google Cloud CLI installed (open a new shell for gcloud on PATH)"
+else
+  echo "WARN: google-cloud-cli install failed" >&2
+fi
+{{ else -}}
+echo "WARN: unsupported Linux distro '{{ .chezmoi.osRelease.id }}'; skipping gcloud install" >&2
+{{ end -}}
+{{ end -}}
