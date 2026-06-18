@@ -24,15 +24,25 @@ log() { echo "[claude-setup] $(date -u +%H:%M:%S) $*"; }
 
 _clear_stale_state() {
     rm -f "${APIKEY_HELPER_PATH}"
-    sed -i '/^CLAUDE_CODE_OAUTH_TOKEN=/d' /etc/environment
-    sed -i '/^ANTHROPIC_API_KEY=/d' /etc/environment
+    # Guard the seds: `sed -i` on a not-yet-created /etc/environment fails and,
+    # under `set -e`, would abort the whole setup before auth is configured.
+    if [ -f /etc/environment ]; then
+        sed -i '/^CLAUDE_CODE_OAUTH_TOKEN=/d' /etc/environment
+        sed -i '/^ANTHROPIC_API_KEY=/d' /etc/environment
+    fi
 
     if [[ -f "${CLAUDE_SETTINGS_PATH}" ]] && command -v jq >/dev/null 2>&1; then
         if jq -e '.apiKeyHelper' "${CLAUDE_SETTINGS_PATH}" >/dev/null 2>&1; then
+            # Handle a jq failure explicitly so a bare `jq ... && mv` can't
+            # return non-zero and trip `set -e`; leave the file as-is on error.
             local tmp; tmp=$(mktemp)
-            jq 'del(.apiKeyHelper)' "${CLAUDE_SETTINGS_PATH}" > "${tmp}" \
-                && mv "${tmp}" "${CLAUDE_SETTINGS_PATH}"
-            chown "${USER_NAME}:${USER_NAME}" "${CLAUDE_SETTINGS_PATH}"
+            if jq 'del(.apiKeyHelper)' "${CLAUDE_SETTINGS_PATH}" > "${tmp}" 2>/dev/null; then
+                mv "${tmp}" "${CLAUDE_SETTINGS_PATH}"
+                chown "${USER_NAME}:${USER_NAME}" "${CLAUDE_SETTINGS_PATH}"
+            else
+                rm -f "${tmp}"
+                log "could not strip apiKeyHelper; leaving settings.json as-is"
+            fi
         fi
     fi
 }
@@ -66,7 +76,7 @@ _seed_onboarding() {
             "${CLAUDE_BIN_PATH}" -p "respond with OK" 2>/dev/null | grep -q 'OK'; then
         log "smoke test OK"
     else
-        log "smoke test did not return OK"
+        log "WARNING: smoke test did not return OK; claude auth may be misconfigured"
     fi
 }
 
@@ -97,8 +107,18 @@ EOF
                 printf '{"apiKeyHelper": "%s"}\n' "${APIKEY_HELPER_PATH}" > "${CLAUDE_SETTINGS_PATH}"
             elif command -v jq >/dev/null 2>&1; then
                 tmp=$(mktemp)
-                jq --arg h "${APIKEY_HELPER_PATH}" '.apiKeyHelper = $h' \
-                    "${CLAUDE_SETTINGS_PATH}" > "${tmp}" && mv "${tmp}" "${CLAUDE_SETTINGS_PATH}"
+                if jq --arg h "${APIKEY_HELPER_PATH}" '.apiKeyHelper = $h' \
+                        "${CLAUDE_SETTINGS_PATH}" > "${tmp}" 2>/dev/null; then
+                    mv "${tmp}" "${CLAUDE_SETTINGS_PATH}"
+                else
+                    rm -f "${tmp}"
+                    log "WARNING: could not update ${CLAUDE_SETTINGS_PATH} apiKeyHelper; apikey auth may fail"
+                fi
+            else
+                # settings.json exists but jq is unavailable, so apiKeyHelper
+                # can't be merged in without clobbering existing keys. Surface
+                # it instead of silently leaving auth unconfigured.
+                log "WARNING: jq unavailable and ${CLAUDE_SETTINGS_PATH} exists; cannot set apiKeyHelper, apikey auth may fail"
             fi
             chown "${USER_NAME}:${USER_NAME}" "${CLAUDE_SETTINGS_PATH}"
             log "configured apikey mode"

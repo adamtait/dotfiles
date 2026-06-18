@@ -29,8 +29,13 @@ _clear_stale_state() {
     # Drop any prior auth state so switching providers doesn't leave
     # OPENAI_API_KEY set alongside a cached ChatGPT login (see openai/codex
     # issue #20099 — silent fallback to API-key billing).
-    sed -i '/^OPENAI_API_KEY=/d'      /etc/environment
-    sed -i '/^CODEX_AUTH_JSON_B64=/d' /etc/environment
+    # Guard the sed calls: a fresh image may not have /etc/environment yet,
+    # and `sed -i` on a missing file fails, which under `set -e` aborts the
+    # whole setup before any auth is configured.
+    if [ -f /etc/environment ]; then
+        sed -i '/^OPENAI_API_KEY=/d'      /etc/environment
+        sed -i '/^CODEX_AUTH_JSON_B64=/d' /etc/environment
+    fi
     rm -f "${AUTH_FILE}"
 }
 

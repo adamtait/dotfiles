@@ -33,7 +33,12 @@ set -euo pipefail
 # RA_CLAUDE_SYNC_PULL_DETACHED guards against infinite re-exec.
 if [ "${RA_CLAUDE_SYNC_PULL_DETACHED:-0}" != "1" ]; then
     export RA_CLAUDE_SYNC_PULL_DETACHED=1
-    setsid --fork "$0" </dev/null >/dev/null 2>&1
+    # Re-exec output is suppressed; capture a setsid failure so a non-running
+    # boot pull is auditable in the boot journal instead of silently no-op'ing.
+    if ! setsid --fork "$0" </dev/null >/dev/null 2>&1; then
+        echo "[claude-sync-pull] WARNING: detached re-exec of '$0' failed;" \
+             "boot pull skipped this boot" >&2
+    fi
     exit 0
 fi
 

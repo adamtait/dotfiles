@@ -21,16 +21,27 @@ GEMINI_BIN_PATH="${USER_HOME}/.npm-global/bin/gemini"
 log() { echo "[gemini-setup] $(date -u +%H:%M:%S) $*"; }
 
 _clear_stale_state() {
-    sed -i '/^GEMINI_API_KEY=/d' /etc/environment
-    sed -i '/^GOOGLE_GENAI_USE_VERTEXAI=/d' /etc/environment
-    sed -i '/^GOOGLE_CLOUD_PROJECT=/d' /etc/environment
-    sed -i '/^GOOGLE_CLOUD_LOCATION=/d' /etc/environment
+    # Guard the seds: `sed -i` on a not-yet-created /etc/environment fails and,
+    # under `set -e`, would abort the whole setup before auth is configured.
+    if [ -f /etc/environment ]; then
+        sed -i '/^GEMINI_API_KEY=/d' /etc/environment
+        sed -i '/^GOOGLE_GENAI_USE_VERTEXAI=/d' /etc/environment
+        sed -i '/^GOOGLE_CLOUD_PROJECT=/d' /etc/environment
+        sed -i '/^GOOGLE_CLOUD_LOCATION=/d' /etc/environment
+    fi
 
     if [[ -f "${GEMINI_SETTINGS_PATH}" ]] && command -v jq >/dev/null 2>&1; then
+        # A pre-existing corrupt/empty settings.json makes jq fail; the bare
+        # `jq ... && mv` would then return non-zero and trip `set -e`. Handle
+        # the failure explicitly and leave the file as-is.
         local tmp; tmp=$(mktemp)
-        jq 'del(.selectedAuthType)' "${GEMINI_SETTINGS_PATH}" > "${tmp}" \
-            && mv "${tmp}" "${GEMINI_SETTINGS_PATH}"
-        chown "${USER_NAME}:${USER_NAME}" "${GEMINI_SETTINGS_PATH}"
+        if jq 'del(.selectedAuthType)' "${GEMINI_SETTINGS_PATH}" > "${tmp}" 2>/dev/null; then
+            mv "${tmp}" "${GEMINI_SETTINGS_PATH}"
+            chown "${USER_NAME}:${USER_NAME}" "${GEMINI_SETTINGS_PATH}"
+        else
+            rm -f "${tmp}"
+            log "could not strip selectedAuthType (invalid settings.json?); leaving as-is"
+        fi
     fi
 }
 
@@ -79,7 +90,7 @@ _smoke_test() {
             | grep -q 'OK'; then
         log "smoke test OK"
     else
-        log "smoke test did not return OK"
+        log "WARNING: smoke test did not return OK; gemini auth may be misconfigured"
     fi
 }
 
