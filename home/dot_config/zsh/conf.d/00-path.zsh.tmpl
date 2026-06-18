@@ -29,7 +29,10 @@ if [ -r "$HOME/.path" ]; then
   while IFS= read -r _line || [ -n "$_line" ]; do
     case $_line in ''|'#'*) continue ;; esac
     _dir=${(e)_line}
-    [ -d "$_dir" ] && _extra_path+=("${_dir:A}")
+    # :a absolutizes and collapses '..' lexically WITHOUT resolving symlinks, so
+    # e.g. .../opt/<pkg>/... stays the stable symlink instead of a version-pinned
+    # .../Cellar/<pkg>/<version>/... that typeset -U can't dedupe against shellenv.
+    [ -d "$_dir" ] && _extra_path+=("${_dir:a}")
   done < "$HOME/.path"
   path=($_extra_path $path)
   unset _line _dir _extra_path
