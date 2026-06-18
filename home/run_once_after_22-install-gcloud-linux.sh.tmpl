@@ -27,13 +27,24 @@ sudo apt-get install -y apt-transport-https ca-certificates gnupg curl || {
   exit 0
 }
 
-# Fetch and dearmor Google's signing key into a dedicated keyring.
+# Fetch and dearmor Google's signing key into a dedicated keyring. Stage in a temp file and
+# install atomically so a failed download can't leave a partial keyring that the guard above
+# would then trust on the next run, permanently breaking apt with a bad-signature error.
 if [ ! -f "$KEYRING" ]; then
-  curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg \
-    | sudo gpg --dearmor -o "$KEYRING" || {
+  _key_tmp="$(mktemp)"
+  if curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg \
+       | gpg --dearmor -o "$_key_tmp"; then
+    sudo install -m 0644 "$_key_tmp" "$KEYRING" || {
       echo "WARN: could not install Google apt signing key; skipping gcloud install" >&2
+      rm -f "$_key_tmp"
       exit 0
     }
+  else
+    echo "WARN: could not fetch Google apt signing key; skipping gcloud install" >&2
+    rm -f "$_key_tmp"
+    exit 0
+  fi
+  rm -f "$_key_tmp"
 fi
 
 # Register the cloud-sdk apt source, pinned to the keyring above.
