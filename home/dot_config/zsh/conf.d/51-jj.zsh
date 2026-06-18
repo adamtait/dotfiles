@@ -2,7 +2,7 @@
 # binary itself, so they stay in sync with whatever version is installed.
 
 if (( $+commands[jj] )); then
-  source <(COMPLETE=zsh jj) 2>/dev/null
+  source <(COMPLETE=zsh jj 2>/dev/null)
 
   alias jjs='jj status'
   alias jjl='jj log'
