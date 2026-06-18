@@ -34,11 +34,11 @@ packages:
       - awscli
       - hashicorp/tap/terraform
       - pulumi/tap/pulumi
-      # google-cloud-sdk + ghostty are casks (see below) but listed via brew bundle too
+      # gcloud-cli + ghostty are casks (see below) but listed via brew bundle too
     # Homebrew casks (GUI / large vendored apps)
     cask:
       - ghostty
-      - google-cloud-sdk
+      - gcloud-cli
       - hammerspoon
       - font-jetbrains-mono-nerd-font
 
