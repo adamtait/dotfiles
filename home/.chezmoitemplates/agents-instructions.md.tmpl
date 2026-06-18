@@ -1,0 +1,36 @@
+{{- /* Single source of truth for tool-agnostic coding-agent guidance.
+       Included verbatim by Claude (CLAUDE.md), and symlinked-to by Codex/Antigravity
+       via ~/.config/agents/AGENTS.md. Keep this provider-neutral. */ -}}
+# Coding agent instructions
+
+These are shared, machine-level defaults for any CLI coding agent. Project-level
+instructions always take precedence over what's here.
+
+## Who I am
+- Name: {{ .name }}
+- Machine type: {{ .machine }}
+
+## General working style
+- Prefer small, reviewable changes. Explain non-obvious decisions briefly.
+- Match the surrounding code's style, naming, and structure; don't introduce new
+  dependencies or patterns without a reason.
+- Read before you write: understand existing utilities and conventions before adding code.
+- When a task is ambiguous, state the assumption you're making and proceed, rather than
+  stalling — unless the choice is costly or hard to reverse.
+
+## Shell / environment
+- Default shell is **zsh**; shell config lives in `~/.config/zsh/conf.d/`.
+- Dotfiles are managed by **chezmoi** (source: `chezmoi source-path`). Edit dotfiles in the
+  chezmoi source, not the live targets, then `chezmoi apply`.
+- Editor is Emacs in client mode (`emacsclient`). Primary languages: Clojure, Python, Go,
+  plus a lot of Markdown.
+
+## Git
+- Default branch is `main`. Don't commit or push unless asked.
+- Keep commits focused; write clear messages describing the why.
+
+## Safety
+- Never print or commit secrets. Tokens come from the environment or a password manager,
+  never inlined into tracked files.
+- Treat destructive actions (deletes, history rewrites, force-push) as requiring explicit
+  confirmation.

@@ -1,0 +1,46 @@
+# Starship prompt. Minimal, fast, legible in a 256-colour terminal (ghostty).
+# https://starship.rs/config/
+
+add_newline = true
+command_timeout = 1000
+
+format = """
+$directory\
+$git_branch\
+$git_status\
+$python\
+$nodejs\
+$golang\
+$java\
+$cmd_duration\
+$line_break\
+$character"""
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+
+[directory]
+truncation_length = 4
+truncate_to_repo = true
+
+[git_branch]
+symbol = " "
+format = "[$symbol$branch]($style) "
+
+[git_status]
+format = '([$all_status$ahead_behind]($style) )'
+
+[cmd_duration]
+min_time = 2000
+format = "[$duration]($style) "
+
+# Language modules: only show inside relevant projects (default behaviour).
+[python]
+symbol = " "
+[nodejs]
+symbol = " "
+[golang]
+symbol = " "
+[java]
+symbol = " "

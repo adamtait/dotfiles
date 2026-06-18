@@ -1,0 +1,35 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/usr/bin/env bash
+# Install macOS packages via Homebrew. Re-runs whenever the rendered package list changes
+# (chezmoi hashes this script's content, which embeds the lists below).
+set -euo pipefail
+
+echo "==> macOS package install (Homebrew)"
+
+if ! command -v brew >/dev/null 2>&1; then
+  echo "==> Installing Homebrew"
+  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv)"
+fi
+
+# Fail fast with a clear message if Homebrew still isn't available (e.g. the install above
+# was interrupted) rather than a confusing "brew: command not found" from brew bundle.
+if ! command -v brew >/dev/null 2>&1; then
+  echo "ERROR: Homebrew is not installed/on PATH; cannot install packages" >&2
+  exit 1
+fi
+
+brew bundle --no-lock --file=/dev/stdin <<'BREWFILE'
+{{ range .packages.common -}}
+brew {{ . | quote }}
+{{ end -}}
+{{ range .packages.darwin.brew -}}
+brew {{ . | quote }}
+{{ end -}}
+{{ range .packages.darwin.cask -}}
+cask {{ . | quote }}
+{{ end -}}
+BREWFILE
+
+echo "==> macOS packages installed"
+{{ end -}}

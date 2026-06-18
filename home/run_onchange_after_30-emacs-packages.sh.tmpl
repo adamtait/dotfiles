@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Pre-install Emacs packages headlessly so the first interactive launch is fast.
+# Re-runs whenever init.el changes (hash embedded below). Non-fatal.
+set -uo pipefail
+
+{{ template "brew-shellenv.sh.tmpl" . }}
+
+# init.el hash (forces re-run when the config changes):
+# {{ include "dot_config/emacs/init.el" | sha256sum }}
+
+if ! command -v emacs >/dev/null 2>&1; then
+  echo "WARN: emacs not found; skipping package pre-install" >&2
+  exit 0
+fi
+
+echo "==> Pre-installing Emacs packages (batch)"
+emacs --batch --no-init-file \
+  --eval "(setq user-emacs-directory \"$HOME/.config/emacs/\")" \
+  --load "$HOME/.config/emacs/early-init.el" \
+  --load "$HOME/.config/emacs/init.el" \
+  --eval "(message \"Emacs packages installed\")" \
+  2>&1 | tail -5 || echo "WARN: emacs package pre-install had errors; will retry on first launch" >&2

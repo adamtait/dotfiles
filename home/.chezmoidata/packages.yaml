@@ -1,0 +1,62 @@
+# Declarative package manifest. Consumed by the run_onchange package-install scripts.
+# Keep tools sorted within each list. Changing any entry re-triggers the installer
+# (the scripts hash this data).
+packages:
+  # Installed on every OS (names valid for both brew and apt where they overlap).
+  common:
+    - bat
+    - emacs
+    - fd
+    - fzf
+    - gh
+    - git
+    - go
+    - htop
+    - jq
+    - ncdu
+    - ripgrep
+    - tldr
+    - tmux
+    - zsh
+
+  darwin:
+    # Homebrew formulae
+    brew:
+      - clojure/tools/clojure
+      - coreutils
+      - fnm
+      - git-delta
+      - openjdk
+      - pyenv
+      - starship
+      - awscli
+      - hashicorp/tap/terraform
+      - pulumi/tap/pulumi
+      # google-cloud-sdk + ghostty are casks (see below) but listed via brew bundle too
+    # Homebrew casks (GUI / large vendored apps)
+    cask:
+      - ghostty
+      - google-cloud-sdk
+      - hammerspoon
+      - font-jetbrains-mono-nerd-font
+
+  linux:
+    # Installed with apt (Debian/Ubuntu code-oss workstation)
+    apt:
+      - build-essential
+      - curl
+      - emacs-nox
+      - fonts-jetbrains-mono
+      - golang-go
+      - openjdk-21-jdk
+      - unzip
+    # Installed with Homebrew-on-Linux for things apt lacks or ships stale
+    brew:
+      - clojure/tools/clojure
+      - fnm
+      - git-delta
+      - pyenv
+      - starship
+      - awscli
+      - hashicorp/tap/terraform
+      - pulumi/tap/pulumi

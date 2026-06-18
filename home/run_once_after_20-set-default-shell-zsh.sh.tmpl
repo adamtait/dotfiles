@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Make zsh the login shell. Idempotent and non-fatal: a locked-down cloud workstation may
+# disallow chsh, so we warn rather than fail the whole `chezmoi apply`.
+set -uo pipefail
+
+{{ template "brew-shellenv.sh.tmpl" . }}
+
+ZSH_BIN="$(command -v zsh || true)"
+if [ -z "$ZSH_BIN" ]; then
+  echo "WARN: zsh not found on PATH yet; skipping default-shell change" >&2
+  exit 0
+fi
+
+CURRENT_SHELL="$(getent passwd "$USER" 2>/dev/null | cut -d: -f7 || dscl . -read /Users/"$USER" UserShell 2>/dev/null | awk '{print $2}')"
+if [ "$CURRENT_SHELL" = "$ZSH_BIN" ]; then
+  exit 0
+fi
+
+# Ensure the shell is registered in /etc/shells.
+if ! grep -qx "$ZSH_BIN" /etc/shells 2>/dev/null; then
+  echo "$ZSH_BIN" | sudo tee -a /etc/shells >/dev/null 2>&1 || \
+    echo "WARN: could not add $ZSH_BIN to /etc/shells" >&2
+fi
+
+if chsh -s "$ZSH_BIN" 2>/dev/null; then
+  echo "==> Default shell changed to $ZSH_BIN (restart your session)"
+else
+  echo "WARN: could not change default shell to zsh (chsh failed); set it manually" >&2
+fi

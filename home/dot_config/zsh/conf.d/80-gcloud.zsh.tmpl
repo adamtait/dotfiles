@@ -1,0 +1,21 @@
+# Google Cloud SDK — derive the install dir instead of hardcoding ~/workspace/...
+# (the old gcloud.sh also had a quoting bug: '~/...' never expands).
+
+_gcloud_candidates=(
+{{ if eq .chezmoi.os "darwin" -}}
+  "${HOMEBREW_PREFIX:-/opt/homebrew}/share/google-cloud-sdk"
+  "${HOMEBREW_PREFIX:-/opt/homebrew}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk"
+{{ end -}}
+  "$HOME/google-cloud-sdk"
+  "$HOME/workspace/google-cloud-sdk"
+  "/usr/lib/google-cloud-sdk"
+)
+
+for _gc in $_gcloud_candidates; do
+  if [[ -f "$_gc/path.zsh.inc" ]]; then
+    source "$_gc/path.zsh.inc"
+    [[ -f "$_gc/completion.zsh.inc" ]] && source "$_gc/completion.zsh.inc"
+    break
+  fi
+done
+unset _gc _gcloud_candidates

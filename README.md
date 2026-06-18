@@ -1,64 +1,70 @@
 # dotfiles
 
-## What is this?
+Cross-platform dotfiles managed with [chezmoi](https://chezmoi.io). Works on **macOS**
+(Intel + Apple Silicon) and **Linux** (including code-oss / VS Code cloud workstations) from a
+single source tree, using templates to handle the OS differences.
 
-Herein lies configuration files and scripts for installing them onto
-OSX (Apple Mac operating system). 
+## What's managed
 
+| Area | Details |
+|------|---------|
+| Shell | **zsh**, modular config under `~/.config/zsh/conf.d/`, Starship prompt |
+| Terminal | **ghostty** (skipped on headless cloud workstations) |
+| Editor | **Emacs** — fresh, minimal, CLI-first config (Clojure / Python / Go / Markdown) |
+| Git | templated `~/.gitconfig` (identity + OS-aware credential helper), delta pager, global ignore |
+| Multiplexer | tmux (+ TPM plugins) |
+| Languages | Node (fnm), Python (pyenv), Java (OpenJDK 21), Go, Clojure CLI |
+| Cloud | AWS CLI, gcloud, Terraform, Pulumi |
+| macOS only | Hammerspoon, `~/Library/KeyBindings` (auto-skipped on Linux) |
+| Coding agents | Claude Code, Codex CLI, Antigravity — sharing one `AGENTS.md` + one MCP server map |
 
-## Quick Start
+Package installation is declarative: edit `home/.chezmoidata/packages.yaml` and the install
+scripts re-run on the next `chezmoi apply`.
 
-### On a fresh machine
+## Bootstrap a new machine
 
-```bash
-sh install.sh
+One line installs chezmoi, clones this repo, prompts for name/email/machine-type, applies
+everything, and runs the package + bootstrap scripts:
+
+```sh
+sh -c "$(curl -fsSL https://get.chezmoi.io)" -- init --apply <your-github-username>
 ```
 
-### Just configuration
+You'll be asked to pick a **machine type**: `personal`, `work`, or `cloud-workstation`. The
+`cloud-workstation` choice skips GUI/macOS-only pieces (Hammerspoon, ghostty).
 
-```bash
-sh setup.sh
+### Linux notes
+- Base packages come from `apt`; tools that apt lacks or ships stale (fnm, clojure, pyenv,
+  starship, git-delta, awscli, terraform, pulumi) are installed via **Homebrew on Linux**, which
+  installs into `$HOME` and does not need root.
+- Changing the login shell to zsh may be restricted on locked-down workstations; the script
+  warns instead of failing, so apply still completes — set the shell manually if needed.
+
+## Day-to-day
+
+```sh
+chezmoi edit ~/.zshrc       # edit a managed file in the source, then apply
+chezmoi diff                # preview what apply would change
+chezmoi apply               # apply changes to $HOME
+chezmoi update              # pull latest from git + apply
+cd "$(chezmoi source-path)" # jump to this repo (also: `dotfiles` alias)
 ```
 
-NOTE: `setup.sh` assumes that `install.sh` has run and completed
-successfully.
+## Layout
 
+```
+.chezmoiroot           -> "home" (the chezmoi source root)
+home/
+  .chezmoi.toml.tmpl   prompts + per-machine data driving all templates
+  .chezmoiignore       templated OS/cloud exclusions
+  .chezmoidata/        declarative package + version data
+  .chezmoiexternal.toml.tmpl  vendored externals (zsh plugins, tpm)
+  .chezmoitemplates/   shared partials (agent instructions, MCP servers)
+  dot_*                files that map to ~/.* (zshrc, gitconfig, tmux.conf, ...)
+  dot_config/          ~/.config/* (zsh, ghostty, emacs, git, starship, agents)
+  private_dot_claude/  private_dot_codex/  private_dot_antigravity/  agent configs
+  run_*                package install + bootstrap scripts
+```
 
-## Motivation
-
-What started as a collection of application configuration files has
-morphed into a set of scripts for turning a clean machine into a
-customized software development environment. It's customized for my
-work, but could be adapted for you.
-
-
-## Concepts
-
-These dotfiles have 2 phases:
-
-+ install phase
-+ setup phase
-
-### Install Phase
-
-As you would expect, the _install phase_ moves files around. It
-installs then runs _Homebrew_ (many times!), it downloads applications
-and installs all the applications. The details of which applications
-are installed are in the `install/` directory. The subdirectories of
-`install/` indicate explicit order thus handling dependencies.
-
-
-### Setup Phase
-
-The _setup phase_ deals with configuration. It generates and sets up
-symlinks in the host filesystem for applications to access the
-configuration.
-
-The configuration files (or the scripts that generate them) all exist
-within this git repo. Nothing new is downloaded or installed in this
-phase.
-
-The _setup phase_ scripts can be found in `setup/`. Unlike the
-_install phase_, this phase has no concept of order or dependencies.
-It assumes that symlink'ing configuration files shouldn't depend on
-any other.
+See [IMPLEMENTATION-NOTES.md](IMPLEMENTATION-NOTES.md) for design decisions, deviations from the
+original plan, and known caveats.

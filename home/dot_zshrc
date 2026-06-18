@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+# ~/.zshrc — interactive shell configuration.
+# The real content lives in modular files under ~/.config/zsh/conf.d/, sourced in
+# sorted order. This is the direct analog of the old `source ~/.bash.d/*` loop.
+
+# Autoloaded functions (rename, etc.). Put the dir on fpath BEFORE sourcing conf.d, so
+# `compinit` (run in conf.d/30-completion.zsh) sees any completion functions here.
+ZSH_FUNCTIONS="${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions"
+if [[ -d "$ZSH_FUNCTIONS" ]]; then
+  fpath=("$ZSH_FUNCTIONS" $fpath)
+  autoload -Uz "$ZSH_FUNCTIONS"/*(N:t)
+fi
+
+ZSH_CONF_D="${XDG_CONFIG_HOME:-$HOME/.config}/zsh/conf.d"
+if [[ -d "$ZSH_CONF_D" ]]; then
+  for _f in "$ZSH_CONF_D"/*.zsh(N); do
+    source "$_f"
+  done
+  unset _f
+fi
+
+# Machine-local overrides, never managed by chezmoi.
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"

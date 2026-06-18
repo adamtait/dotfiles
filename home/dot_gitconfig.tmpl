@@ -1,0 +1,62 @@
+[user]
+	name = {{ .name }}
+	email = {{ .email }}
+[hub]
+	protocol = https
+[credential]
+	helper = {{ if eq .chezmoi.os "darwin" }}osxkeychain{{ else }}cache --timeout=86400{{ end }}
+[core]
+	pager = "less -FXRS -x2"
+	editor = emacsclient -a '' -t
+	excludesfile = ~/.config/git/ignore
+[include]
+	# Machine-local identity / overrides, not managed by chezmoi.
+	path = ~/.gituser
+[init]
+	defaultBranch = main
+[alias]
+	ci      = commit
+	co      = checkout
+	st      = status
+	df      = diff --color --color-words --abbrev
+	ds      = diff --color --color-words --abbrev --staged
+	drop    = reset --soft HEAD~1
+	br      = branch
+	sta     = stash
+	unstage = "reset HEAD"
+	llog    = "log --date=local"
+	flog    = "log --pretty=fuller --decorate"
+	lg      = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
+	lga     = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all
+	lgd     = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit -p
+	lol     = "log --graph --decorate --oneline"
+	lola    = "log --graph --decorate --oneline --all"
+	blog    = "log @{upstream}... --left-right"
+	prune-merged ="!git branch --merged | grep -vE '^[*+]|(\\bmain\\b|\\bmaster\\b)' | xargs -r git branch -d && git remote prune origin"
+[color]
+	ui = auto
+[apply]
+	whitespace = nowarn
+[branch]
+	autosetupmerge = true
+[push]
+	default = simple
+	tags = true
+	autoSetupRemote = true
+[pull]
+	rebase = true
+[rebase]
+	autosquash = true
+[pager]
+	diff = delta
+	show = delta
+	log = delta
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+	line-numbers = true
+[merge]
+	conflictstyle = zdiff3
+[diff]
+	colorMoved = default

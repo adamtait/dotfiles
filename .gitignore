@@ -1,16 +1,9 @@
-# emacs
+# Editor noise
 *~
 \#*\#
 .\#*
-configuration/emacs/d/elpa
-configuration/emacs/d/ido.last
-configuration/emacs/d/smex-items
-configuration/emacs/d/.repl-history
+*.swp
+.DS_Store
 
-
-# generated files
-configuration/lein/self-installs
-configuration/git/gitconfig
-.emacs.d
-configuration/dnscrypt/launchdaemon.plist
-
+# chezmoi local state (should never be committed)
+home/.chezmoi.toml

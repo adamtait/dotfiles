@@ -1,0 +1,13 @@
+{{- /* Put brew (and its installed tools) on PATH. chezmoi runs scripts in a fresh
+       environment that hasn't sourced ~/.zprofile, so on a first bootstrap the tools the
+       package step just installed via Homebrew won't be found without this. */ -}}
+{{ if eq .chezmoi.os "darwin" -}}
+for _b in /opt/homebrew/bin/brew /usr/local/bin/brew; do
+  [ -x "$_b" ] && eval "$("$_b" shellenv)" && break
+done
+{{ else -}}
+for _b in /home/linuxbrew/.linuxbrew/bin/brew "$HOME/.linuxbrew/bin/brew"; do
+  [ -x "$_b" ] && eval "$("$_b" shellenv)" && break
+done
+{{ end -}}
+unset _b
