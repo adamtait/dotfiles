@@ -28,6 +28,7 @@ packages:
       - git-delta
       - openjdk
       - pyenv
+      - rv
       - starship
       - awscli
       - hashicorp/tap/terraform
@@ -56,6 +57,7 @@ packages:
       - fnm
       - git-delta
       - pyenv
+      - rv
       - starship
       - awscli
       - hashicorp/tap/terraform

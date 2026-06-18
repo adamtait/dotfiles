@@ -1,8 +1,8 @@
-# Ruby via rbenv.
+# Ruby via rv (spinel-coop) — fast, single-binary version + gem manager. Replaces rbenv.
+# rv is installed onto PATH by the package step; `rv shell init` registers a preexec
+# hook that switches Ruby per .ruby-version/.tool-versions. Completions come from
+# Homebrew's site-functions via compinit (see 30-completion.zsh), so none are sourced here.
 
-export RBENV_ROOT="$HOME/.rbenv"
-[[ -d "$RBENV_ROOT/bin" ]] && path=("$RBENV_ROOT/bin" $path)
-
-if (( $+commands[rbenv] )); then
-  eval "$(rbenv init - zsh)"
+if (( $+commands[rv] )); then
+  eval "$(rv shell init zsh)"
 fi
