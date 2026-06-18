@@ -1,8 +1,10 @@
 # Starship prompt. Minimal, fast, legible in a 256-colour terminal (ghostty).
 # https://starship.rs/config/
 
+# command_timeout is a safety backstop: the per-language version lookups below
+# can spike past the default on cold/contended renders (e.g. first prompt after cd).
 add_newline = true
-command_timeout = 1000
+command_timeout = 2000
 
 format = """
 $directory\
@@ -38,6 +40,14 @@ format = "[$duration]($style) "
 # Language modules: only show inside relevant projects (default behaviour).
 [python]
 symbol = " "
+{{- if lookPath "pyenv" }}
+# On pyenv hosts, read the version from pyenv (`pyenv version-name`, ~95ms)
+# instead of executing the pyenv `python` shim (~210ms + interpreter startup),
+# which intermittently timed out the prompt render in pyenv-managed projects.
+# Gated on pyenv being installed: without it `pyenv version-name` returns
+# nothing and the prompt would show an empty Python version.
+pyenv_version_name = true
+{{- end }}
 [nodejs]
 symbol = " "
 [golang]
