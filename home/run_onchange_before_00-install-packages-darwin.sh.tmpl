@@ -25,8 +25,8 @@ fi
 # "<owner>/<tap>/<formula>".) `|| true` keeps `brew trust` a no-op on older Homebrew.
 {{- $taps := list -}}
 {{- range .packages.darwin.brew -}}
-{{- if contains "/" . -}}
 {{- $parts := splitList "/" . -}}
+{{- if ge (len $parts) 3 -}}
 {{- $taps = append $taps (printf "%s/%s" (index $parts 0) (index $parts 1)) -}}
 {{- end -}}
 {{- end }}
