@@ -193,3 +193,22 @@ Considered and **skipped** (not real issues):
   ones (`ll`/`la`/`lt`/`lk`/`lf`/`ld`) are kept.
 - MCP JSON-vs-TOML duplication for Codex — only three small servers; documented tradeoff. (Claude
   now reuses the canonical template via jq, so only Codex's TOML is a separate rendering.)
+
+## Second review pass (post-PR `/review`) — fixes applied
+
+Fixed:
+- **`compinit` ran before Homebrew completions were added to `fpath`** (30-completion.zsh), so
+  brew-provided zsh completions were never registered. Moved the `fpath` addition above
+  `compinit`. Also reordered `dot_zshrc` to put `~/.config/zsh/functions` on `fpath` *before*
+  sourcing conf.d, so `compinit` can see any completion functions there.
+- **`rename` function declared itself `#compdef rename`** — that tag marks a file as the
+  *completion for* the `rename` command, not the command implementation. Harmless while the
+  functions dir loaded after compinit, but the reorder above would have made compinit try to run
+  the mv-logic as a completion generator. Removed the tag.
+- Added a fail-fast Homebrew-presence check in the macOS installer so an interrupted Homebrew
+  install yields a clear error instead of `brew bundle: command not found`.
+
+Refuted (verified against the real `claude` CLI, not assumed):
+- "`claude mcp add-json` doesn't exist / should be `claude mcp add`" — **false**. `claude mcp
+  add-json <name> <json> --scope user` and `claude mcp remove <name> --scope user` are both valid
+  subcommands/flags (confirmed via `claude mcp --help`). The registration script is correct.

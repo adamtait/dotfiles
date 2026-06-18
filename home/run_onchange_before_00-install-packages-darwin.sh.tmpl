@@ -12,6 +12,13 @@ if ! command -v brew >/dev/null 2>&1; then
   eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv)"
 fi
 
+# Fail fast with a clear message if Homebrew still isn't available (e.g. the install above
+# was interrupted) rather than a confusing "brew: command not found" from brew bundle.
+if ! command -v brew >/dev/null 2>&1; then
+  echo "ERROR: Homebrew is not installed/on PATH; cannot install packages" >&2
+  exit 1
+fi
+
 brew bundle --no-lock --file=/dev/stdin <<'BREWFILE'
 {{ range .packages.common -}}
 brew {{ . | quote }}

@@ -1,4 +1,3 @@
-#compdef rename
 # rename — bulk-rename similar files via a sed script.
 #   usage:   rename <fileglob> <sed-script>
 #   example: rename '*.ft' 's/\.ft/\.tt/g'
