@@ -1,5 +1,5 @@
-# PATH / MANPATH — cross-platform, built from Homebrew's shellenv (no hardcoded prefixes).
-# Replaces the old ~/.path line-by-line reader entirely.
+# PATH / MANPATH — cross-platform, built from Homebrew's shellenv (no hardcoded prefixes),
+# then augmented with any entries listed in ~/.path.
 
 {{ if eq .chezmoi.os "darwin" -}}
 {{   if eq .chezmoi.arch "arm64" -}}
@@ -20,6 +20,20 @@ unset _brew
 
 # Personal bins.
 path=("$HOME/.local/bin" $path)
+
+# Extra entries from ~/.path (one directory per line; blank lines and #comments
+# ignored, $VARs such as $HOME expanded). Prepended so the file's order wins, and
+# missing directories are skipped so a stale entry never breaks the rest of PATH.
+if [ -r "$HOME/.path" ]; then
+  _extra_path=()
+  while IFS= read -r _line || [ -n "$_line" ]; do
+    case $_line in ''|'#'*) continue ;; esac
+    _dir=${(e)_line}
+    [ -d "$_dir" ] && _extra_path+=("${_dir:A}")
+  done < "$HOME/.path"
+  path=($_extra_path $path)
+  unset _line _dir _extra_path
+fi
 
 # De-duplicate while preserving order.
 typeset -U path manpath
