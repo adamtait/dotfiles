@@ -1,0 +1,9 @@
+name: et
+version: "1.0.0"
+description: "Installs Eternal Terminal server (etserver) and starts it at boot for auto-reconnecting connections via `ra connect --et`"
+port-for-tunnel: 2022
+config:
+  - name: enabled
+    type: bool
+    description: "Install etserver and start it at boot?"
+    default: false

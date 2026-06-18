@@ -1,0 +1,75 @@
+name: claude-sync
+version: "1.1.0"
+description: "Syncs ~/.claude/ (session history, .claude.json, CLAUDE.md memory) across cloud workstations via a GCS bucket"
+# Bucket declared in plugin.yaml; ra core walks all installed plugins
+# generically (no plugin-specific code in cmd/create.go). The bucket
+# name is intentionally free of "claude" so other plugins can share
+# the same bucket under their own prefixes.
+buckets:
+  - name: state
+    name_template: "ra-{project_id}-{user_email_hash}"
+    override_field: bucket_name_override
+    role: roles/storage.objectAdmin
+    env_var: RA_PLUGIN_CLAUDE_SYNC_BUCKET
+    # Storage hygiene (load-reduction plan #4). ra core applies these GCS
+    # Object Lifecycle Management rules to the bucket on every `ra create`
+    # (idempotent — GCS replaces the whole lifecycle config each time).
+    # Both rules are scoped to the claude-sync/ prefix via matchesPrefix so
+    # they NEVER touch objects other plugins write into this shared bucket.
+    # Conservative defaults: cheapen cold data, then delete very old data.
+    lifecycle:
+      # After 90 days of inactivity, demote to Coldline (cheaper at-rest
+      # for data the boot pull's #1 age filter has long stopped reading).
+      - action: SetStorageClass
+        storage_class: COLDLINE
+        age_days: 90
+        prefixes:
+          - "claude-sync/"
+      # After 365 days, delete outright. Far beyond the 30-day pull TTL,
+      # so by the time this fires the data is provably unused. Raise this
+      # horizon (or drop the rule) if you want indefinite cold retention.
+      - action: Delete
+        age_days: 365
+        prefixes:
+          - "claude-sync/"
+# Stable namespace (load-reduction plan #3). Opt into ra core's generic
+# stable-id injection: core derives a deterministic id from (project,
+# config_name, user_email) — stable across `ra create` rebuilds, unlike
+# the GCE instance UUID — and exports it under this env var. 270/271 prefer
+# it over resolve_ws_id(), so a rebuilt workstation reuses ONE namespace
+# instead of spawning a fresh one each create. Core hard-codes nothing; the
+# env var name lives here, in the plugin's own declaration.
+stable_id:
+  env_var: RA_PLUGIN_CLAUDE_SYNC_NAMESPACE
+config:
+  - name: enabled
+    type: bool
+    description: "Enable claude-sync?"
+    default: false
+  - name: interval_seconds
+    type: int
+    description: "Seconds between push cycles of ~/.claude/ to GCS"
+    default: 60
+  - name: bucket_name_override
+    type: string
+    description: "Override the auto-derived GCS bucket name (empty = use ra-<project>-<hash>)"
+  # Boot-pull recency/age filter (load-reduction plan #1). The boot pull
+  # ranks namespaces by their manifest's last_push_at_epoch and pulls only
+  # those active within pull_max_age_days AND within the top pull_max_namespaces
+  # by recency. Surfaced to 270_*.sh as RA_PLUGIN_CLAUDE_SYNC_PULL_MAX_AGE_DAYS
+  # / RA_PLUGIN_CLAUDE_SYNC_PULL_MAX_NAMESPACES.
+  - name: pull_max_age_days
+    type: int
+    description: "Boot pull: only merge namespaces whose last push is within this many days (0 = no age limit, cap-only)"
+    default: 30
+  - name: pull_max_namespaces
+    type: int
+    description: "Boot pull: cap the number of namespaces merged to the N most-recently-pushed"
+    default: 15
+  # Install-time only — not used by workstation scripts. When true at user-level
+  # install, ra plugin install auto-sets bucket_name_override so all workstations
+  # across GCP projects share one bucket. Has no runtime effect on the workstation.
+  - name: sync_all_projects
+    type: bool
+    description: "Use a single shared GCS bucket across all GCP projects. When installed at user level and enabled, bucket_name_override is auto-set to the user-level default project's bucket so all workstations sync to the same place."
+    default: false

@@ -1,0 +1,66 @@
+# ra user config — baseline for all ra commands.
+# Every required key is set here. Project configs (.ra/config.yaml)
+# override per-key.
+
+git:
+    user_name: "adamtait"
+    user_email: "bin@adamta.it"
+gcloud:
+    project: email-agent-adamtait
+    workstation:
+        region: us-central1
+        machine_type: e2-standard-2
+        disk_size_gb: 50
+        cluster_name: ra-dev-cluster
+        config_name: adamtait-config
+        service_account_name: ra-workstation-sa
+        image_name: ra-workstation
+        image_tag: latest
+        repo_name: ra-workstation-images
+        auto_sleep_hours: 3
+        auto_shutdown_hours: 10
+# plugins — installed via 'ra plugin install <git-url-or-path>'. Each
+# plugin contributes its own config block under plugins.<name>.*.
+plugins:
+    claude:
+        auth_provider: oauth
+        enabled: true
+    gemini:
+        auth_provider: apikey
+        enabled: true
+        region: us-central1
+    codex:
+        auth_provider: oauth
+        enabled: true
+    tmux:
+        enabled: true
+        session_name: main
+        start_directory: "~"
+    claude-sync:
+        bucket_name_override: remote-agent-sync-artifacts
+        enabled: true
+        interval_seconds: 300
+        pull_max_age_days: 30
+        pull_max_namespaces: 10
+        sync_all_projects: true
+    antigravity:
+        enabled: true
+    et:
+        enabled: true
+        port-for-tunnel: 2022
+# secrets — populated by `ra plugin install` for plugins that declare them.
+# Each entry has shape {secret_name, env_var}. Logical names matter to
+# plugin scripts (e.g. the github plugin reads RA_SECRET_GITHUB_PAT_NAME).
+secrets:
+    claude_oauth:
+        secret_name: claude-code-oauth-token-adamtait
+        env_var: CLAUDE_CODE_OAUTH_TOKEN
+    gemini_apikey:
+        secret_name: gemini-api-key-adamtait
+        env_var: GEMINI_API_KEY
+    codex_auth_json:
+        secret_name: codex-auth-json-adamtait
+        env_var: CODEX_AUTH_JSON_B64
+# env — plain static env vars forwarded to the container (no secret fetch).
+env:
+    CLAUDE_CODE_NO_FLICKER: 1
