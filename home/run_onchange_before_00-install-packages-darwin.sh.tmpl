@@ -19,7 +19,7 @@ if ! command -v brew >/dev/null 2>&1; then
   exit 1
 fi
 
-brew bundle --no-lock --file=/dev/stdin <<'BREWFILE'
+brew bundle --file=/dev/stdin <<'BREWFILE'
 {{ range .packages.common -}}
 brew {{ . | quote }}
 {{ end -}}
