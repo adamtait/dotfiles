@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Install Bun (JavaScript runtime + package manager) via its official installer. Bun is the
+# default JS toolchain here and runs the qmd CLI installed by the next script. We use the
+# upstream installer (not brew/apt) because that's the canonical, cross-platform path and the
+# user asked for the Bun installer specifically. Installs to $HOME/.bun; 75-bun.zsh puts it on
+# PATH. Idempotent (early-out if bun is already present) and non-fatal: a locked-down box may
+# block the network fetch, so we warn rather than fail `chezmoi apply`.
+set -uo pipefail
+
+export BUN_INSTALL="${BUN_INSTALL:-$HOME/.bun}"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+if command -v bun >/dev/null 2>&1; then
+  exit 0
+fi
+
+# The installer needs curl + unzip; both are provided by the package step (curl/unzip are in
+# packages.yaml linux.apt, and macOS ships both) which runs before this script.
+echo "==> Installing Bun (official installer)"
+if curl -fsSL https://bun.sh/install | bash; then
+  echo "==> Bun installed (open a new shell for bun on PATH)"
+else
+  echo "WARN: bun install failed; skipping (qmd install will be skipped too)" >&2
+  exit 0
+fi
