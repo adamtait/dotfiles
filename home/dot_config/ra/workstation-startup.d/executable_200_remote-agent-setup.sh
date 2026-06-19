@@ -39,7 +39,7 @@ log() {
 # Install the shared ra-env helper library, then source it. Plugin scripts
 # (workstation-startup.d/ at numbers >= 250) run as SEPARATE processes and
 # source this same file, so env-var persistence — per-key dedup, the dual write
-# to /etc/environment and /run/ra/env, and the /run/ra/env quoting — lives in
+# to /etc/environment and /run/ra/env, and the single-quote escaping — lives in
 # exactly one place. Emitted with a single-quoted heredoc (<<'RA_ENV_LIB') so
 # the escaping expressions below are written to the file literally, not expanded
 # here. This script sources its own emitted lib so there is no duplicated body.
@@ -49,11 +49,22 @@ cat > /usr/local/lib/ra/ra-env.sh <<'RA_ENV_LIB'
 # ra-env helper library — installed by 200_remote-agent-setup.sh; sourced by the
 # core setup script and by plugin workstation-startup.d scripts.
 #
-#   ra_env_set KEY VALUE  — dedup + write KEY to BOTH /etc/environment (literal,
-#                           pam_env-parsed) and /run/ra/env (single-quote
-#                           escaped, bash-sourced by login shells). Creates
+#   ra_env_set KEY VALUE  — dedup + write KEY to BOTH /etc/environment and
+#                           /run/ra/env, single-quote escaped. Creates
 #                           /run/ra/env lazily, owned user:user 0600.
 #   ra_env_unset KEY      — remove KEY from BOTH files. Idempotent; set -e safe.
+#
+# Both files are single-quote-wrapped (with embedded-quote escaping `'\''`) so a
+# value containing spaces or shell metacharacters can't be re-parsed as extra
+# commands when the file is sourced:
+#   - /run/ra/env is bash-sourced via `set -a; . FILE`.
+#   - /etc/environment is read by pam_env as plain KEY=VAL, BUT some system tools
+#     also `. /etc/environment` (e.g. Debian's /usr/sbin/update-info-dir, run by
+#     the install-info dpkg trigger under `set -e`). An unquoted value with a `|`
+#     — like RA_PLUGIN_GITHUB_REPO_URLS's pipe-separated list — would otherwise be
+#     executed as a pipeline, failing the trigger and breaking apt for any package
+#     that ships info files (emacs, etc.). pam_env strips the surrounding quotes,
+#     so login shells still receive the clean value.
 #
 # Keys are valid env var names ([A-Za-z_][A-Za-z0-9_]*), so the sed regexes are
 # safe without escaping. Plugins don't set RA_ENV_FILE, so default it here.
@@ -62,9 +73,12 @@ cat > /usr/local/lib/ra/ra-env.sh <<'RA_ENV_LIB'
 ra_env_set() {
     local key="$1"
     local val="$2"
+    local quoted="${val//\'/\'\\\'\'}"
+
     [ -f /etc/environment ] || : > /etc/environment
     sed -i "/^${key}=/d" /etc/environment
-    echo "${key}=${val}" >> /etc/environment
+    printf "%s='%s'\n" "${key}" "${quoted}" >> /etc/environment
+
     if [ ! -f "${RA_ENV_FILE}" ]; then
         # Create 0600 from the start. The umask is scoped to a subshell so it
         # can't leak into a sourcing plugin's shell and tighten files that
@@ -77,9 +91,6 @@ ra_env_set() {
         chmod 0600 "${RA_ENV_FILE}"
     fi
     sed -i "/^${key}=/d" "${RA_ENV_FILE}"
-    # Single-quote-wrap (with embedded-quote escaping `'\''`) so values with
-    # spaces or shell metacharacters can't be re-parsed during sourcing.
-    local quoted="${val//\'/\'\\\'\'}"
     printf "%s='%s'\n" "${key}" "${quoted}" >> "${RA_ENV_FILE}"
 }
 
