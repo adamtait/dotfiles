@@ -21,24 +21,35 @@ GEMINI_BIN_PATH="${USER_HOME}/.npm-global/bin/gemini"
 log() { echo "[gemini-setup] $(date -u +%H:%M:%S) $*"; }
 
 # Source the shared ra-env helper (ra_env_set / ra_env_unset), installed by
-# 200_remote-agent-setup.sh at boot. Each function dedups and updates BOTH
-# /etc/environment and /run/ra/env. Fall back to a thin inline implementation
-# if the lib is missing (e.g. a newer plugin booting against an older core).
+# 200_remote-agent-setup.sh at boot. Each updates BOTH /etc/environment and
+# /run/ra/env, deduped. If the lib is somehow absent (e.g. a newer plugin
+# booting against an older core that predates it), fall back to an inline copy
+# with the SAME both-file contract — so behavior is identical whether or not the
+# lib is present, rather than silently diverging.
 if [ -r /usr/local/lib/ra/ra-env.sh ]; then
     # shellcheck source=/dev/null
     . /usr/local/lib/ra/ra-env.sh
 else
     log "WARNING: /usr/local/lib/ra/ra-env.sh missing; using inline fallback"
+    : "${RA_ENV_FILE:=/run/ra/env}"
     ra_env_set() {
         local key="$1" val="$2"
         [ -f /etc/environment ] || : > /etc/environment
         sed -i "/^${key}=/d" /etc/environment
         echo "${key}=${val}" >> /etc/environment
+        if [ ! -f "${RA_ENV_FILE}" ]; then
+            ( umask 077; : > "${RA_ENV_FILE}" )
+            chown user:user "${RA_ENV_FILE}"
+            chmod 0600 "${RA_ENV_FILE}"
+        fi
+        sed -i "/^${key}=/d" "${RA_ENV_FILE}"
+        local quoted="${val//\'/\'\\\'\'}"
+        printf "%s='%s'\n" "${key}" "${quoted}" >> "${RA_ENV_FILE}"
     }
     ra_env_unset() {
         local key="$1"
         [ -f /etc/environment ] && sed -i "/^${key}=/d" /etc/environment
-        [ -f /run/ra/env ] && sed -i "/^${key}=/d" /run/ra/env
+        [ -f "${RA_ENV_FILE}" ] && sed -i "/^${key}=/d" "${RA_ENV_FILE}"
         return 0
     }
 fi
