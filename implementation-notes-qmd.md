@@ -56,6 +56,26 @@ Both scripts early-out if the target binary (`bun`, then `qmd`) is already on PA
 the `install-gcloud` pattern. The qmd script also guards on `bun` being present and skips
 (non-fatal) if Bun didn't install.
 
+## Code review (`/review`, high effort) — outcome
+
+**Fixed — finding #1 (real bug):** the official Bun installer appends a `# bun` block to
+`~/.zshrc` whenever it's writable (confirmed against the installer source; no opt-out flag).
+`~/.zshrc` is chezmoi-managed, so that out-of-band edit would make the *next*
+`chezmoi apply` see the file as modified and abort trying to prompt — fatal on a no-TTY box
+(the same failure mode already seen with `~/.config/git/ignore`). Fix in
+`run_once_after_23-install-bun`: temporarily strip the user write bit on `~/.zshrc` around the
+installer call so the installer's own `[[ -w $rc ]]` guard skips it, then restore. PATH and
+completions are already owned by `75-bun.zsh`, so nothing is lost.
+
+**Acknowledged, not changed — finding #2 (by design):** `run_once` + non-fatal `exit 0`
+means a transient install failure is recorded as done and won't auto-retry on a later apply
+(run_once tracks the content hash; neither `run_once` nor `run_onchange` re-runs on a clean
+apply). This matches the existing `install-python`/`install-gcloud` scripts and the approved
+plan, so it's left as-is for consistency. To force a retry after a failure: re-run the
+script manually, or edit it to change its content hash. (An always-run `run_after_` script
+guarded by the existing `command -v` early-out would retry every apply but would deviate from
+the sibling convention.)
+
 ## Verification notes
 - chezmoi's real source dir is `~/.local/share/chezmoi`, **not** this repo, so all checks
   used `chezmoi execute-template --source ./home` / `chezmoi apply --dry-run --source ./home`

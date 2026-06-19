@@ -17,9 +17,22 @@ fi
 # The installer needs curl + unzip; both are provided by the package step (curl/unzip are in
 # packages.yaml linux.apt, and macOS ships both) which runs before this script.
 echo "==> Installing Bun (official installer)"
+
+# The installer appends a "# bun" block to ~/.zshrc when that file is writable. ~/.zshrc is
+# chezmoi-managed (home/dot_zshrc), so that out-of-band edit would make the next
+# `chezmoi apply` see it as modified and abort trying to prompt (fatal on a no-TTY box).
+# PATH/completions are already owned by 75-bun.zsh, so we don't want the installer's edit:
+# strip the user write bit so the installer's own `[[ -w $rc ]]` guard skips ~/.zshrc, then
+# restore it. (chmod is best-effort/non-fatal; the install proceeds regardless.)
+_zshrc="$HOME/.zshrc"
+if [ -f "$_zshrc" ]; then chmod u-w "$_zshrc" 2>/dev/null || true; fi
+_restore_zshrc() { [ -f "$_zshrc" ] && chmod u+w "$_zshrc" 2>/dev/null || true; }
+
 if curl -fsSL https://bun.sh/install | bash; then
+  _restore_zshrc
   echo "==> Bun installed (open a new shell for bun on PATH)"
 else
+  _restore_zshrc
   echo "WARN: bun install failed; skipping (qmd install will be skipped too)" >&2
   exit 0
 fi
