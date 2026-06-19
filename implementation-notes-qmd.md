@@ -76,6 +76,13 @@ script manually, or edit it to change its content hash. (An always-run `run_afte
 guarded by the existing `command -v` early-out would retry every apply but would deviate from
 the sibling convention.)
 
+## Code review — second pass
+
+**Fixed:** the `~/.zshrc` write-bit restore was only called in the two normal install
+branches, so an interrupt mid-download could leave `~/.zshrc` read-only. Replaced the
+duplicated restore calls with `trap _restore_zshrc EXIT`, which restores on every exit path
+(signals + early exits) and is also DRY. No other issues found this pass.
+
 ## Verification notes
 - chezmoi's real source dir is `~/.local/share/chezmoi`, **not** this repo, so all checks
   used `chezmoi execute-template --source ./home` / `chezmoi apply --dry-run --source ./home`
