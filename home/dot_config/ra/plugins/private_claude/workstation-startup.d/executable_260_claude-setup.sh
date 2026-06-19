@@ -22,14 +22,46 @@ CLAUDE_BIN_PATH="${USER_HOME}/.npm-global/bin/claude"
 
 log() { echo "[claude-setup] $(date -u +%H:%M:%S) $*"; }
 
+# Source the shared ra-env helper (ra_env_set / ra_env_unset), installed by
+# 200_remote-agent-setup.sh at boot. Each updates BOTH /etc/environment and
+# /run/ra/env, deduped. If the lib is somehow absent (e.g. a newer plugin
+# booting against an older core that predates it), fall back to an inline copy
+# with the SAME both-file contract — so behavior is identical whether or not the
+# lib is present, rather than silently diverging.
+if [ -r /usr/local/lib/ra/ra-env.sh ]; then
+    # shellcheck source=/dev/null
+    . /usr/local/lib/ra/ra-env.sh
+else
+    log "WARNING: /usr/local/lib/ra/ra-env.sh missing; using inline fallback"
+    : "${RA_ENV_FILE:=/run/ra/env}"
+    ra_env_set() {
+        local key="$1" val="$2"
+        [ -f /etc/environment ] || : > /etc/environment
+        sed -i "/^${key}=/d" /etc/environment
+        echo "${key}=${val}" >> /etc/environment
+        if [ ! -f "${RA_ENV_FILE}" ]; then
+            ( umask 077; : > "${RA_ENV_FILE}" )
+            chown user:user "${RA_ENV_FILE}"
+            chmod 0600 "${RA_ENV_FILE}"
+        fi
+        sed -i "/^${key}=/d" "${RA_ENV_FILE}"
+        local quoted="${val//\'/\'\\\'\'}"
+        printf "%s='%s'\n" "${key}" "${quoted}" >> "${RA_ENV_FILE}"
+    }
+    ra_env_unset() {
+        local key="$1"
+        [ -f /etc/environment ] && sed -i "/^${key}=/d" /etc/environment
+        [ -f "${RA_ENV_FILE}" ] && sed -i "/^${key}=/d" "${RA_ENV_FILE}"
+        return 0
+    }
+fi
+
 _clear_stale_state() {
     rm -f "${APIKEY_HELPER_PATH}"
-    # Guard the seds: `sed -i` on a not-yet-created /etc/environment fails and,
-    # under `set -e`, would abort the whole setup before auth is configured.
-    if [ -f /etc/environment ]; then
-        sed -i '/^CLAUDE_CODE_OAUTH_TOKEN=/d' /etc/environment
-        sed -i '/^ANTHROPIC_API_KEY=/d' /etc/environment
-    fi
+    # Clear prior auth from BOTH /etc/environment and /run/ra/env so a provider
+    # switch can't leave a stale token where login shells still source it.
+    ra_env_unset CLAUDE_CODE_OAUTH_TOKEN
+    ra_env_unset ANTHROPIC_API_KEY
 
     if [[ -f "${CLAUDE_SETTINGS_PATH}" ]] && command -v jq >/dev/null 2>&1; then
         if jq -e '.apiKeyHelper' "${CLAUDE_SETTINGS_PATH}" >/dev/null 2>&1; then
@@ -87,7 +119,7 @@ case "${RA_PLUGIN_CLAUDE_AUTH_PROVIDER:-}" in
         if [[ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
             log "CLAUDE_CODE_OAUTH_TOKEN not set; auth may fail"
         else
-            echo "CLAUDE_CODE_OAUTH_TOKEN=${CLAUDE_CODE_OAUTH_TOKEN}" >> /etc/environment
+            ra_env_set CLAUDE_CODE_OAUTH_TOKEN "${CLAUDE_CODE_OAUTH_TOKEN}"
             log "exported CLAUDE_CODE_OAUTH_TOKEN"
             _seed_onboarding "${CLAUDE_CODE_OAUTH_TOKEN}"
         fi

@@ -20,15 +20,47 @@ GEMINI_BIN_PATH="${USER_HOME}/.npm-global/bin/gemini"
 
 log() { echo "[gemini-setup] $(date -u +%H:%M:%S) $*"; }
 
+# Source the shared ra-env helper (ra_env_set / ra_env_unset), installed by
+# 200_remote-agent-setup.sh at boot. Each updates BOTH /etc/environment and
+# /run/ra/env, deduped. If the lib is somehow absent (e.g. a newer plugin
+# booting against an older core that predates it), fall back to an inline copy
+# with the SAME both-file contract — so behavior is identical whether or not the
+# lib is present, rather than silently diverging.
+if [ -r /usr/local/lib/ra/ra-env.sh ]; then
+    # shellcheck source=/dev/null
+    . /usr/local/lib/ra/ra-env.sh
+else
+    log "WARNING: /usr/local/lib/ra/ra-env.sh missing; using inline fallback"
+    : "${RA_ENV_FILE:=/run/ra/env}"
+    ra_env_set() {
+        local key="$1" val="$2"
+        [ -f /etc/environment ] || : > /etc/environment
+        sed -i "/^${key}=/d" /etc/environment
+        echo "${key}=${val}" >> /etc/environment
+        if [ ! -f "${RA_ENV_FILE}" ]; then
+            ( umask 077; : > "${RA_ENV_FILE}" )
+            chown user:user "${RA_ENV_FILE}"
+            chmod 0600 "${RA_ENV_FILE}"
+        fi
+        sed -i "/^${key}=/d" "${RA_ENV_FILE}"
+        local quoted="${val//\'/\'\\\'\'}"
+        printf "%s='%s'\n" "${key}" "${quoted}" >> "${RA_ENV_FILE}"
+    }
+    ra_env_unset() {
+        local key="$1"
+        [ -f /etc/environment ] && sed -i "/^${key}=/d" /etc/environment
+        [ -f "${RA_ENV_FILE}" ] && sed -i "/^${key}=/d" "${RA_ENV_FILE}"
+        return 0
+    }
+fi
+
 _clear_stale_state() {
-    # Guard the seds: `sed -i` on a not-yet-created /etc/environment fails and,
-    # under `set -e`, would abort the whole setup before auth is configured.
-    if [ -f /etc/environment ]; then
-        sed -i '/^GEMINI_API_KEY=/d' /etc/environment
-        sed -i '/^GOOGLE_GENAI_USE_VERTEXAI=/d' /etc/environment
-        sed -i '/^GOOGLE_CLOUD_PROJECT=/d' /etc/environment
-        sed -i '/^GOOGLE_CLOUD_LOCATION=/d' /etc/environment
-    fi
+    # Clear prior auth from BOTH /etc/environment and /run/ra/env so a provider
+    # switch can't leave stale values where login shells still source them.
+    ra_env_unset GEMINI_API_KEY
+    ra_env_unset GOOGLE_GENAI_USE_VERTEXAI
+    ra_env_unset GOOGLE_CLOUD_PROJECT
+    ra_env_unset GOOGLE_CLOUD_LOCATION
 
     if [[ -f "${GEMINI_SETTINGS_PATH}" ]] && command -v jq >/dev/null 2>&1; then
         # A pre-existing corrupt/empty settings.json makes jq fail; the bare
@@ -101,7 +133,7 @@ case "${RA_PLUGIN_GEMINI_AUTH_PROVIDER:-}" in
         if [[ -z "${GEMINI_API_KEY:-}" ]]; then
             log "GEMINI_API_KEY not set; auth may fail"
         else
-            echo "GEMINI_API_KEY=${GEMINI_API_KEY}" >> /etc/environment
+            ra_env_set GEMINI_API_KEY "${GEMINI_API_KEY}"
             log "exported GEMINI_API_KEY"
             _write_settings "USE_GEMINI"
             _smoke_test "GEMINI_API_KEY=${GEMINI_API_KEY}"
@@ -111,11 +143,9 @@ case "${RA_PLUGIN_GEMINI_AUTH_PROVIDER:-}" in
         : "${GCP_PROJECT_ID:?GCP_PROJECT_ID not set — required for vertex auth}"
         region="${RA_PLUGIN_GEMINI_REGION:-us-central1}"
         [ -n "${region}" ] || region="us-central1"
-        {
-            echo "GOOGLE_GENAI_USE_VERTEXAI=true"
-            echo "GOOGLE_CLOUD_PROJECT=${GCP_PROJECT_ID}"
-            echo "GOOGLE_CLOUD_LOCATION=${region}"
-        } >> /etc/environment
+        ra_env_set GOOGLE_GENAI_USE_VERTEXAI true
+        ra_env_set GOOGLE_CLOUD_PROJECT "${GCP_PROJECT_ID}"
+        ra_env_set GOOGLE_CLOUD_LOCATION "${region}"
         log "configured Vertex AI mode (project=${GCP_PROJECT_ID}, location=${region})"
         _write_settings "USE_VERTEX_AI"
         _smoke_test \
