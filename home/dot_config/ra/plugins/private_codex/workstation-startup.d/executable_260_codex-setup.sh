@@ -39,16 +39,16 @@ else
     : "${RA_ENV_FILE:=/run/ra/env}"
     ra_env_set() {
         local key="$1" val="$2"
+        local quoted="${val//\'/\'\\\'\'}"
         [ -f /etc/environment ] || : > /etc/environment
         sed -i "/^${key}=/d" /etc/environment
-        echo "${key}=${val}" >> /etc/environment
+        printf "%s='%s'\n" "${key}" "${quoted}" >> /etc/environment
         if [ ! -f "${RA_ENV_FILE}" ]; then
             ( umask 077; : > "${RA_ENV_FILE}" )
             chown user:user "${RA_ENV_FILE}"
             chmod 0600 "${RA_ENV_FILE}"
         fi
         sed -i "/^${key}=/d" "${RA_ENV_FILE}"
-        local quoted="${val//\'/\'\\\'\'}"
         printf "%s='%s'\n" "${key}" "${quoted}" >> "${RA_ENV_FILE}"
     }
     ra_env_unset() {
