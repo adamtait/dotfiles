@@ -5,12 +5,9 @@ packages:
   # Installed on every OS (names valid for both brew and apt where they overlap).
   common:
     - bat
-    - emacs
-    - fd
     - fzf
     - gh
     - git
-    - go
     - htop
     - jq
     - ncdu
@@ -24,8 +21,11 @@ packages:
     brew:
       - clojure/tools/clojure
       - coreutils
+      - emacs
+      - fd
       - fnm
       - git-delta
+      - go
       - jj
       - openjdk
       - pyenv
@@ -48,6 +48,7 @@ packages:
       - build-essential
       - curl
       - emacs-nox
+      - fd-find
       - fonts-jetbrains-mono
       - golang-go
       - openjdk-21-jdk

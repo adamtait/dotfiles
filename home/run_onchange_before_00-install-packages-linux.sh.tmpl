@@ -18,9 +18,12 @@ APT_PACKAGES=(
 if command -v apt-get >/dev/null 2>&1; then
   echo "==> apt-get install ${APT_PACKAGES[*]}"
   sudo apt-get update -y
-  # Some "common" names differ on apt; install best-effort and don't abort the whole run.
-  sudo apt-get install -y "${APT_PACKAGES[@]}" || \
-    echo "WARN: some apt packages failed; continuing" >&2
+  # Install individually: apt-get is atomic, so a single unknown name would abort
+  # the whole batch and install nothing. Per-package keeps a bad name isolated and
+  # the failure visible instead of silently dropping everything (e.g. emacs-nox).
+  for p in "${APT_PACKAGES[@]}"; do
+    sudo apt-get install -y "$p" || echo "WARN: apt package '$p' failed; continuing" >&2
+  done
 fi
 {{ else -}}
 echo "WARN: unsupported Linux distro '{{ .chezmoi.osRelease.id }}'; skipping apt step" >&2
