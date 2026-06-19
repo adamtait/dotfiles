@@ -1,0 +1,7 @@
+{{- /* Extra PATH entries, one directory per line, read by ~/.config/zsh/conf.d/00-path.zsh.
+       Blank lines and #comments are ignored; $VARs (e.g. $HOME) expand at shell-read time;
+       missing directories are skipped. Use $HOME (not $BUN_INSTALL etc.) — 00-path runs
+       before the per-tool conf.d modules that export those vars. */ -}}
+# Bun global bin — bun itself plus `bun install -g` CLIs such as qmd.
+# (75-bun.zsh sets $BUN_INSTALL and loads completions; PATH lives here.)
+$HOME/.bun/bin

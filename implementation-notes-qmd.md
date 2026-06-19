@@ -83,6 +83,18 @@ branches, so an interrupt mid-download could leave `~/.zshrc` read-only. Replace
 duplicated restore calls with `trap _restore_zshrc EXIT`, which restores on every exit path
 (signals + early exits) and is also DRY. No other issues found this pass.
 
+## Follow-up: Bun PATH moved to `~/.local/path`
+
+Per request, Bun's PATH entry now lives in the declarative `~/.local/path` file
+(`home/dot_local/path.tmpl`) that `00-path.zsh` already consumes, instead of a `path=(...)`
+line in `75-bun.zsh`. `75-bun.zsh` is trimmed to just exporting `$BUN_INSTALL` and loading
+completions.
+
+Key detail: the entry is `$HOME/.bun/bin`, **not** `$BUN_INSTALL/bin`. `00-path.zsh` (which
+reads `~/.local/path` and expands `$VARs`) runs *before* the per-tool conf.d modules, so
+`$BUN_INSTALL` isn't exported yet at that point — `$HOME` is always set. The reader skips
+missing dirs, so this is still safe before Bun is installed.
+
 ## Verification notes
 - chezmoi's real source dir is `~/.local/share/chezmoi`, **not** this repo, so all checks
   used `chezmoi execute-template --source ./home` / `chezmoi apply --dry-run --source ./home`
