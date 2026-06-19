@@ -25,17 +25,37 @@ AUTH_FILE="${CODEX_HOME}/auth.json"
 
 log() { echo "[codex-setup] $(date -u +%H:%M:%S) $*"; }
 
+# Source the shared ra-env helper (ra_env_set / ra_env_unset), installed by
+# 200_remote-agent-setup.sh at boot. Each function dedups and updates BOTH
+# /etc/environment and /run/ra/env. Fall back to a thin inline implementation
+# if the lib is missing (e.g. a newer plugin booting against an older core).
+if [ -r /usr/local/lib/ra/ra-env.sh ]; then
+    # shellcheck source=/dev/null
+    . /usr/local/lib/ra/ra-env.sh
+else
+    log "WARNING: /usr/local/lib/ra/ra-env.sh missing; using inline fallback"
+    ra_env_set() {
+        local key="$1" val="$2"
+        [ -f /etc/environment ] || : > /etc/environment
+        sed -i "/^${key}=/d" /etc/environment
+        echo "${key}=${val}" >> /etc/environment
+    }
+    ra_env_unset() {
+        local key="$1"
+        [ -f /etc/environment ] && sed -i "/^${key}=/d" /etc/environment
+        [ -f /run/ra/env ] && sed -i "/^${key}=/d" /run/ra/env
+        return 0
+    }
+fi
+
 _clear_stale_state() {
     # Drop any prior auth state so switching providers doesn't leave
     # OPENAI_API_KEY set alongside a cached ChatGPT login (see openai/codex
-    # issue #20099 — silent fallback to API-key billing).
-    # Guard the sed calls: a fresh image may not have /etc/environment yet,
-    # and `sed -i` on a missing file fails, which under `set -e` aborts the
-    # whole setup before any auth is configured.
-    if [ -f /etc/environment ]; then
-        sed -i '/^OPENAI_API_KEY=/d'      /etc/environment
-        sed -i '/^CODEX_AUTH_JSON_B64=/d' /etc/environment
-    fi
+    # issue #20099 — silent fallback to API-key billing). Clearing through the
+    # helper drops the keys from BOTH /etc/environment and /run/ra/env, so a
+    # stale value can't linger where login shells still source it.
+    ra_env_unset OPENAI_API_KEY
+    ra_env_unset CODEX_AUTH_JSON_B64
     rm -f "${AUTH_FILE}"
 }
 
@@ -75,7 +95,7 @@ case "${RA_PLUGIN_CODEX_AUTH_PROVIDER:-}" in
         if [[ -z "${OPENAI_API_KEY:-}" ]]; then
             log "OPENAI_API_KEY not set; auth may fail"
         else
-            echo "OPENAI_API_KEY=${OPENAI_API_KEY}" >> /etc/environment
+            ra_env_set OPENAI_API_KEY "${OPENAI_API_KEY}"
             log "configured apikey mode"
         fi
         ;;
