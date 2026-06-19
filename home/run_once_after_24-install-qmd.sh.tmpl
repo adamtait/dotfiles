@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Install qmd (https://github.com/tobi/qmd) — an on-device markdown search engine distributed
+# only via npm/bun. We install it globally with Bun so it runs on the Bun runtime; the global
+# bin lands in $BUN_INSTALL/bin, which 75-bun.zsh adds to PATH. Idempotent (early-out if qmd is
+# present) and non-fatal: if Bun didn't install (see 23-install-bun), we warn and skip.
+set -uo pipefail
+
+export BUN_INSTALL="${BUN_INSTALL:-$HOME/.bun}"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+if command -v qmd >/dev/null 2>&1; then
+  exit 0
+fi
+
+if ! command -v bun >/dev/null 2>&1; then
+  echo "WARN: bun not found; skipping qmd install" >&2
+  exit 0
+fi
+
+echo "==> Installing qmd (bun install -g @tobilu/qmd)"
+if bun install -g @tobilu/qmd; then
+  echo "==> qmd installed (open a new shell for qmd on PATH)"
+else
+  echo "WARN: qmd install failed" >&2
+fi

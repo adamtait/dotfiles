@@ -30,6 +30,7 @@ packages:
       - openjdk
       - pyenv
       - rv
+      - sqlite
       - starship
       - awscli
       - hashicorp/tap/terraform
