@@ -34,7 +34,8 @@ jobs:
           EOF
 
       - name: doctor
-        run: "$HOME/.local/bin/chezmoi doctor --source ./home" || true
+        run: |
+          "$HOME/.local/bin/chezmoi" doctor --source ./home || true
 
       - name: Render whole tree (dry-run apply — does not run scripts)
         run: "$HOME/.local/bin/chezmoi apply --source ./home --dry-run --verbose"
