@@ -33,6 +33,14 @@ sh -c "$(curl -fsSL https://get.chezmoi.io)" -- init --apply <your-github-userna
 You'll be asked to pick a **machine type**: `personal`, `work`, or `cloud-workstation`. The
 `cloud-workstation` choice skips GUI/macOS-only pieces (Hammerspoon, ghostty).
 
+The bootstrap binary chezmoi uses to apply may not persist on PATH afterward, so a `run_once`
+script (`run_once_after_10-install-chezmoi.sh.tmpl`) reinstalls chezmoi into `~/.local/bin`
+(always on PATH via `00-path.zsh`). To restore it manually:
+
+```sh
+sh -c "$(curl -fsSL https://get.chezmoi.io)" -- -b ~/.local/bin
+```
+
 ### Linux notes
 - Base packages come from `apt`; tools that apt lacks or ships stale (fnm, clojure, pyenv,
   starship, git-delta, awscli, terraform, pulumi) are installed via **Homebrew on Linux**, which
