@@ -19,7 +19,10 @@ echo "==> Installing chezmoi into $_bindir (official installer)"
 mkdir -p "$_bindir"
 
 # `-b <bindir>` tells the installer to drop only the binary (no init/apply) at that path.
-if sh -c "$(curl -fsSL https://get.chezmoi.io)" -- -b "$_bindir"; then
+# Pipe (not `sh -c "$(curl ...)"`) so `set -o pipefail` catches a failed fetch: command
+# substitution would swallow a network error into an empty script that exits 0, falsely
+# reporting success on the locked-down box this WARN path exists for.
+if curl -fsSL https://get.chezmoi.io | sh -s -- -b "$_bindir"; then
   echo "==> chezmoi installed (open a new shell for it on PATH)"
 else
   echo "WARN: chezmoi install failed; skipping (it stays available only via the bootstrap binary)" >&2
