@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Install chezmoi itself into ~/.local/bin so it persists on PATH after bootstrap. The
+# get.chezmoi.io bootstrap one-liner fetches chezmoi to a temporary/cwd location just long
+# enough to run `init --apply`; once that finishes, `chezmoi` may not live in any PATH dir.
+# ~/.local/bin is unconditionally prepended to PATH by 00-path.zsh, and it's the documented
+# canonical home for this binary, so we ensure a copy lands there. Idempotent (early-out if
+# already present) and non-fatal: a locked-down box may block the network fetch, so we warn
+# rather than fail `chezmoi apply`. Cross-platform: the official installer and ~/.local/bin
+# both work on macOS and Linux.
+set -uo pipefail
+
+_bindir="$HOME/.local/bin"
+
+if [ -x "$_bindir/chezmoi" ]; then
+  exit 0
+fi
+
+echo "==> Installing chezmoi into $_bindir (official installer)"
+mkdir -p "$_bindir"
+
+# `-b <bindir>` tells the installer to drop only the binary (no init/apply) at that path.
+# Pipe (not `sh -c "$(curl ...)"`) so `set -o pipefail` catches a failed fetch: command
+# substitution would swallow a network error into an empty script that exits 0, falsely
+# reporting success on the locked-down box this WARN path exists for.
+if curl -fsSL https://get.chezmoi.io | sh -s -- -b "$_bindir"; then
+  echo "==> chezmoi installed (open a new shell for it on PATH)"
+else
+  echo "WARN: chezmoi install failed; skipping (it stays available only via the bootstrap binary)" >&2
+  exit 0
+fi
