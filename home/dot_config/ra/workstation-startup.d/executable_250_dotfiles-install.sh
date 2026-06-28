@@ -13,14 +13,9 @@
 # stabilize.
 set -euo pipefail
 
-USER_NAME="user"
-USER_HOME="/home/${USER_NAME}"
-INSTALL_MARKER="${USER_HOME}/.ra-dotfiles-installed"
+# LOG_FILE must be set before the detach guard — it redirects the detached
+# child's output at re-exec time. All other variables live below the guard.
 LOG_FILE="/var/log/ra-dotfiles-install.log"
-CHEZMOI_BIN="${USER_HOME}/.local/bin/chezmoi"
-CHEZMOI_SOURCE_DIR="${USER_HOME}/.local/share/chezmoi"
-CHEZMOI_CONFIG_DIR="${USER_HOME}/.config/chezmoi"
-CHEZMOI_CONFIG_FILE="${CHEZMOI_CONFIG_DIR}/chezmoi.toml"
 
 # Detach so the install never blocks workstation startup.
 # chezmoi --apply runs post-install hooks (pyenv, bun, package installs)
@@ -40,7 +35,20 @@ fi
 
 exec >>"${LOG_FILE}" 2>&1
 
+USER_NAME="user"
+USER_HOME="/home/${USER_NAME}"
+INSTALL_MARKER="${USER_HOME}/.ra-dotfiles-installed"
+CHEZMOI_BIN="${USER_HOME}/.local/bin/chezmoi"
+CHEZMOI_SOURCE_DIR="${USER_HOME}/.local/share/chezmoi"
+CHEZMOI_CONFIG_DIR="${USER_HOME}/.config/chezmoi"
+CHEZMOI_CONFIG_FILE="${CHEZMOI_CONFIG_DIR}/chezmoi.toml"
+
 log() { echo "[dotfiles-install] $(date -u +%H:%M:%S) $*"; }
+
+# Source fetched secrets and propagated env vars (RA_PLUGIN_* toggles, etc.)
+# so that a future enable/disable gate or any hook that needs a secret can
+# see them — same preamble used by all sibling workstation-startup.d scripts.
+[ -r /run/ra/env ] && set -a && . /run/ra/env && set +a
 
 log "starting"
 
@@ -67,26 +75,36 @@ sudo -u "${USER_NAME}" tee "${CHEZMOI_CONFIG_FILE}" >/dev/null <<'TOML'
     machine = "cloud-workstation"
     isCloud = true
 TOML
-chown "${USER_NAME}:${USER_NAME}" "${CHEZMOI_CONFIG_FILE}"
 chmod 0600 "${CHEZMOI_CONFIG_FILE}"
 log "pre-seeded ${CHEZMOI_CONFIG_FILE}"
 
-# Remove any stale source dir from a prior failed attempt. chezmoi init
-# refuses to overwrite an existing source dir, so a failed clone would
-# block all future retries without this cleanup.
-if [ -d "${CHEZMOI_SOURCE_DIR}" ]; then
-    log "removing stale source dir from previous attempt"
-    rm -rf "${CHEZMOI_SOURCE_DIR}"
-fi
-
-log "running chezmoi init --apply"
-if sudo -u "${USER_NAME}" env HOME="${USER_HOME}" \
-        "${CHEZMOI_BIN}" init --apply --no-tty \
-        https://github.com/adamtait/dotfiles.git; then
-    log "chezmoi init --apply succeeded"
+# If the source dir already exists as a valid git repo (e.g. from a prior boot
+# where clone succeeded but apply failed mid-run), pull updates rather than
+# wiping it — this preserves any local edits made between attempts.
+# Only rm -rf if the dir exists but is not a valid git repo (corrupt partial clone).
+if [ -d "${CHEZMOI_SOURCE_DIR}" ] && \
+        sudo -u "${USER_NAME}" git -C "${CHEZMOI_SOURCE_DIR}" rev-parse --git-dir >/dev/null 2>&1; then
+    log "source dir exists; pulling latest"
+    if ! sudo -u "${USER_NAME}" env HOME="${USER_HOME}" \
+            git -C "${CHEZMOI_SOURCE_DIR}" pull; then
+        log "ERROR: git pull failed; will retry on next boot"
+        exit 1
+    fi
+    log "running chezmoi apply"
+    if ! sudo -u "${USER_NAME}" env HOME="${USER_HOME}" \
+            "${CHEZMOI_BIN}" apply --no-tty; then
+        log "ERROR: chezmoi apply failed; will retry on next boot"
+        exit 1
+    fi
 else
-    log "ERROR: chezmoi init --apply failed; will retry on next boot"
-    exit 1
+    [ -d "${CHEZMOI_SOURCE_DIR}" ] && { log "removing invalid source dir"; rm -rf "${CHEZMOI_SOURCE_DIR}"; }
+    log "running chezmoi init --apply"
+    if ! sudo -u "${USER_NAME}" env HOME="${USER_HOME}" \
+            "${CHEZMOI_BIN}" init --apply --no-tty \
+            https://github.com/adamtait/dotfiles.git; then
+        log "ERROR: chezmoi init --apply failed; will retry on next boot"
+        exit 1
+    fi
 fi
 
 touch "${INSTALL_MARKER}"
