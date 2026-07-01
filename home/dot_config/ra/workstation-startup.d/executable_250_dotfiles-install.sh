@@ -13,9 +13,19 @@
 # stabilize.
 set -euo pipefail
 
-# LOG_FILE must be set before the detach guard — it redirects the detached
-# child's output at re-exec time. All other variables live below the guard.
+# LOG_FILE and the install marker must be known before the detach guard:
+# LOG_FILE redirects the detached child's output at re-exec time, and the
+# marker lets an already-installed boot bail immediately (below) without
+# forking a throwaway background process. Remaining vars live below the guard.
 LOG_FILE="/var/log/ra-dotfiles-install.log"
+USER_NAME="user"
+USER_HOME="/home/${USER_NAME}"
+INSTALL_MARKER="${USER_HOME}/.ra-dotfiles-installed"
+
+# Nothing to do on boots after a successful install — bail before detaching so
+# we don't fork a background process just to no-op. (The home disk, and thus
+# the marker, persists across workstation recreations.)
+[ -e "${INSTALL_MARKER}" ] && exit 0
 
 # Detach so the install never blocks workstation startup.
 # chezmoi --apply runs post-install hooks (pyenv, bun, package installs)
@@ -35,9 +45,6 @@ fi
 
 exec >>"${LOG_FILE}" 2>&1
 
-USER_NAME="user"
-USER_HOME="/home/${USER_NAME}"
-INSTALL_MARKER="${USER_HOME}/.ra-dotfiles-installed"
 CHEZMOI_BIN="${USER_HOME}/.local/bin/chezmoi"
 CHEZMOI_SOURCE_DIR="${USER_HOME}/.local/share/chezmoi"
 CHEZMOI_CONFIG_DIR="${USER_HOME}/.config/chezmoi"
@@ -52,13 +59,18 @@ log() { echo "[dotfiles-install] $(date -u +%H:%M:%S) $*"; }
 
 log "starting"
 
-[ -e "${INSTALL_MARKER}" ] && { log "already installed; exiting"; exit 0; }
-
 # Install chezmoi binary to ~/.local/bin if not already on the persistent disk.
 if [ ! -x "${CHEZMOI_BIN}" ]; then
     log "installing chezmoi to ${CHEZMOI_BIN}"
+    # Capture the installer separately so a curl failure is caught here. Inlined
+    # as `sh -c "$(curl ...)"`, a failed download yields an empty script that
+    # `sh` runs with exit 0 — set -e never sees it and we'd log a false success.
+    if ! chezmoi_installer="$(curl -fsSL https://get.chezmoi.io)"; then
+        log "ERROR: chezmoi download failed; will retry on next boot"
+        exit 1
+    fi
     sudo -u "${USER_NAME}" env HOME="${USER_HOME}" \
-        sh -c "$(curl -fsSL https://get.chezmoi.io)" -- -b "${USER_HOME}/.local/bin"
+        sh -c "${chezmoi_installer}" -- -b "${USER_HOME}/.local/bin"
     log "chezmoi installed"
 fi
 
@@ -79,15 +91,22 @@ chmod 0600 "${CHEZMOI_CONFIG_FILE}"
 log "pre-seeded ${CHEZMOI_CONFIG_FILE}"
 
 # If the source dir already exists as a valid git repo (e.g. from a prior boot
-# where clone succeeded but apply failed mid-run), pull updates rather than
-# wiping it — this preserves any local edits made between attempts.
+# where clone succeeded but apply failed mid-run), fast-forward it to the remote
+# rather than re-cloning. chezmoi apply never writes to the source dir, so a hard
+# reset to the upstream is safe and — unlike `git pull` — can't wedge on a
+# divergent local state that would then fail every boot.
 # Only rm -rf if the dir exists but is not a valid git repo (corrupt partial clone).
 if [ -d "${CHEZMOI_SOURCE_DIR}" ] && \
         sudo -u "${USER_NAME}" git -C "${CHEZMOI_SOURCE_DIR}" rev-parse --git-dir >/dev/null 2>&1; then
-    log "source dir exists; pulling latest"
+    log "source dir exists; syncing to remote"
     if ! sudo -u "${USER_NAME}" env HOME="${USER_HOME}" \
-            git -C "${CHEZMOI_SOURCE_DIR}" pull; then
-        log "ERROR: git pull failed; will retry on next boot"
+            git -C "${CHEZMOI_SOURCE_DIR}" fetch --prune origin; then
+        log "ERROR: git fetch failed; will retry on next boot"
+        exit 1
+    fi
+    if ! sudo -u "${USER_NAME}" env HOME="${USER_HOME}" \
+            git -C "${CHEZMOI_SOURCE_DIR}" reset --hard '@{u}'; then
+        log "ERROR: git reset failed; will retry on next boot"
         exit 1
     fi
     log "running chezmoi apply"
