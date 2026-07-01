@@ -4,6 +4,20 @@
   "includeCoAuthoredBy": true,
   "env": {
     "EDITOR": "emacsclient -a '' -t"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(git push:*)",
+      "Bash(gh pr:*)"
+    ],
+    "deny": [
+      "Bash(git push * main)",
+      "Bash(git push * main:*)",
+      "Bash(git push * master)",
+      "Bash(git push * master:*)",
+      "Bash(git push origin main)",
+      "Bash(git push origin master)"
+    ]
   }
 }
 {{- /* NOTE: Claude Code does NOT read MCP servers from settings.json — user-scoped MCP
