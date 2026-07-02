@@ -64,3 +64,4 @@ secrets:
 # env — plain static env vars forwarded to the container (no secret fetch).
 env:
     CLAUDE_CODE_NO_FLICKER: 1
+    COLORTERM: "truecolor"
