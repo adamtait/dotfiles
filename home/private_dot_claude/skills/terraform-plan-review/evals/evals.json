@@ -1,0 +1,54 @@
+{
+  "skill_name": "terraform-plan-review",
+  "evals": [
+    {
+      "id": 0,
+      "name": "data-loss-plan",
+      "prompt": "Review the terraform plan in .claude/skills/terraform-plan-review/evals/fixtures/01-data-loss.plan.txt for errors, omissions, inconsistencies, breaking production features, data loss, possible errors and likely future problems. Is it safe to apply?",
+      "expected_output": "Identifies as Critical/Do-not-apply: the Firestore database replacement (location_id us-central1->nam5) = irreversible data loss, blocked by DELETE_PROTECTION_ENABLED so apply will also error; the storage bucket force_destroy flip to true followed by destroy = all artifact objects deleted; the secret_manager secret replacement (secret_id rename) destroys all versions. Report leads with verdict + summary, has a severity/category table, and a destroy/replace inventory.",
+      "files": ["fixtures/01-data-loss.plan.txt"],
+      "assertions": [
+        "Flags the Firestore database replacement as data loss (irreversible deletion of all documents)",
+        "Identifies location_id us-central1 -> nam5 as the attribute forcing the Firestore replacement",
+        "Notes that DELETE_PROTECTION_ENABLED means the apply will error / the destroy is blocked",
+        "Flags the storage bucket destroy (force_destroy flipped to true) as deletion of all artifact objects",
+        "Flags the secret_manager_secret replacement (secret_id rename) as destroying all secret versions",
+        "Final verdict is do-not-apply / not safe to apply (red)",
+        "Report leads with a verdict and plan summary before the detailed findings",
+        "Includes a severity-ranked findings table or list (Critical/High/etc.)",
+        "Includes an explicit destroy/replace inventory of the high-risk resources"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "clean-plan-calibration",
+      "prompt": "Can you review this terraform plan and tell me if it's safe to apply? File: .claude/skills/terraform-plan-review/evals/fixtures/02-clean.plan.txt",
+      "expected_output": "Correctly judges the plan SAFE (green verdict / apply OK). Only additions (alert policy, logging metric, DNS TXT record) and one in-place env var change (timeout 60->90). Does NOT invent Critical/High data-loss findings. Destroy/replace inventory states there are none. No false alarms.",
+      "files": ["fixtures/02-clean.plan.txt"],
+      "assertions": [
+        "Final verdict is safe-to-apply / green (does not block the apply)",
+        "Does NOT report any Critical or High data-loss findings (no false alarms)",
+        "Correctly states there are no destroys or replacements in the plan",
+        "Correctly characterizes the changes as additions (alert policy, logging metric, DNS TXT) plus one in-place env var update",
+        "Does not fabricate dangers that are absent from the plan"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "breaking-prod-subtle",
+      "prompt": "review the TERRAFORM plan at .claude/skills/terraform-plan-review/evals/fixtures/03-breaking-prod.plan.txt for errors, omissions, inconsistencies, breaking production features, data loss, possible errors and likely future problems.",
+      "expected_output": "Catches the production-breaking changes even though no stateful storage is destroyed: (1) worker SA loses roles/storage.objectAdmin on the artifacts bucket -> runtime 403 on uploads; (2) the ANTHROPIC_SECRET_NAME secret env ref is removed from the worker job -> worker can't authenticate to Anthropic at runtime (a runtime failure, not a plan error); (3) the egress allow-rule for api.anthropic.com is destroyed -> worker loses connectivity to the API; (4) max_retries 3->0 reliability regression (future problem). Bonus: notices the scheduler cron changed to '0 0 30 2 *' (Feb 30 never exists, so the job will never fire). Verdict apply-with-caution or do-not-apply.",
+      "files": ["fixtures/03-breaking-prod.plan.txt"],
+      "assertions": [
+        "Flags that removing the worker SA's storage.objectAdmin binding will cause runtime 403s on bucket uploads",
+        "Flags that removing the ANTHROPIC_SECRET_NAME secret env from the worker job breaks Anthropic auth at runtime",
+        "Notes that the removed secret env is a runtime failure, not something the plan/apply itself errors on",
+        "Flags that destroying the egress allow-rule for api.anthropic.com cuts the worker's connectivity to the API",
+        "Flags the max_retries 3 -> 0 change as a reliability regression",
+        "Catches that the scheduler cron '0 0 30 2 *' (Feb 30) will never fire",
+        "Final verdict is apply-with-caution or do-not-apply (not green)",
+        "Does not treat the plan as safe just because no database/bucket is destroyed"
+      ]
+    }
+  ]
+}

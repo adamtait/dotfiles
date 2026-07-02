@@ -1,0 +1,53 @@
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+  ~ update in-place
+  - destroy
+
+Terraform will perform the following actions:
+
+  # module.storage.google_storage_bucket_iam_member.worker_object_admin will be destroyed
+  # (because google_storage_bucket_iam_member.worker_object_admin is not in configuration)
+  - resource "google_storage_bucket_iam_member" "worker_object_admin" {
+      - bucket = "email-agent-prod-artifacts" -> null
+      - role   = "roles/storage.objectAdmin" -> null
+      - member = "serviceAccount:worker@email-agent-prod.iam.gserviceaccount.com" -> null
+    }
+
+  # module.worker.google_cloud_run_v2_job.worker will be updated in-place
+  ~ resource "google_cloud_run_v2_job" "worker" {
+        name = "email-agent-worker"
+      ~ template {
+          ~ template {
+              ~ containers {
+                  - env {
+                      - name  = "ANTHROPIC_SECRET_NAME" -> null
+                      - value_source {
+                          - secret_key_ref {
+                              - secret  = "anthropic-api-key" -> null
+                              - version = "latest" -> null
+                            }
+                        }
+                    }
+                  ~ max_retries = 3 -> 0
+                }
+            }
+        }
+    }
+
+  # module.egress.google_network_security_gateway_security_policy_rule.allow_anthropic will be destroyed
+  - resource "google_network_security_gateway_security_policy_rule" "allow_anthropic" {
+      - name              = "allow-anthropic-api" -> null
+      - enabled           = true -> null
+      - priority          = 100 -> null
+      - basic_profile     = "ALLOW" -> null
+      - session_matcher   = "host() == 'api.anthropic.com'" -> null
+    }
+
+  # module.scheduler.google_cloud_scheduler_job.dispatcher_trigger will be updated in-place
+  ~ resource "google_cloud_scheduler_job" "dispatcher_trigger" {
+        name     = "dispatcher-trigger"
+      ~ schedule = "*/2 * * * *" -> "0 0 30 2 *"
+    }
+
+Plan: 0 to add, 2 to change, 2 to destroy.
