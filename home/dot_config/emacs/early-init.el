@@ -5,9 +5,6 @@
 (add-hook 'emacs-startup-hook
           (lambda () (setq gc-cons-threshold (* 32 1024 1024))))
 
-;; Don't let package.el initialize before init.el runs use-package.
-(setq package-enable-at-startup nil)
-
 ;; Disable GUI chrome early (no-ops in a terminal, but harmless and fast).
 (menu-bar-mode -1)
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
