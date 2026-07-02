@@ -1,0 +1,59 @@
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+  ~ update in-place
+
+Terraform will perform the following actions:
+
+  # module.monitoring.google_monitoring_alert_policy.worker_failures will be created
+  + resource "google_monitoring_alert_policy" "worker_failures" {
+      + display_name = "Worker run failures > 5 in 10m"
+      + project      = "email-agent-prod"
+      + combiner     = "OR"
+      + enabled      = true
+      + conditions {
+          + display_name = "worker failure rate"
+          + condition_threshold {
+              + comparison      = "COMPARISON_GT"
+              + threshold_value = 5
+              + duration        = "600s"
+            }
+        }
+    }
+
+  # module.monitoring.google_logging_metric.worker_run_failed will be created
+  + resource "google_logging_metric" "worker_run_failed" {
+      + name   = "worker_run_failed"
+      + filter = "resource.type=cloud_run_job AND textPayload=~\"run failed\""
+      + project = "email-agent-prod"
+      + metric_descriptor {
+          + metric_kind = "DELTA"
+          + value_type  = "INT64"
+        }
+    }
+
+  # module.worker.google_cloud_run_v2_job.worker will be updated in-place
+  ~ resource "google_cloud_run_v2_job" "worker" {
+        name = "email-agent-worker"
+      ~ template {
+          ~ template {
+              ~ containers {
+                  ~ env {
+                      ~ value = "60" -> "90"
+                        name  = "WORKER_SOFT_TIMEOUT_SECONDS"
+                    }
+                }
+            }
+        }
+    }
+
+  # module.dns.google_dns_record_set.txt_verification will be created
+  + resource "google_dns_record_set" "txt_verification" {
+      + name         = "_acme-challenge.email-agent.example.com."
+      + type         = "TXT"
+      + ttl          = 300
+      + managed_zone = "email-agent-zone"
+      + rrdatas      = ["verification-token-xyz"]
+    }
+
+Plan: 3 to add, 1 to change, 0 to destroy.
