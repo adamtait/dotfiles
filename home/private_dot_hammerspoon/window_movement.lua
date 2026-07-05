@@ -235,15 +235,9 @@ hs.hotkey.bind(hotkey, "1",
       local n = screenName()
       local layout = {
          {"Google Chrome",              nil, n, hs.layout.maximized, nil, nil},
-         {"Safari",                     nil, n, hs.layout.maximized, nil, nil},
-         {"Firefox",                    nil, n, hs.layout.maximized, nil, nil},
-         {"Firefox Developer Edition",  nil, n, hs.layout.maximized, nil, nil},
-         {"Emacs",                      nil, n, hs.layout.maximized, nil, nil},
-         {"Xcode",                      nil, n, hs.layout.maximized, nil, nil},
-         {"iTerm2",                     nil, n, hs.layout.maximized, nil, nil},
-         {"Slack",                      nil, n, hs.layout.maximized, nil, nil},
+         {"Ghostty",                    nil, n, hs.layout.maximized, nil, nil},
          {"Spotify",                    nil, n, hs.layout.maximized, nil, nil},
-         {"KeePassX",                   nil, n, hs.layout.maximized, nil, nil}
+         {"KeePassXC",                  nil, n, hs.layout.maximized, nil, nil}
       }
       hs.layout.apply(layout)
    end
@@ -254,38 +248,7 @@ hs.hotkey.bind(hotkey, "2",
       local n = screenName()
       local layout = {
          {"Google Chrome",              nil, n, hs.layout.right50, nil, nil},
-         {"Safari",                     nil, n, hs.layout.right50, nil, nil},
-         {"Firefox",                    nil, n, hs.layout.right50, nil, nil},
-         {"Firefox Developer Edition",  nil, n, hs.layout.right50, nil, nil},
-         {"Emacs",                      nil, n, hs.layout.left50, nil, nil},
-         {"Xcode",                      nil, n, hs.layout.left50, nil, nil},
-         {"iTerm2",                     nil, n, hs.layout.right50, nil, nil},
-         {"Slack",                      nil, n, hs.layout.right50, nil, nil},
-         {"Spotify",                    nil, n, hs.layout.right50, nil, nil},
-         {"KeePassX",                   nil, n, hs.layout.left50, nil, nil}
-      }
-      hs.layout.apply(layout)
-   end
-)
-
-hs.hotkey.bind(hotkey, "3",
-   function()
-      local n = screenName()
-      local l = hs.geometry.rect(0, 0, 0.33, 1)
-      local m = hs.geometry.rect(0.33, 0, 0.33, 1)
-      local r = hs.geometry.rect(0.66, 0, 0.33, 1)      
-
-      local layout = {
-         {"Google Chrome",              nil, n, r, nil, nil},
-         {"Safari",                     nil, n, r, nil, nil},
-         {"Firefox",                    nil, n, r, nil, nil},
-         {"Firefox Developer Edition",  nil, n, r, nil, nil},
-         {"Emacs",                      nil, n, m, nil, nil},
-         {"Xcode",                      nil, n, l, nil, nil},
-         {"iTerm2",                     nil, n, l, nil, nil},
-         {"Slack",                      nil, n, l, nil, nil},
-         {"Spotify",                    nil, n, m, nil, nil},
-         {"KeePassX",                   nil, n, l, nil, nil}
+         {"Ghostty",                    nil, n, hs.layout.left50, nil, nil},
       }
       hs.layout.apply(layout)
    end
