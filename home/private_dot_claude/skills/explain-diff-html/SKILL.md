@@ -1,6 +1,6 @@
 ---
 name: explain-diff-html
-description: Use when the user asks for a rich explanation of a code change, diff, branch, or PR. Produces HTML output.
+description: Use when the user asks for a rich explanation of a code change, diff, branch, or PR and wants a self-contained HTML page — a local file, an offline/shareable page, or when Notion is not mentioned. Produces HTML output. (For a Notion page instead, use explain-diff-notion.)
 ---
 
 # Explain Diff

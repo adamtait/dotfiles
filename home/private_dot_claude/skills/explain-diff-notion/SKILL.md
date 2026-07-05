@@ -1,6 +1,6 @@
 ---
 name: explain-diff-notion
-description: Use when the user asks for a rich explanation of a code change, diff, branch, or PR. Produces a Notion page.
+description: Use when the user asks for a rich explanation of a code change, diff, branch, or PR as a Notion page — they mention Notion or want it created in their Notion workspace. Produces a Notion page via the Notion MCP tools. (For a self-contained HTML file instead, use explain-diff-html.)
 ---
 
 # Explain Diff
@@ -26,7 +26,7 @@ It should have these sections:
   2. Question
      ...
   ```
-  
+
 Format:
 
 - Use the Notion MCP tools to create a new page and return the URL of the new page.
