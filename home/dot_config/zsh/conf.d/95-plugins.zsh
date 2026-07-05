@@ -3,8 +3,12 @@
 
 ZSH_PLUGIN_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh/plugins"
 
-[[ -f "$ZSH_PLUGIN_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && \
+if [[ -f "$ZSH_PLUGIN_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh" ]]; then
   source "$ZSH_PLUGIN_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  # Ctrl-Space accepts the current suggestion and runs it in one keystroke.
+  # (The autosuggest-execute widget is registered when the plugin sources.)
+  bindkey '^ ' autosuggest-execute
+fi
 
 # Keep syntax-highlighting last.
 [[ -f "$ZSH_PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && \
