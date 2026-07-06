@@ -45,8 +45,10 @@ sh -c "$(curl -fsSL https://get.chezmoi.io)" -- -b ~/.local/bin
 - Base packages come from `apt`; tools that apt lacks or ships stale (fnm, clojure, pyenv,
   starship, git-delta, awscli, terraform, pulumi) are installed via **Homebrew on Linux**, which
   installs into `$HOME` and does not need root.
-- Changing the login shell to zsh may be restricted on locked-down workstations; the script
-  warns instead of failing, so apply still completes — set the shell manually if needed.
+- zsh is installed via `apt` (it's in `packages.yaml`), then made the login shell. The shell
+  change tries unprivileged `chsh` first, then falls back to a passwordless-`sudo`
+  `chsh`/`usermod` — so it succeeds on typical cloud workstations. If even sudo is disallowed it
+  warns instead of failing, so apply still completes; set the shell manually in that case.
 
 ## Day-to-day
 

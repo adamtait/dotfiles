@@ -22,8 +22,16 @@ if ! grep -qx "$ZSH_BIN" /etc/shells 2>/dev/null; then
     echo "WARN: could not add $ZSH_BIN to /etc/shells" >&2
 fi
 
-if chsh -s "$ZSH_BIN" 2>/dev/null; then
+# Try unprivileged chsh first; on locked-down cloud workstations it needs a password, so fall
+# back to sudo via chsh, then usermod. Everything runs non-interactively: `</dev/null` keeps
+# chsh's PAM prompt from blocking, and `sudo -n` fails fast (instead of a hidden, hung prompt)
+# when sudo isn't passwordless. All non-fatal — warn and move on if none work.
+if chsh -s "$ZSH_BIN" </dev/null 2>/dev/null; then
   echo "==> Default shell changed to $ZSH_BIN (restart your session)"
+elif sudo -n chsh -s "$ZSH_BIN" "$USER" </dev/null 2>/dev/null; then
+  echo "==> Default shell changed to $ZSH_BIN via sudo (restart your session)"
+elif command -v usermod >/dev/null 2>&1 && sudo -n usermod -s "$ZSH_BIN" "$USER" </dev/null 2>/dev/null; then
+  echo "==> Default shell changed to $ZSH_BIN via usermod (restart your session)"
 else
-  echo "WARN: could not change default shell to zsh (chsh failed); set it manually" >&2
+  echo "WARN: could not change default shell to zsh (chsh/usermod failed); set it manually" >&2
 fi
