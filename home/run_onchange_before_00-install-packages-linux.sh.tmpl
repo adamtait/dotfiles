@@ -2,9 +2,19 @@
 #!/usr/bin/env bash
 # Install Linux packages: apt for base, Homebrew-on-Linux for tools apt lacks/ships stale.
 # Re-runs whenever the rendered package lists below change.
+#
+# Failure policy: individual package failures are isolated (a bad name never aborts the
+# batch) but are RECORDED. If anything failed, the script exits non-zero at the end. This
+# is deliberate: run_onchange scripts that exit 0 are marked "done" by chezmoi and never
+# re-run, so swallowing failures made a half-installed machine look converged (e.g. sudo
+# not yet passwordless, or brew not yet bootstrapped, silently left emacs & co. missing).
+# Exiting non-zero keeps the script pending so the next `chezmoi apply` retries it.
 set -euo pipefail
 
 echo "==> Linux package install"
+
+# Names of package steps that failed; script exits non-zero if non-empty (see policy above).
+FAILED=()
 
 {{ if has .chezmoi.osRelease.id (list "debian" "ubuntu" "pop" "linuxmint") -}}
 APT_PACKAGES=(
@@ -16,31 +26,51 @@ APT_PACKAGES=(
 {{ end -}}
 )
 if command -v apt-get >/dev/null 2>&1; then
+  echo "==> apt-get update"
+  # Guarded: an unguarded failure here would abort under `set -e` before any install.
+  sudo apt-get update -y || { echo "WARN: apt-get update failed; installs may not find packages" >&2; FAILED+=("apt-get-update"); }
   echo "==> apt-get install ${APT_PACKAGES[*]}"
-  sudo apt-get update -y
-  # Install individually: apt-get is atomic, so a single unknown name would abort
-  # the whole batch and install nothing. Per-package keeps a bad name isolated and
-  # the failure visible instead of silently dropping everything (e.g. emacs-nox).
+  # Install individually: apt-get is atomic, so a single unknown name would abort the whole
+  # batch and install nothing. Per-package keeps a bad name isolated and the failure visible.
   for p in "${APT_PACKAGES[@]}"; do
-    sudo apt-get install -y "$p" || echo "WARN: apt package '$p' failed; continuing" >&2
+    sudo apt-get install -y "$p" || { echo "WARN: apt package '$p' failed; continuing" >&2; FAILED+=("apt:$p"); }
   done
 fi
 {{ else -}}
+# An unsupported distro is a permanent condition, not a transient one: retrying never
+# helps, so warn and continue (still run brew) rather than adding it to FAILED and making
+# every `chezmoi apply` hard-fail forever with no path to convergence.
 echo "WARN: unsupported Linux distro '{{ .chezmoi.osRelease.id }}'; skipping apt step" >&2
 {{ end -}}
 
 # Homebrew-on-Linux for fnm/clojure/pyenv/starship/git-delta/awscli/terraform/pulumi.
-if ! command -v brew >/dev/null 2>&1; then
+if ! command -v brew >/dev/null 2>&1 && [ ! -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
   echo "==> Installing Homebrew (Linux)"
   NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || {
-    echo "WARN: linuxbrew install failed; some tools will be missing" >&2
+    echo "WARN: linuxbrew install failed; brew packages will be skipped" >&2
+    FAILED+=("brew-bootstrap")
   }
 fi
 if command -v brew >/dev/null 2>&1 || [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv 2>/dev/null || brew shellenv)"
-  brew install \
-{{ range .packages.linux.brew }}    {{ . | quote }} \
-{{ end }}    || echo "WARN: some brew packages failed; continuing" >&2
+  BREW_PACKAGES=(
+{{ range .packages.linux.brew -}}
+    {{ . | quote }}
+{{ end -}}
+  )
+  # Per-package like apt, so one bad formula doesn't drop the rest and each failure is tracked.
+  for p in "${BREW_PACKAGES[@]}"; do
+    brew install "$p" || { echo "WARN: brew package '$p' failed; continuing" >&2; FAILED+=("brew:$p"); }
+  done
+else
+  echo "WARN: brew unavailable; skipping brew packages" >&2
+  FAILED+=("brew-unavailable")
+fi
+
+if [ ${#FAILED[@]} -gt 0 ]; then
+  echo "ERROR: ${#FAILED[@]} package step(s) failed: ${FAILED[*]}" >&2
+  echo "Exiting non-zero so chezmoi leaves this script pending and retries on next apply." >&2
+  exit 1
 fi
 
 echo "==> Linux packages installed"
