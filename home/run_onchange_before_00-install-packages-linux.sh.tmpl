@@ -37,8 +37,10 @@ if command -v apt-get >/dev/null 2>&1; then
   done
 fi
 {{ else -}}
+# An unsupported distro is a permanent condition, not a transient one: retrying never
+# helps, so warn and continue (still run brew) rather than adding it to FAILED and making
+# every `chezmoi apply` hard-fail forever with no path to convergence.
 echo "WARN: unsupported Linux distro '{{ .chezmoi.osRelease.id }}'; skipping apt step" >&2
-FAILED+=("apt:unsupported-distro:{{ .chezmoi.osRelease.id }}")
 {{ end -}}
 
 # Homebrew-on-Linux for fnm/clojure/pyenv/starship/git-delta/awscli/terraform/pulumi.
