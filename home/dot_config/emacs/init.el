@@ -34,6 +34,13 @@
       use-short-answers t
       sentence-end-double-space nil)
 
+;; When a warnings / native-comp log buffer does surface, keep it to a 3-line
+;; window at the bottom instead of taking half the frame.
+(add-to-list 'display-buffer-alist
+             '("\\*\\(Warnings\\|Async-native-compile-log\\|Compile-Log\\)\\*"
+               (display-buffer-reuse-window display-buffer-below-selected)
+               (window-height . 3)))
+
 (global-display-line-numbers-mode 1)
 (column-number-mode 1)
 (electric-pair-mode 1)

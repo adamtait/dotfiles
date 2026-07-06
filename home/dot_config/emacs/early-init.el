@@ -15,6 +15,11 @@
   (startup-redirect-eln-cache
    (expand-file-name "var/eln-cache/" user-emacs-directory)))
 
+;; Third-party packages (cider, paredit, go-mode, …) emit a flood of native-comp
+;; warnings we can't fix upstream. Log them, but don't pop the warnings buffer.
+;; Must be set before any package is compiled, hence early-init.
+(setq native-comp-async-report-warnings-errors 'silent)
+
 (setq inhibit-startup-screen t
       initial-scratch-message nil
       frame-inhibit-implied-resize t)
