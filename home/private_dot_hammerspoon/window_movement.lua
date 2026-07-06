@@ -138,8 +138,15 @@ hs.hotkey.bind(hotkey, ",",
 
 hs.hotkey.bind(hotkey, "[",
    function()
-      local win = window.focusedwindow()
-      wintoscreen(win, win:screen():next())
+      local win = hs.window.focusedWindow()
+      win:moveToScreen(win:screen():next())
+   end
+)
+
+hs.hotkey.bind(hotkey, "]",
+   function()
+      local win = hs.window.focusedWindow()
+      win:moveToScreen(win:screen():previous())
    end
 )
 
