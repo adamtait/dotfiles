@@ -11,4 +11,19 @@
 {{ else -}}
 [ -x /home/linuxbrew/.linuxbrew/bin/brew ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 [ -x "$HOME/.linuxbrew/bin/brew" ] && eval "$($HOME/.linuxbrew/bin/brew shellenv)"
+
+# ra: attach interactive login shells to the persistent tmux session. The ra
+# tmux plugin installs auto-attach only as a bash /etc/profile.d snippet, which
+# zsh login shells never source. Gated on RA_PLUGIN_TMUX_ENABLED so it is inert
+# on any host that is not an ra workstation.
+if [[ "${RA_PLUGIN_TMUX_ENABLED:-}" == "true" && -t 1 && -z "${TMUX:-}" ]] && command -v tmux >/dev/null 2>&1; then
+  # Fall back to a known-good TERM when the client's terminfo isn't installed
+  # (Ghostty/Kitty/WezTerm), else tmux refuses to start and would drop the shell.
+  infocmp -- "$TERM" &>/dev/null || export TERM=xterm-256color
+  if tmux new-session -A -s "${RA_PLUGIN_TMUX_SESSION_NAME:-main}" \
+         -c "${${RA_PLUGIN_TMUX_START_DIRECTORY:-$HOME}/#\~/$HOME}"; then
+    exit 0   # tmux exited cleanly (detach) -> close the login shell (matches plugin)
+  fi
+  # tmux failed to start -> fall through to a normal zsh login.
+fi
 {{ end -}}
