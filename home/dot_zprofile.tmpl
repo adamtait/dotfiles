@@ -20,10 +20,15 @@ if [[ "${RA_PLUGIN_TMUX_ENABLED:-}" == "true" && -t 1 && -z "${TMUX:-}" ]] && co
   # Fall back to a known-good TERM when the client's terminfo isn't installed
   # (Ghostty/Kitty/WezTerm), else tmux refuses to start and would drop the shell.
   infocmp -- "$TERM" &>/dev/null || export TERM=xterm-256color
-  if tmux new-session -A -s "${RA_PLUGIN_TMUX_SESSION_NAME:-main}" \
-         -c "${${RA_PLUGIN_TMUX_START_DIRECTORY:-$HOME}/#\~/$HOME}"; then
+  # Resolve the start dir; fall back to $HOME if it doesn't exist yet (as the
+  # plugin does) — e.g. a repo path configured before it has been cloned.
+  ra_tmux_dir="${${RA_PLUGIN_TMUX_START_DIRECTORY:-$HOME}/#\~/$HOME}"
+  [[ -d "$ra_tmux_dir" ]] || ra_tmux_dir="$HOME"
+  if tmux new-session -A -s "${RA_PLUGIN_TMUX_SESSION_NAME:-main}" -c "$ra_tmux_dir"; then
+    unset ra_tmux_dir
     exit 0   # tmux exited cleanly (detach) -> close the login shell (matches plugin)
   fi
+  unset ra_tmux_dir
   # tmux failed to start -> fall through to a normal zsh login.
 fi
 {{ end -}}
