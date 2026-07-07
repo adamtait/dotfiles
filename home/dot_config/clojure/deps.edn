@@ -31,16 +31,17 @@
   {:extra-deps {com.datomic/ion-dev {:mvn/version "1.0.298"}}
    :main-opts  ["-m" "datomic.ion.dev"]}
 
-  ;; Logback + slf4j bridges. Logback config is read off the project classpath
-  ;; via ./resources/logging/dev (invocation-dir relative).
+  ;; Logback impl + slf4j bridges only. The logback.xml config is supplied by
+  ;; the project's selected environment on the classpath (e.g. the 6pages
+  ;; monolith's resources/environment/dev, chosen via its base :paths) — not by
+  ;; this alias.
   :log
   {:extra-deps {ch.qos.logback/logback-classic {:mvn/version "1.2.3"
                                                  :exclusions  [org.slf4j/slf4j-api]}
                 org.slf4j/slf4j-api        {:mvn/version "1.7.14"}
                 org.slf4j/jul-to-slf4j     {:mvn/version "1.7.14"}
                 org.slf4j/jcl-over-slf4j   {:mvn/version "1.7.14"}
-                org.slf4j/log4j-over-slf4j {:mvn/version "1.7.14"}}
-   :extra-paths ["resources/logging/dev"]}
+                org.slf4j/log4j-over-slf4j {:mvn/version "1.7.14"}}}
 
   ;; Simple static file server:  clj -M:httpd [port]
   :httpd
