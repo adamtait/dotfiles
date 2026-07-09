@@ -3,9 +3,9 @@
 #
 # Eternal Terminal (https://eternalterminal.dev/) is a remote shell that
 # automatically reconnects across network drops, sleeps, and IP roaming.
-# `ra connect --et` runs the local `et` client against this server — through a
-# pair of gcloud TCP tunnels — so a dropped workstation connection resumes the
-# session instead of freezing.
+# `ra plugin et connect` runs the local `et` client against this server —
+# through a pair of gcloud TCP tunnels — so a dropped workstation connection
+# resumes the session instead of freezing.
 #
 # Installs both `etserver` (the daemon, started at boot by 250_et-start.sh) and
 # `etterminal` (the per-session helper the `et` client invokes over ssh during
