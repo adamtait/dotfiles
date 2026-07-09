@@ -2,6 +2,13 @@ name: et
 version: "1.0.0"
 description: "Eternal Terminal: runs etserver on the workstation and provides `ra plugin et connect` to connect via the local `et` client (auto-reconnecting)"
 port-for-tunnel: 2022
+# post_install_message: printed by `ra plugin install`. Flags the local python3
+# dependency connect.sh needs to allocate/probe tunnel ports (see remote-agent
+# docs/adr/0015 for why a pure-bash /dev/tcp approach was dropped).
+post_install_message: |
+  Note: `ra plugin et connect` uses `python3` on your local machine to allocate
+  and probe the local tunnel ports. It ships with macOS and most Linux dev
+  machines; if it is missing, install it (e.g. `brew install python3`).
 # commands: contributes `ra plugin et connect`. ra resolves + starts the
 # workstation, then runs this local script with the RA_* env contract.
 commands:

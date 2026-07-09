@@ -17,6 +17,11 @@ command -v et >/dev/null 2>&1 || {
 	echo "    Install it: brew install et   (https://eternalterminal.dev/)" >&2
 	exit 1
 }
+command -v python3 >/dev/null 2>&1 || {
+	echo "et: python3 is required (used locally to allocate and probe tunnel ports)." >&2
+	echo "    Install it (e.g. brew install python3) and retry." >&2
+	exit 1
+}
 : "${RA_WORKSTATION:?ra did not set RA_WORKSTATION}"
 
 readonly REMOTE_SSH_PORT=22
@@ -24,24 +29,19 @@ readonly REMOTE_DATA_PORT=2022 # etserver; matches the plugin's port-for-tunnel
 readonly USER_NAME="${RA_WORKSTATION_USER:-user}"
 loc=(--project "$RA_PROJECT" --cluster "$RA_CLUSTER" --config "$RA_CONFIG")
 
-# free_port prints an unused local TCP port (a connect that fails ⇒ nothing is
-# listening ⇒ free). Racy in principle, same as any pick-then-bind.
-free_port() {
-	local p
-	for _ in $(seq 1 100); do
-		p=$(((RANDOM % 16384) + 49152))
-		if ! (exec 3<>"/dev/tcp/127.0.0.1/$p") 2>/dev/null; then
-			echo "$p"
-			return 0
-		fi
-		exec 3>&- 2>/dev/null || true
-	done
-	echo "et: could not find a free local port" >&2
-	return 1
-}
-BOOT_PORT="$(free_port)"
-DATA_PORT="$(free_port)"
-while [ "$DATA_PORT" = "$BOOT_PORT" ]; do DATA_PORT="$(free_port)"; done
+# Pick two distinct free local ports in ONE python3 call: bind two ephemeral
+# sockets at once (the OS hands out two distinct free ports) and print them.
+# This replaces a bash RANDOM + /dev/tcp probe loop on purpose: bash /dev/tcp,
+# driven in a tight loop concurrently with the backgrounded 'ra tunnel' jobs
+# below, triggers a fatal SIGABRT in bash on macOS. Keeping every local-port
+# probe inside a single python3 process avoids that fork/probe storm (same
+# reasoning in wait_port; see remote-agent docs/adr/0015).
+read -r BOOT_PORT DATA_PORT < <(python3 -c '
+import socket
+a = socket.socket(); a.bind(("127.0.0.1", 0))
+b = socket.socket(); b.bind(("127.0.0.1", 0))
+print(a.getsockname()[1], b.getsockname()[1])
+') || { echo "et: could not allocate local ports" >&2; exit 1; }
 
 # Supervised tunnel: `ra tunnel` is a single foreground (unsupervised) tunnel, so
 # wrap it in a respawn loop — if it drops, et's own reconnect finds a fresh one.
@@ -63,17 +63,21 @@ supervise "$BOOT_PORT" "$REMOTE_SSH_PORT" bootstrap &
 supervise "$DATA_PORT" "$REMOTE_DATA_PORT" data &
 trap 'kill %1 %2 2>/dev/null || true; wait 2>/dev/null || true' EXIT INT TERM
 
-# Wait for a local tunnel port to start accepting connections.
+# Wait for a local tunnel port to start accepting connections. ONE python3
+# process runs the whole poll loop internally, so bash does not spawn a probe
+# per iteration while the background 'ra tunnel' jobs are alive - the same
+# macOS bash SIGABRT avoidance as the port picker above.
 wait_port() {
-	local port="$1" deadline=$((SECONDS + 30))
-	while [ "$SECONDS" -lt "$deadline" ]; do
-		if (exec 3<>"/dev/tcp/127.0.0.1/$port") 2>/dev/null; then
-			exec 3>&- 2>/dev/null || true
-			return 0
-		fi
-		sleep 0.25
-	done
-	return 1
+	python3 -c '
+import socket, sys, time
+port = int(sys.argv[1]); deadline = time.time() + 30
+while time.time() < deadline:
+    try:
+        socket.create_connection(("127.0.0.1", port), timeout=1).close(); sys.exit(0)
+    except OSError:
+        time.sleep(0.25)
+sys.exit(1)
+' "$1"
 }
 wait_port "$BOOT_PORT" || echo "et: bootstrap tunnel not up yet; continuing..." >&2
 wait_port "$DATA_PORT" || echo "et: data tunnel not up yet; continuing..." >&2
