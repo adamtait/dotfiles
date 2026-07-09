@@ -43,7 +43,7 @@ By default, **keep the notes file out of the feature commits** — it's a heads-
 
 Do **not** log routine spec-following, obvious mechanical steps, or a narration of every file you touched. If it wouldn't surprise or inform the user, leave it out. The notes are valuable in proportion to how much they save the user from having to reverse-engineer your reasoning.
 
-**Entry format** — keep it lightweight and scannable:
+**Entry format** — keep it lightweight and scannable (this template is markdown; if you're writing the HTML variant, carry the same fields into simple HTML headings and paragraphs):
 
 ```markdown
 # Implementation notes — <plan / feature name>
@@ -59,7 +59,7 @@ Do **not** log routine spec-following, obvious mechanical steps, or a narration 
 
 Once implementation is complete and the tests/build pass:
 
-1. Commit the work in focused commits with clear messages describing the *why*. Follow the user's git conventions (see their global/project instructions for commit trailers and branch rules).
+1. Commit the work in focused commits with clear messages describing the *why*. Follow the user's git conventions (see their global/project instructions for commit trailers and branch rules). Stage explicit paths rather than `git add -A` / `git add .` — that keeps the notes file (and any unrelated working-tree changes) from being swept into the PR against your intent.
 2. Push the branch and open a PR with `gh pr create`.
 3. Write a PR description that summarizes what changed and why, and folds in the **highlights from the implementation notes** — the deviations and tradeoffs a reviewer should know about. Link the plan/issue if there is one.
 
