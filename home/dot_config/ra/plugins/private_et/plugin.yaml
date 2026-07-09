@@ -1,7 +1,14 @@
 name: et
 version: "1.0.0"
-description: "Installs Eternal Terminal server (etserver) and starts it at boot for auto-reconnecting connections via `ra connect --et`"
+description: "Eternal Terminal: runs etserver on the workstation and provides `ra plugin et connect` to connect via the local `et` client (auto-reconnecting)"
 port-for-tunnel: 2022
+# commands: contributes `ra plugin et connect`. ra resolves + starts the
+# workstation, then runs this local script with the RA_* env contract.
+commands:
+  - name: connect
+    description: "Connect via Eternal Terminal (auto-reconnecting) instead of plain SSH"
+    run: commands/connect.sh
+    needs_workstation: true
 config:
   - name: enabled
     type: bool

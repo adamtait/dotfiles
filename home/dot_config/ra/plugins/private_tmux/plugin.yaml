@@ -1,6 +1,20 @@
 name: tmux
 version: "1.0.0"
 description: "Installs tmux and starts a persistent named session at boot; auto-attaches login shells"
+# post_install_message: printed by `ra plugin install`. The connect-time command
+# lives in the user's config (connect.login_command), not in this plugin, so we
+# recommend rather than set it. The `sh -c` wrapper carries a TERM fallback
+# because ra runs it before any shell (no profile.d hook to guard TERM), and tmux
+# refuses to attach when the client's $TERM has no terminfo on the workstation
+# (e.g. xterm-ghostty/xterm-kitty). Wrapping in `sh -c` keeps it shell-agnostic.
+post_install_message: |
+  To attach tmux automatically on `ra connect`, set connect.login_command in your
+  ra config (~/.config/ra/config.yaml):
+
+    connect:
+      login_command: "sh -c 'infocmp -- \"$TERM\" >/dev/null 2>&1 || export TERM=xterm-256color; exec tmux new-session -A -s main'"
+
+  (Use the same session name as session_name below; default is "main".)
 config:
   - name: enabled
     type: bool

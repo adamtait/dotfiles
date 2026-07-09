@@ -24,5 +24,13 @@ cat > /etc/tmux.conf <<'EOF'
 # (which sources /run/ra/env), keeping RA_PLUGIN_* and plugin secrets
 # available in every window/split, not just the one that exec'd tmux.
 set -g default-command "/bin/bash -l"
+
+# Keep the tmux server alive across transient zero-session states. tmux defaults
+# to `exit-empty on`, which reaps the whole server the moment its last session
+# closes — e.g. if the boot session (250_tmux-start.sh) has its pane shell exit —
+# leaving a stale socket and a confusing "no server running" state with no warm
+# session. Setting it here (rather than in the boot script) applies to every
+# server at startup, idempotently, and cannot fail the startup script. See #14.
+set -g exit-empty off
 EOF
 chmod 0644 /etc/tmux.conf
