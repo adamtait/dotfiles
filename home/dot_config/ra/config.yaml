@@ -61,10 +61,10 @@ secrets:
     codex_auth_json:
         secret_name: codex-auth-json-adamtait
         env_var: CODEX_AUTH_JSON_B64
-# connect command
-#  login command auto execs tmux after new connection
-connect:
-    login_command: "sh -c 'infocmp -- \"$TERM\" >/dev/null 2>&1 || export TERM=xterm-256color; exec tmux new-session -A -s main'"
+# connect — no login_command set: the tmux plugin auto-attaches on login
+# (profile.d/05-tmux-autoattach.sh), so tmux comes up on both `ra connect` and
+# `ra plugin et connect` without a client-side command. An empty login_command
+# means a plain interactive login shell.
 # env — plain static env vars forwarded to the container (no secret fetch).
 env:
     CLAUDE_CODE_NO_FLICKER: 1
