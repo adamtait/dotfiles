@@ -19,7 +19,6 @@ gcloud:
         repo_name: ra-workstation-images
         auto_sleep_hours: 3
         auto_shutdown_hours: 10
-
 # plugins — installed via 'ra plugin install <git-url-or-path>'. Each
 # plugin contributes its own config block under plugins.<name>.*.
 plugins:
@@ -49,7 +48,6 @@ plugins:
     et:
         enabled: true
         port-for-tunnel: 2022
-
 # secrets — populated by `ra plugin install` for plugins that declare them.
 # Each entry has shape {secret_name, env_var}. Logical names matter to
 # plugin scripts (e.g. the github plugin reads RA_SECRET_GITHUB_PAT_NAME).
@@ -63,12 +61,10 @@ secrets:
     codex_auth_json:
         secret_name: codex-auth-json-adamtait
         env_var: CODEX_AUTH_JSON_B64
-
 # connect command
 #  login command auto execs tmux after new connection
 connect:
     login_command: "sh -c 'infocmp -- \"$TERM\" >/dev/null 2>&1 || export TERM=xterm-256color; exec tmux new-session -A -s main'"
-
 # env — plain static env vars forwarded to the container (no secret fetch).
 env:
     CLAUDE_CODE_NO_FLICKER: 1
