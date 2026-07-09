@@ -41,7 +41,13 @@ import socket
 a = socket.socket(); a.bind(("127.0.0.1", 0))
 b = socket.socket(); b.bind(("127.0.0.1", 0))
 print(a.getsockname()[1], b.getsockname()[1])
-') || { echo "et: could not allocate local ports" >&2; exit 1; }
+') || true
+# Guard both read failure and malformed/partial output (not just a non-zero
+# read): downstream `ra tunnel` / et -p need two numeric ports.
+if ! [[ "${BOOT_PORT:-}" =~ ^[0-9]+$ && "${DATA_PORT:-}" =~ ^[0-9]+$ ]]; then
+	echo "et: could not allocate local ports" >&2
+	exit 1
+fi
 
 # Supervised tunnel: `ra tunnel` is a single foreground (unsupervised) tunnel, so
 # wrap it in a respawn loop — if it drops, et's own reconnect finds a fresh one.
