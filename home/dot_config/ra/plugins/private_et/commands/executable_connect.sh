@@ -97,10 +97,15 @@ args=(-k 3 --ssh-option "Port=${BOOT_PORT}")
 ident="${HOME}/.ssh/google_compute_engine"
 [ -r "$ident" ] && args+=(--ssh-option "IdentityFile=${ident}")
 args+=(--ssh-option StrictHostKeyChecking=no --ssh-option UserKnownHostsFile=/dev/null -p "${DATA_PORT}")
-# A non-empty RA_LOGIN_COMMAND runs in place of the login shell (matching
-# `ra connect`). et takes a remote command via -c/--command (there is no trailing
-# positional for it — the only positional is the host), and exits when it returns.
-[ -n "${RA_LOGIN_COMMAND:-}" ] && args+=(--command "$RA_LOGIN_COMMAND")
+# No --command for et. Unlike core `ra connect` (whose `ssh --command` runs a
+# NON-login shell, so RA_LOGIN_COMMAND is how tmux gets launched), et connects
+# through a real *login* shell: the workstation's normal startup runs
+# (/etc/profile.d/*, incl. the tmux plugin's auto-attach), so tmux — or whatever
+# the login shell does — is already up. Passing RA_LOGIN_COMMAND here is both
+# redundant and breaking: et's -c/--command is run-and-exit (not a PTY login
+# shell like `ssh -t`), so it drops the session immediately, and re-launching
+# tmux inside the already-attached session errors ("sessions should be nested
+# with care"). RA_LOGIN_COMMAND is intentionally unused for the et transport.
 
 echo "Connecting to ${RA_WORKSTATION} via Eternal Terminal (auto-reconnecting)..." >&2
 # Foreground (not exec) so the EXIT trap tears the tunnels down when et returns.
