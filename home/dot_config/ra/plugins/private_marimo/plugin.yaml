@@ -1,0 +1,25 @@
+name: marimo
+version: "1.0.0"
+description: "Installs marimo (reactive Python notebook) and auto-starts the edit server at boot"
+port-for-tunnel: 2718
+# post_install_message: printed by `ra plugin install`. Explains how to reach the
+# edit server, which binds 127.0.0.1 (loopback only) on the workstation — so it is
+# reachable solely through the port tunnel, never directly over the VPC network.
+post_install_message: |
+  marimo's edit server starts at boot on the workstation, listening on
+  127.0.0.1:2718 (loopback only — not exposed on the VPC network). Reach it
+  by forwarding the port over the tunnel from your local machine:
+
+      ra tunnel 2718:2718 <workstation>
+
+  then open http://localhost:2718 in your browser. Notebooks are read from /
+  created in the configured working_directory (your home directory by default).
+config:
+  - name: enabled
+    type: bool
+    description: "Install marimo and auto-start the edit server?"
+    default: false
+  - name: working_directory
+    type: string
+    description: "Directory where marimo will look for / create notebooks (leave blank for home directory)"
+    default: ""
