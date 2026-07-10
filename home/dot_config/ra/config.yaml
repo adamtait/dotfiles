@@ -32,6 +32,7 @@ plugins:
     codex:
         auth_provider: oauth
         enabled: true
+        release: latest
     tmux:
         enabled: true
         session_name: main
@@ -48,6 +49,10 @@ plugins:
     et:
         enabled: true
         port-for-tunnel: 2022
+    marimo:
+        enabled: true
+        port-for-tunnel: 2718
+        working_directory: $HOME/workspace/notebooks/
 # secrets — populated by `ra plugin install` for plugins that declare them.
 # Each entry has shape {secret_name, env_var}. Logical names matter to
 # plugin scripts (e.g. the github plugin reads RA_SECRET_GITHUB_PAT_NAME).

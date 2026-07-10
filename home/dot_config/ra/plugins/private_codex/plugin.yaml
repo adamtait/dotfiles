@@ -6,6 +6,10 @@ config:
     type: bool
     description: "Enable Codex CLI?"
     default: false
+  - name: release
+    type: string
+    description: "Codex CLI version to install, e.g. 0.144.1 (or 'latest' for the newest release)"
+    default: "latest"
 auth_providers:
   - name: oauth
     description: "ChatGPT OAuth (recommended) — runs `codex login` locally and uploads ~/.codex/auth.json"
