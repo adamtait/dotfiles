@@ -43,17 +43,11 @@ RUN apt-get update \
     && apt-get install -y {{ range .packages.common }}{{ . }} {{ end }}{{ range .packages.linux.apt }}{{ . }} {{ end }}\
     && rm -rf /var/lib/apt/lists/*
 
-# --- Default login shell: zsh -----------------------------------------------
-# chsh writes /etc/passwd, which is also on the ephemeral overlay — so, like the
-# apt packages above, the dotfiles' run_once chsh does not survive a rebuild.
-# Bake the shell change into the image so `user` always logs into zsh. The tmux
-# plugin's zsh-autoattach hook already assumes zsh is the login shell.
-RUN if command -v zsh >/dev/null 2>&1; then \
-        grep -qxF /usr/bin/zsh /etc/shells 2>/dev/null || echo /usr/bin/zsh >> /etc/shells; \
-        chsh -s /usr/bin/zsh user || usermod -s /usr/bin/zsh user; \
-    else \
-        echo "zsh not installed; cannot set it as the default shell" >&2; exit 1; \
-    fi
+# The zsh binary is baked above, but the *default login shell* is NOT set here:
+# the `user` account is created at container startup by the Cloud Workstations
+# entrypoint, not at image build (a Dockerfile `chsh user` fails with "user does
+# not exist"), and /etc/passwd is on the ephemeral overlay anyway. The shell is
+# therefore set on every boot by workstation-startup.d/255_default-shell-zsh.sh.
 
 # --- SSH keepalive ----------------------------------------------------------
 # `gcloud workstations ssh` tunnels SSH over a websocket and provides no
