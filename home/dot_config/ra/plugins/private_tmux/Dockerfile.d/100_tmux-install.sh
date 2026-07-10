@@ -34,7 +34,9 @@ cat > /etc/tmux.conf <<'EOF'
 # available in every window/split, not just the one that exec'd tmux.
 # The shell is resolved from /etc/passwd at pane-open time (not hardcoded) so it
 # tracks any post-build chsh/usermod change; `exec` leaves no extra sh wrapper.
-set -g default-command 'exec "$(getent passwd "$(id -un)" | cut -d: -f7)" -l'
+# Fall back to bash if the lookup ever comes back empty — an empty value would
+# make `exec` fail and the pane die with no shell, whereas bash always exists.
+set -g default-command '_sh=$(getent passwd "$(id -un)" | cut -d: -f7); exec "${_sh:-/bin/bash}" -l'
 
 # Keep the tmux server alive across transient zero-session states. tmux defaults
 # to `exit-empty on`, which reaps the whole server the moment its last session
