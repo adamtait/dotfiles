@@ -5,6 +5,10 @@
 # This file ships with no plugin-specific content; plugins drop scripts
 # into Dockerfile.d/, workstation-startup.d/, and profile.d/ (those dirs
 # are merged from project + user + plugin sources at assembly time).
+#
+# NOTE: this is a chezmoi template (Dockerfile.tmpl). The personal package list
+# below is rendered from .chezmoidata/packages.yaml at `chezmoi apply` time, so
+# the image and the dotfiles' run_onchange installer share one source of truth.
 FROM us-central1-docker.pkg.dev/cloud-workstations-images/predefined/code-oss:latest
 
 USER root
@@ -16,6 +20,40 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 RUN command -v gcloud >/dev/null || (echo "gcloud missing from base image" && exit 1)
+
+# --- Personal dotfiles packages (baked into the image for persistence) ------
+# WHY THESE ARE HERE AND NOT LEFT TO THE DOTFILES:
+# The chezmoi dotfiles install these with apt in a run_onchange script at first
+# boot. But apt writes to /usr on the container's *overlay* rootfs, which is
+# rebuilt from this image on every workstation start — so the packages (zsh,
+# ripgrep, emacs, go, …) vanish on the next rebuild. Meanwhile chezmoi's own
+# completion state and the ra dotfiles marker (~/.ra-dotfiles-installed) live on
+# the *persistent* /home disk, so the installer believes it is already converged
+# and never re-runs. Net result: a rebuilt box comes up as bare bash with the
+# tools gone. Baking them into the image (the overlay's lower layer) makes them
+# present on every boot regardless of chezmoi/marker state.
+#
+# Only apt-installed tools are baked here. Homebrew/bun/pyenv/fnm tools are NOT:
+# they install under /home (/home/linuxbrew, ~/.bun, ~/.pyenv …), which is a
+# persistent disk and survives rebuilds on its own.
+#
+# The list is rendered from the same .chezmoidata/packages.yaml the dotfiles
+# use — `common` + `linux.apt` (the linux `brew` list is deliberately excluded).
+RUN apt-get update \
+    && apt-get install -y {{ range .packages.common }}{{ . }} {{ end }}{{ range .packages.linux.apt }}{{ . }} {{ end }}\
+    && rm -rf /var/lib/apt/lists/*
+
+# --- Default login shell: zsh -----------------------------------------------
+# chsh writes /etc/passwd, which is also on the ephemeral overlay — so, like the
+# apt packages above, the dotfiles' run_once chsh does not survive a rebuild.
+# Bake the shell change into the image so `user` always logs into zsh. The tmux
+# plugin's zsh-autoattach hook already assumes zsh is the login shell.
+RUN if command -v zsh >/dev/null 2>&1; then \
+        grep -qxF /usr/bin/zsh /etc/shells 2>/dev/null || echo /usr/bin/zsh >> /etc/shells; \
+        chsh -s /usr/bin/zsh user || usermod -s /usr/bin/zsh user; \
+    else \
+        echo "zsh not installed; cannot set it as the default shell" >&2; exit 1; \
+    fi
 
 # --- SSH keepalive ----------------------------------------------------------
 # `gcloud workstations ssh` tunnels SSH over a websocket and provides no
