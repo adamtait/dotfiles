@@ -2,7 +2,11 @@
 # https://starship.rs/config/
 
 # command_timeout is a safety backstop: the per-language version lookups below
-# can spike past the default on cold/contended renders (e.g. first prompt after cd).
+# can spike past the default on cold/contended renders (e.g. first prompt after
+# cd). The worst offender — `go version` triggering a multi-second Go toolchain
+# download under GOTOOLCHAIN=auto — is fixed at the source on ra workstations
+# (ra/Dockerfile.d/050_golang-install.sh installs a current Go so nothing
+# downloads); this timeout still guards other hosts with a stale toolchain.
 add_newline = true
 command_timeout = 2000
 
@@ -52,5 +56,9 @@ pyenv_version_name = true
 symbol = " "
 [golang]
 symbol = " "
+# `go version` self-downloads a newer toolchain when a repo's go.mod `go`
+# directive outranks the installed Go (GOTOOLCHAIN=auto), which stalled the
+# prompt on the first `cd` into a Go repo. Fixed at the image level rather than
+# here (see command_timeout above); the module stays enabled.
 [java]
 symbol = " "
