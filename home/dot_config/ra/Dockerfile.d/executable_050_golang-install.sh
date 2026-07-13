@@ -15,6 +15,10 @@
 # pinning, and SHA256-verify the tarball against go.dev's signed manifest.
 set -euo pipefail
 
+# Build hooks run over the network at image-build time; retry transient blips so
+# a momentary go.dev hiccup doesn't fail the whole `ra create`.
+curl() { command curl --retry 3 --retry-connrefused --retry-delay 2 "$@"; }
+
 case "$(uname -m)" in
     x86_64 | amd64) ARCH=amd64 ;;
     aarch64 | arm64) ARCH=arm64 ;;
@@ -25,8 +29,12 @@ esac
 VERSION="$(curl -fsSL 'https://go.dev/VERSION?m=text' | head -n1)"
 [ -n "$VERSION" ] || { echo "golang-install: could not resolve latest Go version" >&2; exit 1; }
 
-# Skip if the target toolchain is already the one on PATH.
-if command -v go >/dev/null 2>&1 && [ "$(go version | awk '{print $3}')" = "$VERSION" ]; then
+# Skip if the target toolchain is already the one on PATH. GOTOOLCHAIN=local
+# forces the version probe to use the installed toolchain — so this check can
+# never itself trigger the toolchain download we're here to prevent, whatever
+# the build's cwd/go.mod happens to be.
+if command -v go >/dev/null 2>&1 && \
+    [ "$(GOTOOLCHAIN=local go version 2>/dev/null | awk '{print $3}')" = "$VERSION" ]; then
     echo "golang-install: ${VERSION} already installed, skipping."
     exit 0
 fi
