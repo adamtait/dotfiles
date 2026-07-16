@@ -56,6 +56,23 @@ else
     }
 fi
 
+# ra_env_set_secret (secret → /run/ra/env ONLY, never the world-readable
+# /etc/environment) was added to the core lib later. Define a fallback if this
+# core predates it, or the lib was absent above — so a newer plugin booting
+# against an older core still keeps the OAuth token out of /etc/environment.
+command -v ra_env_set_secret >/dev/null 2>&1 || ra_env_set_secret() {
+    local key="$1" val="$2"
+    local quoted="${val//\'/\'\\\'\'}"
+    [ -f /etc/environment ] && sed -i "/^${key}=/d" /etc/environment
+    if [ ! -f "${RA_ENV_FILE}" ]; then
+        ( umask 077; : > "${RA_ENV_FILE}" )
+        chown user:user "${RA_ENV_FILE}"
+        chmod 0600 "${RA_ENV_FILE}"
+    fi
+    sed -i "/^${key}=/d" "${RA_ENV_FILE}"
+    printf "%s='%s'\n" "${key}" "${quoted}" >> "${RA_ENV_FILE}"
+}
+
 _clear_stale_state() {
     rm -f "${APIKEY_HELPER_PATH}"
     # Clear prior auth from BOTH /etc/environment and /run/ra/env so a provider
@@ -119,8 +136,8 @@ case "${RA_PLUGIN_CLAUDE_AUTH_PROVIDER:-}" in
         if [[ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
             log "CLAUDE_CODE_OAUTH_TOKEN not set; auth may fail"
         else
-            ra_env_set CLAUDE_CODE_OAUTH_TOKEN "${CLAUDE_CODE_OAUTH_TOKEN}"
-            log "exported CLAUDE_CODE_OAUTH_TOKEN"
+            ra_env_set_secret CLAUDE_CODE_OAUTH_TOKEN "${CLAUDE_CODE_OAUTH_TOKEN}"
+            log "exported CLAUDE_CODE_OAUTH_TOKEN (to /run/ra/env only)"
             _seed_onboarding "${CLAUDE_CODE_OAUTH_TOKEN}"
         fi
         ;;

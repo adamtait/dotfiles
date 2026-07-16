@@ -9,8 +9,8 @@
 # (We require base64 because /etc/environment and /run/ra/env can't carry
 # multi-line values safely; raw JSON would break shell sourcing.)
 #
-# apikey path: appends OPENAI_API_KEY to /etc/environment so codex picks
-# it up on login.
+# apikey path: writes OPENAI_API_KEY to /run/ra/env (0600, not the
+# world-readable /etc/environment) so codex picks it up on login.
 set -euo pipefail
 
 USER_NAME="user"
@@ -59,6 +59,23 @@ else
     }
 fi
 
+# ra_env_set_secret (secret → /run/ra/env ONLY, never the world-readable
+# /etc/environment) was added to the core lib later. Define a fallback if this
+# core predates it, or the lib was absent above — so a newer plugin booting
+# against an older core still keeps OPENAI_API_KEY out of /etc/environment.
+command -v ra_env_set_secret >/dev/null 2>&1 || ra_env_set_secret() {
+    local key="$1" val="$2"
+    local quoted="${val//\'/\'\\\'\'}"
+    [ -f /etc/environment ] && sed -i "/^${key}=/d" /etc/environment
+    if [ ! -f "${RA_ENV_FILE}" ]; then
+        ( umask 077; : > "${RA_ENV_FILE}" )
+        chown user:user "${RA_ENV_FILE}"
+        chmod 0600 "${RA_ENV_FILE}"
+    fi
+    sed -i "/^${key}=/d" "${RA_ENV_FILE}"
+    printf "%s='%s'\n" "${key}" "${quoted}" >> "${RA_ENV_FILE}"
+}
+
 _clear_stale_state() {
     # Drop any prior auth state so switching providers doesn't leave
     # OPENAI_API_KEY set alongside a cached ChatGPT login (see openai/codex
@@ -106,7 +123,7 @@ case "${RA_PLUGIN_CODEX_AUTH_PROVIDER:-}" in
         if [[ -z "${OPENAI_API_KEY:-}" ]]; then
             log "OPENAI_API_KEY not set; auth may fail"
         else
-            ra_env_set OPENAI_API_KEY "${OPENAI_API_KEY}"
+            ra_env_set_secret OPENAI_API_KEY "${OPENAI_API_KEY}"
             log "configured apikey mode"
         fi
         ;;
