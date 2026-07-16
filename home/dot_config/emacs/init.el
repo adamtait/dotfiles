@@ -77,8 +77,10 @@
 ;; corfu-terminal via the `popon' library, and `popon--make-framebuffer' can
 ;; spin forever building the popup (100% CPU, hard freeze) under some window
 ;; geometry. As an idle timer, auto-popup made this fire during ordinary typing.
-;; With auto off, completion is on-demand only (TAB, see `tab-always-indent'),
-;; so the popup renders solely when asked. Revisit if popon > 0.13 fixes the loop.
+;; With auto off, completion is on-demand only: `C-M-i' (completion-at-point)
+;; works in any buffer, and `tab-always-indent' also lets TAB complete in prog
+;; modes (markdown/org bind TAB themselves, so use C-M-i there). The popon popup
+;; then renders solely when asked. Revisit if popon > 0.13 fixes the loop.
 (use-package corfu
   :init (global-corfu-mode 1)
   :custom (corfu-auto nil)
