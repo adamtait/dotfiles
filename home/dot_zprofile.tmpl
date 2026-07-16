@@ -32,3 +32,9 @@ if [[ "${RA_PLUGIN_TMUX_ENABLED:-}" == "true" && -t 1 && -z "${TMUX:-}" ]] && co
   # tmux failed to start -> fall through to a normal zsh login.
 fi
 {{ end -}}
+
+# Personal bins on PATH for every login shell — including non-interactive ones
+# (e.g. `ssh host cmd`) that skip ~/.zshrc, where 00-path.zsh would otherwise be
+# the only thing adding it. Prepended after Homebrew's shellenv so it wins;
+# interactive shells re-add and dedupe it in 00-path.zsh via `typeset -U path`.
+[ -d "$HOME/.local/bin" ] && export PATH="$HOME/.local/bin:$PATH"
