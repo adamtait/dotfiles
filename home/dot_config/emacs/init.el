@@ -73,9 +73,16 @@
 (use-package which-key :init (which-key-mode 1))
 
 ;; In-buffer completion (terminal-friendly).
+;; NOTE: `corfu-auto' is intentionally OFF. In a TTY the popup is drawn by
+;; corfu-terminal via the `popon' library, and `popon--make-framebuffer' can
+;; spin forever building the popup (100% CPU, hard freeze) under some window
+;; geometry. As an idle timer, auto-popup made this fire during ordinary typing.
+;; With auto off, completion is on-demand only (TAB, see `tab-always-indent'),
+;; so the popup renders solely when asked. Revisit if popon > 0.13 fixes the loop.
 (use-package corfu
   :init (global-corfu-mode 1)
-  :custom (corfu-auto t) (corfu-auto-delay 0.2)
+  :custom (corfu-auto nil)
+          (tab-always-indent 'complete)
   :config (when (eq window-system nil)
             (use-package corfu-terminal
               :init (corfu-terminal-mode 1))))
