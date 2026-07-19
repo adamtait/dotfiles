@@ -48,8 +48,9 @@ no, proceed.
 
 Always ask through the interactive, clickable question interface (the `AskUserQuestion`
 tool), never as a numbered list of questions dumped into prose. The interactive interface
-lets the user answer with a click instead of typing, shows the options side by side, and
-keeps the exchange from turning into a wall of text. A numbered list makes the user do more
+lets the user answer with a click instead of typing, presents each question with its
+options as selectable choices, and keeps the exchange from turning into a wall of text. A
+numbered list makes the user do more
 work and invites them to answer "just do your best," which puts you right back where you
 started.
 
