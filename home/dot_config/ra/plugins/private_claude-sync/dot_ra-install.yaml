@@ -1,2 +1,4 @@
-repo: ../ra-plugins/claude-sync
-installed_at: "2026-06-16T05:17:25Z"
+repo: git@github.com:adamtait/ra-plugins.git
+path: claude-sync
+ref: df4bea1cd06dbed4c36b3ab2b2159ecec7f2d578
+installed_at: "2026-11-07T06:30:18Z"

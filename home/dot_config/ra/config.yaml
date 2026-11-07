@@ -41,6 +41,7 @@ plugins:
         bucket_name_override: remote-agent-sync-artifacts
         enabled: true
         interval_seconds: 300
+        pull_interval_seconds: 600
         pull_max_age_days: 30
         pull_max_namespaces: 10
         sync_all_projects: true
